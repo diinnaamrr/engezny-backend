@@ -1,5 +1,9 @@
 name: Dev Deploy - Nemo Tours
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
     branches:
@@ -20,26 +24,15 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: fassla-software
-          password: ${{ secrets.GHCR_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/fassla-software/nemo-tours-backend
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix=dev-
-            type=raw,value=dev
-
-      - name: Build and push Docker image
+      - name: Build & Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/fassla-software/nemo-tours-backend:dev
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -48,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH to server & deploy
+      - name: Deploy on Dev Server via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -57,64 +50,12 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            set -e
-
             cd /var/www/nemo-tours-backend
 
-            mkdir -p docker/nginx storage bootstrap/cache
-
-            rm -f docker/nginx/default.conf
-
-            cat > docker/nginx/default.conf << 'EOF'
-            server {
-                listen 80;
-                server_name nemotours.duckdns.org;
-
-                root /var/www/html/public;
-                index index.php;
-
-                client_max_body_size 100M;
-
-                location / {
-                    try_files $uri $uri/ /index.php?$query_string;
-                }
-
-                location ~ \.php$ {
-                    fastcgi_pass app:9000;
-                    fastcgi_index index.php;
-                    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-                    include fastcgi_params;
-                }
-
-                location ~ /\.(?!well-known).* {
-                    deny all;
-                }
-            }
-            EOF
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
             docker-compose -f docker-compose.dev.yml pull
             docker-compose -f docker-compose.dev.yml down
             docker-compose -f docker-compose.dev.yml up -d
 
-            DEV_URL="https://nemotours.duckdns.org"
-
-            cp .env .env.backup || true
-
-            if grep -q "^APP_URL=" .env; then
-              sed -i "s|^APP_URL=.*|APP_URL=${DEV_URL}|" .env
-            else
-              echo "APP_URL=${DEV_URL}" >> .env
-            fi
-
-            if grep -q "^ASSET_URL=" .env; then
-              sed -i "s|^ASSET_URL=.*|ASSET_URL=${DEV_URL}|" .env
-            else
-              echo "ASSET_URL=${DEV_URL}" >> .env
-            fi
-
-            docker-compose -f docker-compose.dev.yml exec -T app php artisan key:generate || true
-            docker-compose -f docker-compose.dev.yml exec -T app php artisan storage:link || true
-            docker-compose -f docker-compose.dev.yml exec -T app php artisan config:clear || true
-            docker-compose -f docker-compose.dev.yml exec -T app php artisan cache:clear || true
-            docker-compose -f docker-compose.dev.yml exec -T app php artisan view:clear || true
-            docker-compose -f docker-compose.dev.yml exec -T app php artisan route:clear || true
+            docker image prune -f
