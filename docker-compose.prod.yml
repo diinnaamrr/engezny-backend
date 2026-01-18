@@ -1,7 +1,7 @@
 services:
   app:
     image: ghcr.io/osama21245/wayak-back:${IMAGE_TAG:-latest}
-    container_name: wayak_app
+    container_name: nemotours_app
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
@@ -10,7 +10,7 @@ services:
       - ./bootstrap/cache:/var/www/html/bootstrap/cache
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - wayak-network
+      - nemotours-network
     depends_on:
       - db
       - redis
@@ -26,53 +26,51 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: wayak_nginx
+    container_name: nemotours_nginx
     restart: unless-stopped
     ports:
-      - "8111:80"  # Changed to 8111 for CloudPanel reverse proxy
-      # - "443:443"  # Commented out - SSL handled by CloudPanel Nginx
+      - "8015:80"  # بورت جديد مخصص للـ nemotours
     volumes:
       - ./:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./docker/nginx/ssl:/etc/nginx/ssl:ro
     networks:
-      - wayak-network
+      - nemotours-network
     depends_on:
       - app
 
   db:
     image: mysql:8.0
-    container_name: wayak_db
+    container_name: nemotours_db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-wayak_db}
+      MYSQL_DATABASE: ${DB_DATABASE:-nemotours_db}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-${DB_PASSWORD}}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME:-wayak_user}
+      MYSQL_USER: ${DB_USERNAME:-nemotours}
     volumes:
-      - dbdata:/var/lib/mysql
+      - nemotours_dbdata:/var/lib/mysql
       - ./backups:/backups
     networks:
-      - wayak-network
+      - nemotours-network
     command: --default-authentication-plugin=mysql_native_password
 
   redis:
     image: redis:7-alpine
-    container_name: wayak_redis
+    container_name: nemotours_redis
     restart: unless-stopped
     volumes:
-      - redisdata:/data
+      - nemotours_redisdata:/data
     networks:
-      - wayak-network
+      - nemotours-network
     command: redis-server --appendonly yes
 
 networks:
-  wayak-network:
+  nemotours-network:
     driver: bridge
 
 volumes:
-  dbdata:
+  nemotours_dbdata:
     driver: local
-  redisdata:
+  nemotours_redisdata:
     driver: local
-
