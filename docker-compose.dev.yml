@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/osama21245/wayak-back:dev
+    image: ghcr.io/fassla-software/nemo-tours-backend:${IMAGE_TAG:-dev}
     container_name: nemotours_app_dev
     restart: unless-stopped
     working_dir: /var/www/html
