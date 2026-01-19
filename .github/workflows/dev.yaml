@@ -46,11 +46,11 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
           password: ${{ secrets.SSH_PASSWORD }}
+      
           port: 22
           script: |
-            cd /var/www/nemo-tours-backend
+            cd /var/www/nemo-tours-dev
 
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
@@ -58,4 +58,5 @@ jobs:
             docker-compose -f docker-compose.dev.yml down
             docker-compose -f docker-compose.dev.yml up -d
 
+            # تنظيف الصور القديمة
             docker image prune -f
