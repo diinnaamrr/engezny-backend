@@ -1,0 +1,67 @@
+name: Dev Deploy - Nemo Tours
+
+permissions:
+  contents: read
+  packages: write
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/fassla-software/nemo-tours-backend:dev
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy on Dev Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd /var/www
+
+            if [ ! -d "nemo-tours-dev/.git" ]; then
+              git clone -b dev https://github.com/fassla-software/nemo-tours-backend.git nemo-tours-dev
+            fi
+
+            cd nemo-tours-dev
+            git pull origin dev
+
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+
+            docker-compose -f docker-compose.dev.yml pull
+            docker-compose -f docker-compose.dev.yml down
+            docker-compose -f docker-compose.dev.yml up -d
+
+            docker image prune -f
