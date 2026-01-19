@@ -50,12 +50,11 @@ jobs:
     steps:
       - name: SSH to server & deploy
         uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST_PROD }}
-          username: ${{ secrets.SSH_USER_PROD }}
-          key: ${{ secrets.SSH_KEY_PROD }}
-          password: ${{ secrets.SSH_PASSWORD_PROD }}
-          port: ${{ secrets.SSH_PORT || 22 }}
+            with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
           script: |
             cd /var/www/nemo-tours-prod
 
