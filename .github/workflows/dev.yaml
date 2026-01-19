@@ -49,7 +49,14 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd /var/www/nemo-tours-dev
+            cd /var/www
+
+            if [ ! -d "nemo-tours-dev/.git" ]; then
+              git clone -b dev https://github.com/fassla-software/nemo-tours-backend.git nemo-tours-dev
+            fi
+
+            cd nemo-tours-dev
+            git pull origin dev
 
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
@@ -57,5 +64,4 @@ jobs:
             docker-compose -f docker-compose.dev.yml down
             docker-compose -f docker-compose.dev.yml up -d
 
-            # تنظيف الصور القديمة
             docker image prune -f
