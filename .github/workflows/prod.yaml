@@ -50,7 +50,7 @@ jobs:
     steps:
       - name: SSH to server & deploy
         uses: appleboy/ssh-action@v1.0.3
-            with:
+        with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
