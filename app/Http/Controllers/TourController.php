@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Tour;
 use App\Models\Category;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\StoreTourRequest;
+use App\Http\Requests\UpdateTourRequest;
 
 class TourController extends Controller
 {
@@ -21,19 +23,9 @@ class TourController extends Controller
         return view('adminmodule::admin.tour.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(StoreTourRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
-            'departure_date' => 'nullable|date',
-            'return_date' => 'nullable|date',
-        ]);
-
-        $data = $request->all();
+        $data = $request->validated();
         $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
@@ -70,20 +62,11 @@ class TourController extends Controller
         return view('adminmodule::admin.tour.edit', compact('tour', 'categories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateTourRequest $request, $id)
     {
         $tour = Tour::findOrFail($id);
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'departure_date' => 'nullable|date',
-            'return_date' => 'nullable|date',
-        ]);
 
-        $data = $request->all();
+        $data = $request->validated();
         $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
