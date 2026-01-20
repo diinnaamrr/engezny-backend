@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tour;
 use App\Models\Category;
+use Illuminate\Support\Facades\File;
 
 class TourController extends Controller
 {
@@ -27,7 +28,7 @@ class TourController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'departure_date' => 'nullable|date',
             'return_date' => 'nullable|date',
         ]);
@@ -109,6 +110,25 @@ class TourController extends Controller
     public function destroy($id)
     {
         $tour = Tour::findOrFail($id);
+        
+        // Delete main image
+        if ($tour->image) {
+            $imagePath = public_path('storage/app/public/tour/' . $tour->image);
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
+        }
+
+        // Delete gallery images
+        if ($tour->gallery && is_array($tour->gallery)) {
+            foreach ($tour->gallery as $img) {
+                $galleryPath = public_path('storage/app/public/tour/gallery/' . $img);
+                if (File::exists($galleryPath)) {
+                    File::delete($galleryPath);
+                }
+            }
+        }
+
         $tour->delete();
         return back()->with('success', 'Tour deleted successfully.');
     }
