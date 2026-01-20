@@ -35,6 +35,14 @@
                                             <label for="destination" class="form-label">{{ translate('destination') }}</label>
                                             <input type="text" name="destination" class="form-control" id="destination" placeholder="{{ translate('destination') }}">
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="departure_place" class="form-label">{{ translate('departure_place') }}</label>
+                                            <input type="text" name="departure_place" class="form-control" id="departure_place" placeholder="{{ translate('departure_place') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="rating" class="form-label">{{ translate('rating') }}</label>
+                                            <input type="number" step="0.1" min="0" max="5" name="rating" class="form-control" id="rating" placeholder="{{ translate('rating') }}">
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -62,6 +70,10 @@
                                         <div class="mb-3 d-flex align-items-center gap-2">
                                             <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input">
                                             <label for="is_featured" class="form-check-label">{{ translate('is_featured') }}</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="gallery_text" class="form-label">{{ translate('gallery_text') }}</label>
+                                            <textarea name="gallery_text" class="form-control" id="gallery_text" rows="2" placeholder="{{ translate('gallery_text') }}"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">

@@ -37,6 +37,12 @@
                                         </div>
                                         <div class="text-end">
                                             <h4 class="text-primary mb-0">{{ getCurrencyFormat($tour->price) }}</h4>
+                                            @if($tour->rating)
+                                                <div class="d-flex align-items-center gap-1 mt-1">
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <span class="fw-bold">{{ $tour->rating }}</span>
+                                                </div>
+                                            @endif
                                             @if($tour->is_featured)
                                                 <span class="badge badge-success mt-1">{{ translate('featured') }}</span>
                                             @endif
@@ -77,6 +83,13 @@
                                         <h6 class="text-capitalize mb-2">{{ translate('description') }}</h6>
                                         <p class="text-justify">{{ $tour->description ?? translate('no_description_available') }}</p>
                                     </div>
+
+                                    @if($tour->gallery_text)
+                                        <div class="mb-4">
+                                            <h6 class="text-capitalize mb-2">{{ translate('gallery_text') }}</h6>
+                                            <p class="text-justify">{{ $tour->gallery_text }}</p>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
