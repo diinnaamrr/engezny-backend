@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tour;
 use App\Models\Category;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreTourRequest;
 use App\Http\Requests\UpdateTourRequest;
 
@@ -29,17 +29,13 @@ class TourController extends Controller
         $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('storage/app/public/tour'), $imageName);
-            $data['image'] = $imageName;
+            $data['image'] = $request->file('image')->store('tour', 'public');
         }
 
         if ($request->hasFile('gallery')) {
             $gallery = [];
             foreach ($request->file('gallery') as $file) {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('storage/app/public/tour/gallery'), $name);
-                $gallery[] = $name;
+                $gallery[] = $file->store('tour/gallery', 'public');
             }
             $data['gallery'] = $gallery;
         }
@@ -70,17 +66,17 @@ class TourController extends Controller
         $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('storage/app/public/tour'), $imageName);
-            $data['image'] = $imageName;
+            // Delete old image
+            if ($tour->image) {
+                Storage::disk('public')->delete($tour->image);
+            }
+            $data['image'] = $request->file('image')->store('tour', 'public');
         }
 
         if ($request->hasFile('gallery')) {
             $gallery = $tour->gallery ?? [];
             foreach ($request->file('gallery') as $file) {
-                $name = time().rand(1,100).'.'.$file->extension();
-                $file->move(public_path('storage/app/public/tour/gallery'), $name);
-                $gallery[] = $name;
+                $gallery[] = $file->store('tour/gallery', 'public');
             }
             $data['gallery'] = $gallery;
         }
@@ -96,20 +92,12 @@ class TourController extends Controller
         
         // Delete main image
         if ($tour->image) {
-            $imagePath = public_path('storage/app/public/tour/' . $tour->image);
-            if (File::exists($imagePath)) {
-                File::delete($imagePath);
-            }
+            Storage::disk('public')->delete($tour->image);
         }
 
         // Delete gallery images
         if ($tour->gallery && is_array($tour->gallery)) {
-            foreach ($tour->gallery as $img) {
-                $galleryPath = public_path('storage/app/public/tour/gallery/' . $img);
-                if (File::exists($galleryPath)) {
-                    File::delete($galleryPath);
-                }
-            }
+            Storage::disk('public')->delete($tour->gallery);
         }
 
         $tour->delete();
