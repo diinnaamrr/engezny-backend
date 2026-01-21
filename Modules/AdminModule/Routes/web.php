@@ -6,7 +6,8 @@ use Modules\AdminModule\Http\Controllers\Web\New\Admin\DashboardController;
 use Modules\AdminModule\Http\Controllers\Web\New\Admin\ReportController;
 use Modules\AdminModule\Http\Controllers\Web\New\Admin\SettingController;
 use Modules\AdminModule\Http\Controllers\Web\New\Admin\SharedController;
-
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TourController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,6 +50,24 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], f
     Route::controller(SharedController::class)->group(function () {
         Route::get('seen-notification', 'seenNotification')->name('seen-notification');
         Route::get('get-notifications', 'getNotifications')->name('get-notifications');
+    });
+
+    Route::group(['prefix' => 'tours', 'as' => 'tours.'], function () {
+        Route::get('/', [TourController::class, 'index'])->name('index');
+        Route::get('create', [TourController::class, 'create'])->name('create');
+        Route::post('store', [TourController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [TourController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [TourController::class, 'update'])->name('update');
+        Route::get('show/{id}', [TourController::class, 'show'])->name('show');
+        Route::delete('delete/{id}', [TourController::class, 'destroy'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::post('store', [CategoryController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [CategoryController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [CategoryController::class, 'destroy'])->name('delete');
     });
 });
 Route::controller(SharedController::class)->group(function () {
