@@ -26,7 +26,7 @@ class TourController extends Controller
     public function store(StoreTourRequest $request)
     {
         $data = $request->validated();
-        $data['is_featured'] = $request->has('is_featured');
+        $data['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('tour', 'public');
@@ -63,7 +63,7 @@ class TourController extends Controller
         $tour = Tour::findOrFail($id);
 
         $data = $request->validated();
-        $data['is_featured'] = $request->has('is_featured');
+        $data['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('image')) {
             // Delete old image
