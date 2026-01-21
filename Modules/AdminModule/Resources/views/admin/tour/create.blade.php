@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                         <div class="mb-3 d-flex align-items-center gap-2">
-                                            <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input">
+                                            <input type="checkbox" name="is_featured" id="is_featured" class="form-check-input" value="1">
                                             <label for="is_featured" class="form-check-label">{{ translate('is_featured') }}</label>
                                         </div>
                                         <div class="mb-3">
