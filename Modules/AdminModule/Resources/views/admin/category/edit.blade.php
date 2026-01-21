@@ -33,7 +33,7 @@
                                             <label for="image" class="form-label">{{ translate('image') }}</label>
                                             <input type="file" name="image" class="form-control" id="image">
                                             <div class="mt-2">
-                                                <img width="100" class="rounded" src="{{ asset('storage/app/public/category/'.$category->image) }}" 
+                                                <img width="100" class="rounded" src="{{ asset('storage/category/'.$category->image) }}" 
                                                      onerror="this.src='{{ asset('public/assets/admin-module/img/media/upload-file.png') }}'">
                                             </div>
                                         </div>
