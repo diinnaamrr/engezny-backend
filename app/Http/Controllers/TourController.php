@@ -11,6 +11,34 @@ use App\Http\Requests\UpdateTourRequest;
 
 class TourController extends Controller
 {
+    // Public-facing methods for landing page
+    public function home()
+    {
+        $featuredTours = Tour::where('is_featured', true)
+            ->with('category')
+            ->latest()
+            ->get();
+        
+        return view('landing-page.home', compact('featuredTours'));
+    }
+
+    public function tours()
+    {
+        $tours = Tour::with('category')
+            ->latest()
+            ->paginate(12);
+        
+        return view('landing-page.tours', compact('tours'));
+    }
+
+    public function tourDetails($id)
+    {
+        $tour = Tour::with('category')->findOrFail($id);
+        
+        return view('landing-page.tour-details', compact('tour'));
+    }
+
+    // Admin methods
     public function index()
     {
         $tours = Tour::with('category')->latest()->paginate(20);
