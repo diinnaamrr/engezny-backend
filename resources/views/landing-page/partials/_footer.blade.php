@@ -31,7 +31,7 @@
             
             {{-- Column 1: Logo, Description & Social Media (Large Column) --}}
             <div class="col-lg-5 col-md-12 order-md-1 order-lg-1">
-                <a href="{{ route('index') }}" class="d-flex align-items-center mb-3">
+                <a href="{{ route('home') }}" class="d-flex align-items-center mb-3">
                     <img src="{{ $footerLogo ? asset("storage/app/public/business/".$footerLogo) : asset('public/landing-page/assets/img/heroLogo.png') }}"
                          alt="Wayak Logo"
                          class="img-fluid"
@@ -67,7 +67,7 @@
             <div class="col-lg-3 col-md-6 order-md-3 order-lg-2">
                 <h6 class="text-white mb-3 fw-bold border-start border-3 ps-3" style="border-color: {{ $secondary_color }} !important;">{{ translate('Quick Links') }}</h6>
                 <ul class="list-unstyled">
-                    <li class="mb-1"><a href="{{ route('index') }}" class="text-white-70 text-decoration-none footer-link-hover">{{ translate('Home') }}</a></li>
+                    <li class="mb-1"><a href="{{ route('home') }}" class="text-white-70 text-decoration-none footer-link-hover">{{ translate('Home') }}</a></li>
                     <li class="mb-1"><a href="{{ route('about-us') }}" class="text-white-70 text-decoration-none footer-link-hover">{{ translate('About Us') }}</a></li>
                     <li class="mb-1"><a href="{{ route('contact-us') }}" class="text-white-70 text-decoration-none footer-link-hover">{{ translate('Contact Us') }}</a></li>
                     <li class="mb-1"><a href="{{ route('privacy') }}" class="text-white-70 text-decoration-none footer-link-hover">{{ translate('Privacy Policy') }}</a></li>
