@@ -38,6 +38,19 @@ class TourController extends Controller
         return view('landing-page.tour-details', compact('tour'));
     }
 
+    public function categoryTours($id)
+    {
+        $category = Category::with('children')->findOrFail($id);
+        $tours = Tour::where('category_id', $id)->latest()->paginate(12);
+        
+        return view('landing-page.category-tours', compact('category', 'tours'));
+    }
+
+    public function bookingContact()
+    {
+        return view('landing-page.booking-contact');
+    }
+
     // Admin methods
     public function index()
     {
