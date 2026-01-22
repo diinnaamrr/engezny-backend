@@ -94,6 +94,8 @@ Route::controller(App\Http\Controllers\TourController::class)->group(function ()
     Route::get('/', 'home')->name('home');
     Route::get('/tours', 'tours')->name('tours');
     Route::get('/tour/{id}', 'tourDetails')->name('tour.details');
+    Route::get('/category/{id}/tours', 'categoryTours')->name('category.tours');
+    Route::get('/book-tour', 'bookingContact')->name('book.tour');
 });
 Route::get('track-parcel/{id}', [ParcelTrackingController::class, 'trackingParcel'])->name('track-parcel');
 
