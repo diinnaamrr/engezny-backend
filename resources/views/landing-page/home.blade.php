@@ -10,9 +10,14 @@
 @include('landing-page.sections.hero-tours')
 
 {{-- ===========================
-    ADS AREA SECTION
+    CLIENTS CAROUSEL SECTION
 ============================ --}}
-@include('landing-page.sections.ads-area')
+@include('landing-page.sections.clients-carousel')
+
+{{-- ===========================
+    CATEGORIES SECTION
+============================ --}}
+@include('landing-page.sections.categories')
 
 {{-- ===========================
     FEATURED TOURS SECTION
