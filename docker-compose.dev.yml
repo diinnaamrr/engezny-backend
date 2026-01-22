@@ -5,7 +5,9 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
+        - ./public:/var/www/html/public
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - nemotours-dev-network
@@ -31,6 +33,7 @@ services:
     volumes:
       - ./:/var/www/html
       - ./docker/nginx/default-dev.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
     networks:
       - nemotours-dev-network
     depends_on:
@@ -42,8 +45,8 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-nemotours_db_dev}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-${DB_PASSWORD}}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME:-nemotours}
     volumes:
       - nemotours_dbdata_dev:/var/lib/mysql
