@@ -49,7 +49,7 @@
     .hero-section {
         position: relative;
         height: 100vh;
-        background-image: url('{{ asset('public/landing-page/assets/img/hero_bg2.jpg') }}');
+        background-image: url('{{ asset('public/landing-page/assets/img/hero_bg.jpg') }}');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
