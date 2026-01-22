@@ -6,9 +6,16 @@
 
 {{-- Page Header --}}
 <section class="category-header">
-    <div class="container">
-        <h1 class="category-title">{{ $category->name }}</h1>
-        <p class="category-subtitle">{{ $category->description ?? 'Explore amazing tours in this category' }}</p>
+    @if($category->image)
+        <div class="category-header-image">
+            <img src="{{ asset('storage/'.$category->image) }}" alt="{{ $category->name }}" class="img-fluid w-100">
+        </div>
+    @endif
+    <div class="category-header-overlay">
+        <div class="container">
+            <h1 class="category-title">{{ $category->name }}</h1>
+            <p class="category-subtitle">{{ $category->description ?? 'Explore amazing tours in this category' }}</p>
+        </div>
     </div>
 </section>
 
@@ -90,9 +97,39 @@
 
 <style>
     .category-header {
-        background: linear-gradient(135deg, #3E69AD 0%, #2d5089 100%);
-        padding: 120px 0 80px;
+        position: relative;
+        height: 400px;
         margin-top: 70px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .category-header-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .category-header-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .category-header-overlay {
+        position: relative;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-align: center;
     }
 
