@@ -37,7 +37,7 @@
             <div class="col-12 col-lg-6 order-1 order-lg-2 text-center" data-aos="fade-left">
                 <div class="image-wrapper">
                     <img src="{{ asset('public/landing-page/assets/img/rider.png') }}"
-                         alt="Drive with Wayak"
+                         alt="Drive with دينا"
                          class="img-fluid custom-img">
                 </div>
             </div>
