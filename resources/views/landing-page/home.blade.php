@@ -15,8 +15,18 @@
 @include('landing-page.sections.ads-area')
 
 {{-- ===========================
-    TRIPS SECTION
+    FEATURED TOURS SECTION
 ============================ --}}
-@include('landing-page.sections.trips')
+@include('landing-page.sections.featured-tours')
+
+{{-- ===========================
+    SAFARI SPECIALS SECTION
+============================ --}}
+@include('landing-page.sections.safari-specials')
+
+{{-- ===========================
+    HOW IT WORKS SECTION
+============================ --}}
+@include('landing-page.sections.how-it-works')
 
 @endsection
