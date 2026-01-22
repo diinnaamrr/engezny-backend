@@ -2,13 +2,13 @@
     TRIPS SECTION
 ============================ --}}
 <section id="trips" class="trips-section py-5">
-    <div class="container">
+    <div class="container mt-5">
         <div class="text-center mb-5">
             <p class="trips-subtitle">Trips</p>
-            <h2 class="trips-title">Our Trips</h2>
+            <h2 class="trips-title mt-4">Our Trips</h2>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 px-1">
             @foreach($featuredTours as $tour)
                 <div class="col-lg-3 col-md-6">
                     <div class="trip-card">
@@ -39,6 +39,12 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{{ route('tours') }}" class="btn-see-all">
+                See All
+            </a>
         </div>
     </div>
 </section>
@@ -101,7 +107,6 @@
     .trip-name {
         font-size: 18px;
         font-weight: 600;
-        color: #5E6282;
         margin-bottom: 10px;
     }
 
@@ -148,6 +153,25 @@
 
     .details-icon-wrapper i {
         font-size: 20px;
+    }
+
+    .btn-see-all {
+        display: inline-block;
+        background-color: #3E69AD;
+        color: #fff;
+        padding: 12px 35px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0px 20px 35px rgba(62, 105, 173, 0.15);
+    }
+
+    .btn-see-all:hover {
+        background-color: #2d5089;
+        color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0px 25px 45px rgba(62, 105, 173, 0.25);
     }
 
     /* Responsive */
