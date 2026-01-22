@@ -113,6 +113,24 @@
         <span class="link-title">Send Notification</span>
     </a>
 </li>
+
+                <!---------- Start Tours Management --------------->
+                <li class="nav-category" title="{{ translate('tours_management') }}">
+                    {{ translate('tours_management') }}
+                </li>
+                <li class="{{Request::is('admin/categories*')?'active open':''}}">
+                    <a href="{{ route('admin.categories.index') }}">
+                        <i class="bi bi-tags-fill"></i>
+                        <span class="link-title text-capitalize">{{ translate('categories') }}</span>
+                    </a>
+                </li>
+                <li class="{{Request::is('admin/tours*')?'active open':''}}">
+                    <a href="{{ route('admin.tours.index') }}">
+                        <i class="bi bi-globe-americas"></i>
+                        <span class="link-title text-capitalize">{{ translate('tours') }}</span>
+                    </a>
+                </li>
+                <!---------- End Tours Management --------------->
               
                 <li class="{{ Request::is('admin/trip/log') || Request::is('admin/trip/list/*') || Request::is('admin/trip/details/*')?'active sub-menu-opened':'' }} text-capitalize">
                     <a href="#">
