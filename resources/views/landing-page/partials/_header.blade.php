@@ -1,18 +1,16 @@
-@php($primary_color = '#00579E')
-@php($secondary_color = '#FF7D2E')
+@php($primary_color = '#3E69AD')
 
 <header id="main-header" class="sticky-top shadow-none">
-    <nav class="navbar navbar-expand-lg px-3 py-2 fixed-top" id="wayak-navbar">
+    <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top" id="nemo-navbar">
         <div class="container">
 
-            {{-- Logo --}}
-            <a class="navbar-brand d-flex align-items-center py-0" href="#">
-                @php($logo = getSession('header_logo'))
+            {{-- Logo (Arrow Icon) --}}
+            <a class="navbar-brand d-flex align-items-center py-0" href="{{ route('home') }}">
                 <img
-                    src="{{ asset('public/landing-page/assets/img/heroLogo.png') }}"
-                    alt="Wayak Logo"
+                    src="{{asset('public/landing-page/assets/img/arrow.svg')}}"
+                    alt="NEMO Logo"
                     class="img-fluid"
-                    style="height: 40px; transition: height 0.3s ease;"
+                    style="height: 35px; transition: height 0.3s ease;"
                 >
             </a>
 
@@ -26,51 +24,36 @@
                 aria-expanded="false"
                 aria-label="Toggle navigation"
             >
-                {{-- Fixing the Toggler Icon Visibility on Transparent Background --}}
                 <span class="navbar-toggler-icon" style="filter: invert(1); border: 1px solid white; border-radius: 3px;"></span>
             </button>
 
             {{-- Menu --}}
             <div class="collapse navbar-collapse" id="landingNavbar">
-                <ul class="navbar-nav mx-auto gap-lg-3 mt-3 mt-lg-0">
+                <ul class="navbar-nav mx-auto gap-lg-4 mt-3 mt-lg-0">
                     {{-- Nav Links --}}
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#">{{ translate('Home') }}</a>
+                        <a class="nav-link fw-normal text-base" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#about">{{ translate('About Us') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#features">{{ translate('Features') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#earn-money">{{ translate('Earn Money') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#download-app">{{ translate('Download App') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#testimonials">{{ translate('testimonials') }}</a>
+                        <a class="nav-link fw-normal text-base" href="{{ route('about-us') }}">About</a>
                     </li>
 
-                    {{-- Contact Button (Mobile) --}}
+                    {{-- Get in Touch Button (Mobile) --}}
                     <li class="nav-item d-lg-none">
-                        <a class="btn w-100 mt-2 text-white fw-bold" href="#contact-us"
-                           style="background-color: {{ $secondary_color }};">
-                            {{ translate('Contact Us') }}
+                        <a class="btn w-100 mt-2 text-white fw-bold" href="{{ route('contact-us') }}"
+                           style="background-color: {{ $primary_color }};">
+                            Get in Touch
                         </a>
                     </li>
                 </ul>
 
-                {{-- Contact Button (Desktop) --}}
+                {{-- Get in Touch Button (Desktop) --}}
                 <div class="d-none d-lg-block">
-                    <a href="#contact-us"
-                    class="btn text-white fw-bold px-4"
-                    style="background-color: {{ $secondary_color }}; transition: background-color 0.3s ease;"
-                    onmouseover="this.style.backgroundColor='{{ $primary_color }}';"
-                    onmouseout="this.style.backgroundColor='{{ $secondary_color }}';"
+                    <a href="{{ route('contact-us') }}"
+                    class="btn text-white fw-bold px-4 py-2"
+                    style="background-color: {{ $primary_color }}; transition: all 0.3s ease;"
                     >
-                        {{ translate('Contact Us') }}
+                        Get in Touch
                     </a>
                 </div>
             </div>
@@ -78,36 +61,32 @@
     </nav>
 </header>
 
-{{-- Smooth Scrolling and Scroll Effect Script --}}
+{{-- Navbar Scripts --}}
 <script>
     const primaryColor = '{{ $primary_color }}';
-    const secondaryColor = '{{ $secondary_color }}';
-    const navbar = document.getElementById('wayak-navbar');
+    const navbar = document.getElementById('nemo-navbar');
     const navLinks = navbar.querySelectorAll('.nav-link');
     const togglerIcon = navbar.querySelector('.navbar-toggler-icon');
-    const logoImg = navbar.querySelector('.navbar-brand img');
 
-    // 1. Scroll Effect Functionality
+    // Scroll Effect Functionality
     function handleScroll() {
-        if (window.scrollY > 50) { // Change color after 50px scroll
+        if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
-            // Change text color to dark when background is light
             navLinks.forEach(link => link.style.color = 'white');
-            togglerIcon.style.filter = 'invert(1)'; // Keep toggler icon white on dark background
+            togglerIcon.style.filter = 'invert(1)';
             togglerIcon.style.borderColor = 'white';
         } else {
             navbar.classList.remove('scrolled');
-            // Change text color to white on transparent background
             navLinks.forEach(link => link.style.color = 'white');
-            togglerIcon.style.filter = 'invert(1)'; // Keep toggler icon white on transparent background
+            togglerIcon.style.filter = 'invert(1)';
             togglerIcon.style.borderColor = 'white';
         }
     }
 
     window.addEventListener('scroll', handleScroll);
-    document.addEventListener('DOMContentLoaded', handleScroll); // Check position on load
+    document.addEventListener('DOMContentLoaded', handleScroll);
 
-    // 2. Smooth Scrolling
+    // Smooth Scrolling
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -116,7 +95,7 @@
                 if (target) {
                     e.preventDefault();
                     let offset = 0;
-                    if(href !== '#home') { // Adjust for fixed header height
+                    if(href !== '#home') {
                         offset = navbar.offsetHeight + 10;
                     }
                     window.scrollTo({
@@ -124,7 +103,7 @@
                         behavior: 'smooth'
                     });
                     
-                    // Close the mobile menu after click
+                    // Close mobile menu
                     if (window.innerWidth < 992 && navbar.classList.contains('show')) {
                         const bsCollapse = new bootstrap.Collapse(document.getElementById('landingNavbar'), {
                             toggle: false
@@ -135,16 +114,15 @@
             });
         });
     });
-
 </script>
 
 <style>
-    /* 1. Base Styles for Header */
-    #wayak-navbar {
-        background-color: transparent; /* Start Transparent */
+    /* Base Styles for Header */
+    #nemo-navbar {
+        background-color: transparent;
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        padding-top: 0.5rem !important; /* Reduced Padding */
-        padding-bottom: 0.5rem !important;
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
     }
 
     .navbar-toggler-icon {
@@ -152,24 +130,43 @@
     }
     
     .nav-link {
-        color: white !important; /* Default text color on transparent background */
+        color: white !important;
+        font-size: 1rem;
+        position: relative;
+        padding-bottom: 0.5rem !important;
     }
 
-    /* 2. Scrolled State */
-    #wayak-navbar.scrolled {
-        background-color: {{ $primary_color }} !important; /* Blue background on scroll */
+    /* Hover Effect - Thick Bottom Border */
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background-color: {{ $primary_color }};
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    /* Scrolled State */
+    #nemo-navbar.scrolled {
+        background-color: {{ $primary_color }} !important;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
     }
-    
-    /* 3. Hover Effect on Links */
-    .nav-link:hover {
-        color: {{ $secondary_color }} !important;
-    }
 
-    /* Adjustments for Mobile Menu (when open) */
+    /* Mobile Menu */
     .navbar-collapse.show {
         background-color: {{ $primary_color }};
         padding: 10px;
         border-radius: 5px;
+    }
+
+    /* Text Base Size */
+    .text-base {
+        font-size: 1rem;
     }
 </style>
