@@ -14,29 +14,30 @@
 ============================ --}}
 @include('landing-page.sections.clients-carousel')
 
+
+{{-- ===========================
+    FEATURED TOURS SECTION
+============================ --}}
+@include('landing-page.sections.featured-tours')
+    
+{{-- ===========================
+    SAFARI SPECIALS SECTION
+============================ --}}
+@include('landing-page.sections.safari-specials')
+        
 {{-- ===========================
     CATEGORIES SECTION
 ============================ --}}
 @include('landing-page.sections.categories')
 
 {{-- ===========================
-    FEATURED TOURS SECTION
+    BANNER SECTION
 ============================ --}}
-@include('landing-page.sections.featured-tours')
-
-{{-- ===========================
-    SAFARI SPECIALS SECTION
-============================ --}}
-@include('landing-page.sections.safari-specials')
+@include('landing-page.sections.banner')
 
 {{-- ===========================
     HOW IT WORKS SECTION
 ============================ --}}
 @include('landing-page.sections.how-it-works')
-
-{{-- ===========================
-    BANNER SECTION
-============================ --}}
-@include('landing-page.sections.banner')
 
 @endsection
