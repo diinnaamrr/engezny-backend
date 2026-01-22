@@ -1,7 +1,7 @@
 {{-- ===========================
     HOW IT WORKS SECTION
 ============================ --}}
-<section id="how-it-works" class="how-it-works-section py-5">
+<section id="how-it-works" class="how-it-works-section py-5 my-5">
     <div class="container">
         <div class="text-center mb-5">
             <p class="section-subtitle-small">Fast & Easy</p>

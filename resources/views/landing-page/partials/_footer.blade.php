@@ -1,23 +1,24 @@
-<footer class="simple-footer py-4">
+<footer class="simple-footer py-5 mt-5">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-4 text-start">
+            <div class="col-md-4 text-start mb-4">
                 <img src="{{ asset('public/landing-page/assets/img/footer_logo.png') }}" 
                      alt="Nemo Logo" 
                      class="footer-logo">
             </div>
-            <div class="col-md-4 text-center">
+            <div class="col-md-4 text-start mb-4">
+                <h5 class="footer-title">Contact Us</h5>
                 <div class="contact-info">
                     <p class="contact-email">Email: <a href="mailto:Hassannemo.hn@gmail.com">Hassannemo.hn@gmail.com</a></p>
                     <div class="contact-phones">
-                        <a href="tel:01092958475" class="contact-link phone"><i class="bi bi-telephone"></i> 01092958475</a>
-                        <a href="tel:01208686821" class="contact-link phone"><i class="bi bi-telephone"></i> 01208686821</a>
-                        <a href="tel:01020515054" class="contact-link phone"><i class="bi bi-telephone"></i> 01020515054</a>
-                        <a href="https://wa.me/201092958475" class="contact-link whatsapp"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                        <a href="https://wa.me/201092958475" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01092958475</a>
+                        <a href="https://wa.me/201208686821" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01208686821</a>
+                        <a href="https://wa.me/201020515054" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01020515054</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 text-end">
+            <div class="col-md-4 text-center mb-4">
+                <h5 class="footer-title">Follow Us</h5>
                 <div class="social-links">
                     <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
                     <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
@@ -26,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-4">
             <div class="col-12 text-center">
                 <p class="copyright-text">Copyright © Nemo2026. All Rights Reserved.</p>
             </div>
@@ -40,13 +41,20 @@
         border-top: 1px solid #e9ecef;
     }
 
+    .footer-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #181E4B;
+        margin-bottom: 1rem;
+    }
+
     .footer-logo {
-        height: 80px;
+        height: 100px;
     }
 
     .social-links {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         gap: 15px;
     }
 
@@ -90,7 +98,7 @@
 
     .contact-phones {
         display: flex;
-        justify-content: center;
+        justify-content: start;
         gap: 8px;
         flex-wrap: wrap;
     }
@@ -104,16 +112,6 @@
         text-decoration: none;
         font-size: 11px;
         transition: all 0.3s ease;
-    }
-
-    .contact-link.phone {
-        background-color: #3E69AD;
-        color: white;
-    }
-
-    .contact-link.phone:hover {
-        background-color: #2d5089;
-        color: white;
     }
 
     .contact-link.whatsapp {
