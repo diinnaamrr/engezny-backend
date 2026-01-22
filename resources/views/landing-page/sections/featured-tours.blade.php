@@ -1,46 +1,41 @@
 {{-- ===========================
     FEATURED TOURS SECTION
 ============================ --}}
-<section id="featured-tours" class="py-5">
-    <div class="container">
+<section id="featured-tours" class="featured-tours-section py-5">
+    <div class="container mt-5">
         <div class="text-center mb-5">
-            <h2 class="section-title">Featured Tours</h2>
-            <p class="section-subtitle">Discover our handpicked selection of amazing destinations</p>
+            <p class="section-subtitle-small">Trips</p>
+            <h2 class="section-title-large mt-4">Our Trips</h2>
         </div>
 
         @if($featuredTours->count() > 0)
-            <div class="row g-4">
+            <div class="row g-4 px-1">
                 @foreach($featuredTours as $tour)
-                    <div class="col-md-6 col-lg-4">
-                        <div class="tour-card">
-                            <div class="tour-image">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="tour-card-new">
+                            <div class="tour-image-wrapper">
                                 <img 
                                     src="{{ $tour->image ? asset('storage/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
                                     alt="{{ $tour->name }}"
-                                    class="img-fluid"
+                                    class="tour-image"
                                 >
-                                @if($tour->is_featured)
-                                    <span class="featured-badge">Featured</span>
-                                @endif
                             </div>
-                            <div class="tour-body">
-                                <h3 class="tour-name">{{ $tour->name }}</h3>
-                                @if($tour->destination)
-                                    <p class="tour-destination">
-                                        <i class="bi bi-geo-alt"></i> {{ $tour->destination }}
-                                    </p>
-                                @endif
-                                <div class="tour-meta">
+                            <div class="tour-content">
+                                <h4 class="tour-name">{{ $tour->name }}</h4>
+                                <div class="tour-info">
+                                    <span class="tour-date">
+                                        {{ $tour->departure_date ? $tour->departure_date->format('d') : '14' }}-{{ $tour->return_date ? $tour->return_date->format('d M') : '29 June' }}
+                                    </span>
+                                    <span class="separator">|</span>
                                     <span class="tour-price">${{ number_format($tour->price, 2) }}</span>
-                                    @if($tour->departure_date)
-                                        <span class="tour-date">
-                                            <i class="bi bi-calendar"></i> {{ $tour->departure_date->format('M d, Y') }}
-                                        </span>
-                                    @endif
                                 </div>
-                                <a href="{{ route('tour.details', $tour->id) }}" class="btn btn-primary w-100 mt-3">
-                                    View Details
-                                </a>
+                                <div class="tour-footer">
+                                    <a href="{{ route('tour.details', $tour->id) }}" class="details-link">
+                                        <span class="details-icon-wrapper">
+                                            <i class="bi bi-arrow-right-short"></i>
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -48,8 +43,8 @@
             </div>
 
             <div class="text-center mt-5">
-                <a href="{{ route('tours') }}" class="btn btn-outline-primary btn-lg">
-                    View All Tours <i class="bi bi-arrow-right"></i>
+                <a href="{{ route('tours') }}" class="btn-see-all">
+                    See All
                 </a>
             </div>
         @else
@@ -61,120 +56,139 @@
 </section>
 
 <style>
-    /* Featured Tours Section */
-    .section-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #333;
+    .featured-tours-section {
+        background-color: #fff;
     }
 
-    .section-subtitle {
-        font-size: 1.1rem;
-        color: #666;
-    }
-
-    .tour-card {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        height: 100%;
-    }
-
-    .tour-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .tour-image {
-        position: relative;
-        height: 250px;
-        overflow: hidden;
-    }
-
-    .tour-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .tour-card:hover .tour-image img {
-        transform: scale(1.1);
-    }
-
-    .featured-badge {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: #3E69AD;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
+    .section-subtitle-small {
+        font-size: 18px;
+        color: #3E69AD;
         font-weight: 600;
-    }
-
-    .tour-body {
-        padding: 1.5rem;
-    }
-
-    .tour-name {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #333;
         margin-bottom: 0.5rem;
     }
 
-    .tour-destination {
-        color: #666;
-        margin-bottom: 1rem;
+    .section-title-large {
+        font-family: 'Volkhov', serif;
+        font-size: 50px;
+        color: #181E4B;
+        font-weight: 700;
     }
 
-    .tour-meta {
+    .tour-card-new {
+        background: #fff;
+        border-radius: 20px;
+        padding: 15px;
+        box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.02), 0px 64.8148px 46.8519px rgba(0, 0, 0, 0.0151852), 0px 38.5185px 25.4815px rgba(0, 0, 0, 0.0121481), 0px 20px 13px rgba(0, 0, 0, 0.01), 0px 8.14815px 6.51852px rgba(0, 0, 0, 0.00785185), 0px 1.85185px 3.14815px rgba(0, 0, 0, 0.00481481);
+        transition: transform 0.3s ease;
+        height: 100%;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+    }
+
+    .tour-card-new:hover {
+        transform: translateY(-10px);
+    }
+
+    .tour-image-wrapper {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 20px;
+        margin-bottom: 15px;
+    }
+
+    .tour-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .tour-content {
+        padding: 0 5px 10px 5px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tour-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #5E6282;
+    }
+
+    .tour-info {
+        font-size: 16px;
+        color: #5E6282;
+        margin-bottom: 15px;
+        display: flex;
         align-items: center;
-        padding-top: 1rem;
-        border-top: 1px solid #eee;
+        gap: 10px;
+    }
+
+    .separator {
+        color: #5E6282;
+        opacity: 0.5;
     }
 
     .tour-price {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #3E69AD;
-    }
-
-    .tour-date {
-        color: #666;
-        font-size: 0.9rem;
-    }
-
-    .btn-primary {
-        background: #3E69AD;
-        border: none;
-        padding: 0.75rem;
         font-weight: 600;
+    }
+
+    .tour-footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .details-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        background-color: #F5F5F5;
+        border-radius: 50%;
+        color: #181E4B;
         transition: all 0.3s ease;
     }
 
-    .btn-primary:hover {
-        background: #2d5089;
-        transform: translateY(-2px);
+    .details-icon-wrapper:hover {
+        background-color: #3E69AD;
+        color: #fff;
     }
 
-    .btn-outline-primary {
-        color: #3E69AD;
-        border: 2px solid #3E69AD;
-        padding: 0.75rem 2rem;
+    .details-icon-wrapper i {
+        font-size: 20px;
+    }
+
+    .btn-see-all {
+        display: inline-block;
+        background-color: #3E69AD;
+        color: #fff;
+        padding: 12px 35px;
+        border-radius: 10px;
         font-weight: 600;
+        text-decoration: none;
         transition: all 0.3s ease;
+        box-shadow: 0px 20px 35px rgba(62, 105, 173, 0.15);
     }
 
-    .btn-outline-primary:hover {
-        background: #3E69AD;
-        color: white;
-        transform: translateY(-2px);
+    .btn-see-all:hover {
+        background-color: #2d5089;
+        color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0px 25px 45px rgba(62, 105, 173, 0.25);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .section-title-large {
+            font-size: 35px;
+        }
+        
+        .tour-card-new {
+            margin-bottom: 20px;
+        }
     }
 </style>
