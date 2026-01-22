@@ -7,7 +7,7 @@
             {{-- Logo (Arrow Icon) --}}
             <a class="navbar-brand d-flex align-items-center py-0" href="{{ route('home') }}">
                 <img
-                    src="{{ asset('public/landing-page/assets/img/arrow.svg') }}"
+                    src="{{asset('public/landing-page/assets/img/arrow.svg')}}"
                     alt="NEMO Logo"
                     class="img-fluid"
                     style="height: 35px; transition: height 0.3s ease;"
