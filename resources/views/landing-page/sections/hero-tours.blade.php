@@ -1,4 +1,4 @@
-public/landing-page/assets/img/Scroll.svg{{-- ===========================
+{{-- ===========================
     HERO SECTION
 ============================ --}}
 <section id="hero" class="hero-section">
@@ -39,7 +39,8 @@ public/landing-page/assets/img/Scroll.svg{{-- ===========================
         <img
             src="{{ asset('public/landing-page/assets/img/Scroll.svg') }}"
             alt="Scroll Down"
-            class="scroll-svg">
+            class="scroll-svg"
+        />
     </div>
 </section>
 
@@ -48,7 +49,7 @@ public/landing-page/assets/img/Scroll.svg{{-- ===========================
     .hero-section {
         position: relative;
         height: 100vh;
-        background-image: url('{{ asset(' public/landing-page/assets/img/hero_bg.jpg') }}');
+        background-image: url('{{ asset('public/landing-page/assets/img/hero_bg2.jpg') }}');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
