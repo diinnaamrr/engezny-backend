@@ -29,4 +29,9 @@
 ============================ --}}
 @include('landing-page.sections.how-it-works')
 
+{{-- ===========================
+    BANNER SECTION
+============================ --}}
+@include('landing-page.sections.banner')
+
 @endsection
