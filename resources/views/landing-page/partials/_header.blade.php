@@ -34,9 +34,6 @@
                     <li class="nav-item">
                         <a class="nav-link fw-normal text-base" href="{{ route('home') }}">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-normal text-base" href="{{ route('about-us') }}">About</a>
-                    </li>
 
                     {{-- Get in Touch Button (Mobile) --}}
                     <li class="nav-item d-lg-none">
