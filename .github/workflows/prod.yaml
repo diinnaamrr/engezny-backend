@@ -69,11 +69,11 @@ jobs:
             # إعداد مجلدات Docker و nginx
             mkdir -p docker/nginx docker/php storage bootstrap/cache backups
 
-            # حذف أي nginx config قديم
-            rm -f docker/nginx/default.conf
-
-            # إنشاء nginx config جديد
-            cat > docker/nginx/default.conf << 'EOF'
+            # التأكد من وجود nginx config من الـ repository
+            # إذا لم يكن موجوداً، إنشاء واحد افتراضي
+            if [ ! -f "docker/nginx/default.conf" ]; then
+              echo "⚠️  nginx config غير موجود، إنشاء واحد افتراضي..."
+              cat > docker/nginx/default.conf << 'EOF'
             server {
                 listen 80;
                 server_name _;
@@ -131,7 +131,9 @@ jobs:
                 }
             }
             EOF
+            fi
             chmod 644 docker/nginx/default.conf
+            echo "✅ استخدام nginx config من الـ repository (مع أي تغييرات للدومين)"
 
             # تحديث .env PROD URL
             PROD_URL="https://nemotours-hn.com"
