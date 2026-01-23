@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    image: ghcr.io/fassla-software/nemo-tours-backend:latest
+    image: ghcr.io/fassla-software/nemo-tours-backend:${IMAGE_TAG:-latest}
     container_name: nemotours_app_prod
     restart: unless-stopped
     working_dir: /var/www/html
