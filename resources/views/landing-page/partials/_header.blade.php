@@ -4,13 +4,13 @@
     <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top" id="nemo-navbar">
         <div class="container">
 
-            {{-- Logo (Arrow Icon) --}}
+            {{-- Logo --}}
             <a class="navbar-brand d-flex align-items-center py-0" href="{{ route('home') }}">
                 <img
-                    src="{{asset('public/landing-page/assets/img/arrow.svg')}}"
+                    src="{{asset('public/landing-page/assets/img/footer_logo.png')}}"
                     alt="NEMO Logo"
                     class="img-fluid"
-                    style="height: 35px; transition: height 0.3s ease;"
+                    style="height: 45px; transition: height 0.3s ease;"
                 >
             </a>
 
@@ -33,9 +33,6 @@
                     {{-- Nav Links --}}
                     <li class="nav-item">
                         <a class="nav-link fw-normal text-base" href="{{ route('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-normal text-base" href="{{ route('about-us') }}">About</a>
                     </li>
 
                     {{-- Get in Touch Button (Mobile) --}}
