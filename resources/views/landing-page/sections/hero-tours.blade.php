@@ -17,7 +17,7 @@
                         With <span class="nemo-brand">NEMO</span> enjoy every moment in your trip!
                     </h1>
 
-                    {{-- Search Bar --}}
+                    <!-- {{-- Search Bar --}}
                     <div class="search-container mt-5">
                         <div class="search-wrapper px-3 py-2">
                             <input
@@ -28,7 +28,7 @@
                                 Search
                             </button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
