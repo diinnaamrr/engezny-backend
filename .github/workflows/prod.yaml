@@ -47,12 +47,36 @@ jobs:
             cd /var/www/nemo-tours-prod
 
             # Pull latest code from GitHub
-            git pull origin master || git pull origin main
+            git fetch origin || true
+            git pull origin master || git pull origin main || true
 
             docker login ghcr.io -u fassla-software -p ${{ secrets.GITHUB_TOKEN }}
 
             docker compose -f docker-compose.prod.yml pull
+            
+            # Copy missing resources files from image to host BEFORE starting containers
+            # This ensures files are available when volume mount happens
+            echo "📁 Copying resources files from image to host..."
+            TEMP_CONTAINER=$(docker create ghcr.io/fassla-software/nemo-tours-backend:latest 2>/dev/null || echo "")
+            if [ -n "$TEMP_CONTAINER" ]; then
+              # Ensure resources directory exists
+              mkdir -p ./resources/views/landing-page/sections
+              # Copy resources files from image
+              docker cp "$TEMP_CONTAINER:/var/www/html/resources/." ./resources/ 2>/dev/null || true
+              docker rm "$TEMP_CONTAINER" 2>/dev/null || true
+              echo "✅ Resources files synced from image!"
+            else
+              echo "⚠️  Could not create temp container, files may be missing"
+            fi
+            
+            # Stop containers before updating
+            docker compose -f docker-compose.prod.yml down || true
+            
+            # Start containers (volume mount will now have the files)
             docker compose -f docker-compose.prod.yml up -d
+
+            # Wait for container to be ready
+            sleep 5
 
             docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force || true
             docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear || true
