@@ -114,9 +114,11 @@
                                 <i class="bi bi-star-fill"></i> Featured Tour
                             </div>
                         @endif
-                        <a href="{{ route('contact-us') }}" class="btn btn-primary w-100 btn-lg">
+                        <a href="{{ route('book.tour') }}" class="btn btn-primary w-100 btn-lg">
                             Book Now
                         </a>
+                        
+
                         <a href="{{ route('tours') }}" class="btn btn-outline-secondary w-100 mt-2">
                             <i class="bi bi-arrow-left"></i> Back to Tours
                         </a>

@@ -357,10 +357,10 @@ class TripRequestController extends Controller
                 'type' => $trip->type,
                 'action' => 'ride_started'
             ];
-            dispatch(new SendPushNotificationJob($notification, $data))->onQueue('high');
+            // TEST DISABLED: dispatch(new SendPushNotificationJob($notification, $data))->onQueue('high');
             foreach ($data as $tempNotification) {
                 try {
-                    checkPusherConnection(AnotherDriverTripAcceptedEvent::broadcast($tempNotification->user, $trip));
+                    // TEST DISABLED: checkPusherConnection(AnotherDriverTripAcceptedEvent::broadcast($tempNotification->user, $trip));
                 } catch (Exception $exception) {
 
                 }
@@ -405,7 +405,7 @@ class TripRequestController extends Controller
             user_id: $trip->customer->id
         );
         try {
-            checkPusherConnection(DriverTripAcceptedEvent::broadcast($trip));
+            // TEST DISABLED: checkPusherConnection(DriverTripAcceptedEvent::broadcast($trip));
         } catch (Exception $exception) {
 
         }
@@ -498,11 +498,11 @@ class TripRequestController extends Controller
 
         $data = $this->trip->updateRelationalTable($attributes);
         if ($request->status == 'cancelled') {
-            $this->customerLevelUpdateChecker($trip->customer);
-            $this->driverLevelUpdateChecker(auth()->user());
+            // TEST DISABLED: $this->customerLevelUpdateChecker($trip->customer);
+            // TEST DISABLED: $this->driverLevelUpdateChecker(auth()->user());
         } elseif ($request->status == 'completed') {
-            $this->customerLevelUpdateChecker($trip->customer);
-            $this->driverLevelUpdateChecker(auth()->user());
+            // TEST DISABLED: $this->customerLevelUpdateChecker($trip->customer);
+            // TEST DISABLED: $this->driverLevelUpdateChecker(auth()->user());
         }
         DB::commit();
 
@@ -559,14 +559,14 @@ class TripRequestController extends Controller
         }
         if ($request->status == "completed") {
             try {
-                checkPusherConnection(DriverTripCompletedEvent::broadcast($trip));
+                // TEST DISABLED: checkPusherConnection(DriverTripCompletedEvent::broadcast($trip));
             } catch (Exception $exception) {
 
             }
         }
         if ($request->status == "cancelled") {
             try {
-                checkPusherConnection(DriverTripCancelledEvent::broadcast($trip));
+                // TEST DISABLED: checkPusherConnection(DriverTripCancelledEvent::broadcast($trip));
             } catch (Exception $exception) {
 
             }
@@ -629,7 +629,7 @@ class TripRequestController extends Controller
             );
         }
         try {
-            checkPusherConnection(DriverTripStartedEvent::broadcast($trip));
+            // TEST DISABLED: checkPusherConnection(DriverTripStartedEvent::broadcast($trip));
         } catch (Exception $exception) {
 
         }
