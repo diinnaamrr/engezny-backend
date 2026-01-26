@@ -63,8 +63,17 @@ jobs:
               mkdir -p ./resources/views/landing-page/sections
               # Copy resources files from image
               docker cp "$TEMP_CONTAINER:/var/www/html/resources/." ./resources/ 2>/dev/null || true
+              
+              # Copy public files (images, CSS, JS) from image to host BEFORE starting containers
+              # This ensures images are available when volume mount happens
+              echo "🖼️  Copying public files (including images) from image to host..."
+              mkdir -p ./public/landing-page/assets/img/clients
+              mkdir -p ./public/landing-page/assets
+              # Copy all landing-page assets including images
+              docker cp "$TEMP_CONTAINER:/var/www/html/public/landing-page/assets/." ./public/landing-page/assets/ 2>/dev/null || true
+              
               docker rm "$TEMP_CONTAINER" 2>/dev/null || true
-              echo "✅ Resources files synced from image!"
+              echo "✅ Resources and public files synced from image!"
             else
               echo "⚠️  Could not create temp container, files may be missing"
             fi
@@ -72,21 +81,16 @@ jobs:
             # Stop containers before updating
             docker compose -f docker-compose.prod.yml down || true
             
+            # Set proper permissions before starting containers
+            chown -R www-data:www-data ./public 2>/dev/null || chmod -R 755 ./public
+            
             # Start containers (volume mount will now have the files)
             docker compose -f docker-compose.prod.yml up -d
 
             # Wait for container to be ready
             sleep 5
-
-            # Sync public files (images, CSS, JS) from Docker image to host
-            echo "🔄 Syncing public files from image to host..."
-            mkdir -p /var/www/nemo-tours-prod/public/landing-page/assets
-            docker cp nemotours_app_prod:/var/www/html/public/landing-page/assets/. /var/www/nemo-tours-prod/public/landing-page/assets/ 2>/dev/null || echo "⚠️  Some files may not have been copied"
             
-            # Set proper permissions
-            chown -R www-data:www-data /var/www/nemo-tours-prod/public 2>/dev/null || chmod -R 755 /var/www/nemo-tours-prod/public
-            
-            echo "✅ Public files synced successfully!"
+            echo "✅ Deployment complete! Images should now be accessible."
 
             docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force || true
             docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear || true
