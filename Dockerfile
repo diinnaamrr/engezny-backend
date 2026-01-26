@@ -57,7 +57,7 @@ RUN composer install --no-dev --no-scripts --no-interaction --prefer-dist --igno
 COPY . /var/www/html
 
 # Now run composer scripts and optimize autoloader (all files are present)
-RUN composer dump-autoload --optimize --no-dev --no-interaction
+RUN composer dump-autoload --optimize --no-dev --no-interaction --ignore-platform-reqs
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
