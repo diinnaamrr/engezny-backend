@@ -29,8 +29,7 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/fassla-software/nemo-tours-backend:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          no-cache: true 
 
   deploy:
     needs: build-and-push
@@ -46,6 +45,9 @@ jobs:
           port: 22
           script: |
             cd /var/www/nemo-tours-prod
+
+            # Pull latest code from GitHub
+            git pull origin master || git pull origin main
 
             docker login ghcr.io -u fassla-software -p ${{ secrets.GITHUB_TOKEN }}
 
