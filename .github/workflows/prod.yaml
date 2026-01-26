@@ -78,5 +78,15 @@ jobs:
             # Wait for container to be ready
             sleep 5
 
+            # Sync public files (images, CSS, JS) from Docker image to host
+            echo "🔄 Syncing public files from image to host..."
+            mkdir -p /var/www/nemo-tours-prod/public/landing-page/assets
+            docker cp nemotours_app_prod:/var/www/html/public/landing-page/assets/. /var/www/nemo-tours-prod/public/landing-page/assets/ 2>/dev/null || echo "⚠️  Some files may not have been copied"
+            
+            # Set proper permissions
+            chown -R www-data:www-data /var/www/nemo-tours-prod/public 2>/dev/null || chmod -R 755 /var/www/nemo-tours-prod/public
+            
+            echo "✅ Public files synced successfully!"
+
             docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force || true
             docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear || true
