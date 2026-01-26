@@ -3,11 +3,12 @@ name: Prod Deploy - Nemo Tours
 on:
   push:
     branches: [main, master]
-  workflow_dispatch:   # يضيف إمكانية التشغيل اليدوي من GitHub Actions UI
+  workflow_dispatch:
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -15,40 +16,28 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to GHCR
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: fassla-software
           password: ${{ secrets.GITHUB_TOKEN }}
 
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/fassla-software/nemo-tours-backend
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build Docker image
+      - name: Build & Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/fassla-software/nemo-tours-backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+
     steps:
-      - name: SSH to server & deploy
+      - name: Deploy to production server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -56,127 +45,12 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd /var/www
+            cd /var/www/nemo-tours-prod
 
-            # Clone أو pull من repository
-            if [ ! -d "nemo-tours-prod/.git" ]; then
-              git clone -b master https://github.com/fassla-software/nemo-tours-backend.git nemo-tours-prod
-            fi
-
-            cd nemo-tours-prod
-            git pull origin master
-
-            # إعداد مجلدات Docker و nginx
-            mkdir -p docker/nginx docker/php storage bootstrap/cache backups
-
-            # التأكد من وجود nginx config من الـ repository
-            # إذا لم يكن موجوداً، إنشاء واحد افتراضي
-            if [ ! -f "docker/nginx/default.conf" ]; then
-              echo "⚠️  nginx config غير موجود، إنشاء واحد افتراضي..."
-              cat > docker/nginx/default.conf << 'EOF'
-            server {
-                listen 80;
-                server_name _;
-
-                root /var/www/html/public;
-                index index.php;
-
-                client_max_body_size 100M;
-
-                location ^~ /storage/app/public/ {
-                    alias /var/www/html/storage/app/public/;
-                    try_files $uri =404;
-                    access_log off;
-                    log_not_found off;
-                    expires 30d;
-                }
-
-                location ^~ /storage/ {
-                    alias /var/www/html/storage/app/public/;
-                    try_files $uri =404;
-                    access_log off;
-                    log_not_found off;
-                    expires 30d;
-                }
-
-                location ^~ /public/ {
-                    alias /var/www/html/public/;
-                    try_files $uri $uri/ =404;
-                    access_log off;
-                    expires 30d;
-                }
-
-                location ~* \.(?:css|js|png|jpg|jpeg|gif|ico|svg|woff2?|eot|ttf|otf|mp4|webp|json|xml)$ {
-                    root /var/www/html/public;
-                    try_files $uri =404;
-                    access_log off;
-                    log_not_found off;
-                    expires 30d;
-                    add_header Cache-Control "public, immutable";
-                }
-
-                location / {
-                    try_files $uri $uri/ /index.php?$query_string;
-                }
-
-                location ~ \.php$ {
-                    fastcgi_pass app:9000;
-                    fastcgi_index index.php;
-                    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-                    include fastcgi_params;
-                }
-
-                location ~ /\.(?!well-known).* {
-                    deny all;
-                }
-            }
-            EOF
-            fi
-            chmod 644 docker/nginx/default.conf
-            echo "✅ استخدام nginx config من الـ repository (مع أي تغييرات للدومين)"
-
-            # تحديث .env PROD URL
-            PROD_URL="https://nemotours-hn.com"
-            cp .env .env.backup || true
-            if grep -q "^APP_URL=" .env; then
-              sed -i "s|^APP_URL=.*|APP_URL=${PROD_URL}|" .env
-            else
-              echo "APP_URL=${PROD_URL}" >> .env
-            fi
-
-            if grep -q "^ASSET_URL=" .env; then
-              sed -i "s|^ASSET_URL=.*|ASSET_URL=${PROD_URL}|" .env
-            else
-              echo "ASSET_URL=${PROD_URL}" >> .env
-            fi
-
-            # Login إلى GHCR
             docker login ghcr.io -u fassla-software -p ${{ secrets.GITHUB_TOKEN }}
 
-            # Pull آخر Docker image
-            docker-compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
 
-            # تشغيل Docker Compose
-            docker-compose -f docker-compose.prod.yml down || true
-            docker-compose -f docker-compose.prod.yml up -d
-
-            # Wait for container to be ready
-            sleep 5
-
-            # Sync public files (images, CSS, JS) from Docker image to host
-            echo "🔄 Syncing public files from image to host..."
-            mkdir -p /var/www/nemo-tours-prod/public/landing-page/assets
-            docker cp nemotours_app_prod:/var/www/html/public/landing-page/assets/. /var/www/nemo-tours-prod/public/landing-page/assets/ 2>/dev/null || echo "⚠️  Some files may not have been copied"
-            
-            # Set proper permissions
-            chown -R www-data:www-data /var/www/nemo-tours-prod/public 2>/dev/null || chmod -R 755 /var/www/nemo-tours-prod/public
-            
-            echo "✅ Deployment complete! Public files synced."
-
-            # تنظيف cache وstorage symlinks
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan storage:link || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan config:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan cache:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan view:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan route:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear || true
+            docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force || true
+            docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear || true
