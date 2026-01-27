@@ -1,7 +1,7 @@
 @php($primary_color = '#3E69AD')
 
 <header id="main-header" class="sticky-top shadow-none">
-    <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top" id="nemo-navbar">
+    <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top {{ request()->routeIs('contact-us') ? 'scrolled' : '' }}" id="nemo-navbar">
         <div class="container">
 
             {{-- Logo --}}
@@ -67,7 +67,7 @@
 
     // Scroll Effect Functionality
     function handleScroll() {
-        if (window.scrollY > 50) {
+        if (window.scrollY > 50 || '{{ request()->routeIs('contact-us') }}') {
             navbar.classList.add('scrolled');
             navLinks.forEach(link => link.style.color = 'white');
             togglerIcon.style.filter = 'invert(1)';
