@@ -7,10 +7,9 @@
     @php($contactNumber = getSession('business_contact_phone'))
     @php($businessAddress = getSession('business_address'))
     <!-- Page Header Start -->
-    <div class="container pt-3">
+    <div class="container pt-5 mt-5">
         <section class="page-header">
             <h3 class="title">{{ translate('Contact Us') }}</h3>
-{
         </section>
     </div>
     <!-- Page Header End -->
@@ -28,7 +27,7 @@
                     </div>
                     <div class="cont">
                         <h6 class="subtitle">{{translate('My Email')}}:</h6>
-                        <a href="mailto:{{  $email ? $email : "contact@example.com" }}" class="txt">{{  $email ? $email : "contact@example.com" }}</a>
+                        <a href="mailto:hassannemo.hn@gmail.com" class="txt">hassannemo.hn@gmail.com</a>
                     </div>
                 </div>
                 <div class="item">
@@ -37,18 +36,10 @@
                     </div>
                     <div class="cont">
                         <h6 class="subtitle">{{translate('Call Me Now')}}:</h6>
-                        <a href="tel:{{ $contactNumber ? $contactNumber : "+90-327-539" }}" class="txt">{{ $contactNumber ? $contactNumber : "+90-327-539" }}</a>
+                        <a href="tel:01020515054" class="txt">01020515054</a>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="icon">
-                        <i class="las la-map-marker-alt"></i>
-                    </div>
-                    <div class="cont">
-                        <h6 class="subtitle">{{ translate('Address') }}:</h6>
-                        <div class="txt">{{ $businessAddress ? $businessAddress : "510 Kampong Bahru Rd Singapore 099446" }}</div>
-                    </div>
-                </div>
+
             </div>
             <!-- Contact Information -->
 
