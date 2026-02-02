@@ -60,7 +60,9 @@ class LandingPageController extends Controller
 
     public function portfolio()
     {
-        return view('landing-page.portfolio');
+        $data = $this->businessSetting->findOneBy(criteria: ['key_name' => 'portfolio', 'settings_type' => PAGES_SETTINGS]);
+        $portfolioData = $this->businessSetting->getBy(criteria: ['key_name' => PORTFOLIO_DATA, 'settings_type' => LANDING_PAGES_SETTINGS]);
+        return view('landing-page.portfolio', compact('data', 'portfolioData'));
     }
 
     public function contactUs()

@@ -18,7 +18,7 @@
     <div class="container">
         <div class="hero-content text-center">
             <h1 class="hero-title">Discover the Depths with NEMO Tours</h1>
-            <p class="hero-subtitle">Your Gateway to Unforgettable Underwater Adventures</p>
+            <p class="hero-subtitle">{{ $data?->value['short_description'] ?? 'Your Gateway to Unforgettable Underwater Adventures' }}</p>
         </div>
     </div>
 </section>
@@ -31,7 +31,12 @@
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
                 <div class="story-image-wrapper">
-                    <img src="{{ asset('public/landing-page/assets/img/clients/٢٠٢٥١١٠٣_١١٤٧٣٦.jpg') }}" 
+                    <img src="{{ onErrorImage(
+                        $data?->value['image'],
+                        asset('storage/app/public/business/pages') . '/' . $data?->value['image'],
+                        asset('public/landing-page/assets/img/clients/٢٠٢٥١١٠٣_١١٤٧٣٦.jpg'),
+                        'business/pages/',
+                    ) }}" 
                          alt="NEMO Tours Diving Experience" 
                          class="story-image">
                     <div class="image-decoration"></div>
@@ -41,12 +46,9 @@
                 <div class="story-content">
                     <p class="section-label">Who We Are</p>
                     <h2 class="section-title">Our Story</h2>
-                    <p class="story-text">
-                        NEMO Tours is a premier diving tour company dedicated to providing exceptional underwater experiences in the Red Sea. With years of expertise and a passion for marine exploration, we create unforgettable journeys for divers of all levels.
-                    </p>
-                    <p class="story-text">
-                        From vibrant coral reefs to historic shipwrecks, we guide you through the most spectacular dive sites while ensuring safety and sustainability. Our commitment to excellence and personalized service makes every adventure with us truly memorable.
-                    </p>
+                    <div class="story-text">
+                        {!! $data?->value['long_description'] !!}
+                    </div>
                 </div>
             </div>
         </div>

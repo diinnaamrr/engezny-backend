@@ -15,7 +15,7 @@ class BusinessPageStoreOrUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|in:about_us,privacy_policy,terms_and_conditions,legal,refund_policy',
+            'type' => 'required|in:about_us,privacy_policy,terms_and_conditions,legal,refund_policy,portfolio',
             'name' => 'nullable',
             'short_description' => 'required|max:900',
             'long_description' => 'required',

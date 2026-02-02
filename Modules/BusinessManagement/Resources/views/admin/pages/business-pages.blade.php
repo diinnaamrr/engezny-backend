@@ -38,6 +38,10 @@
                             <a href="{{ url()->current() }}?type=legal"
                                class="nav-link text-capitalize {{ $type == 'legal' ? 'active' : '' }}">{{ translate('legal') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.business.pages-media.landing-page.portfolio.index') }}"
+                               class="nav-link text-capitalize {{ $type == 'portfolio' ? 'active' : '' }}">{{ translate('portfolio') }}</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -108,6 +112,141 @@
                     </div>
                 </div>
             </form>
+
+            @if($type == 'portfolio')
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
+                            <h5 class="text-primary text-uppercase">{{ translate('Portfolio_Gallery') }}</h5>
+                        </div>
+
+                        <form action="{{ route('admin.business.pages-media.landing-page.portfolio.update') }}"
+                              id="portfolio_gallery_form" enctype="multipart/form-data" method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-4">
+                                                <label for="item_title"
+                                                       class="mb-2">{{ translate('Title') }} <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="item_title"
+                                                       name="title" placeholder="{{ translate('Ex: Diving at Red Sea') }}"
+                                                       required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-4">
+                                                <label for="item_description" class="mb-2">{{ translate('Description') }} <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea name="description" id="item_description" rows="3"
+                                                          class="form-control"
+                                                          placeholder="{{ translate('Ex: description ...') }}"
+                                                          required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="d-flex flex-column gap-3 mb-4">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <h6 class="text-capitalize">{{ translate('Image') }} <span
+                                                        class="text-danger">*</span></h6>
+                                                <span class="badge badge-primary">{{ translate('1:1') }}</span>
+                                            </div>
+
+                                            <div class="d-flex">
+                                                <div class="upload-file">
+                                                    <input type="file" class="upload-file__input" name="image"
+                                                           accept="image/png, image/jpeg, image/jpg" required>
+                                                    <div class="upload-file__img">
+                                                        <img
+                                                            src="{{ asset('public/assets/admin-module/img/media/upload-file.png') }}"
+                                                            alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end gap-3">
+                                        <button class="btn btn-secondary text-uppercase"
+                                                type="reset">{{ translate('reset') }}</button>
+                                        <button class="btn btn-primary text-uppercase"
+                                                type="submit">{{ translate('save') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="mt-4">
+                            <div class="table-responsive mt-3">
+                                <table class="table table-borderless align-middle table-hover">
+                                    <thead class="table-light align-middle text-capitalize">
+                                    <tr>
+                                        <th>{{ translate('SL') }}</th>
+                                        <th class="text-center">{{ translate('Image') }}</th>
+                                        <th>{{ translate('Title') }}</th>
+                                        <th>{{ translate('Description') }}</th>
+                                        <th class="text-center">{{ translate('Action') }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($portfolioData as $key => $item)
+                                        <tr>
+                                            <td>{{$key + $portfolioData->firstItem()}}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-center w-100">
+                                                    <div
+                                                        class="aspect-1 d-flex justify-content-center align-items-center overflow-hidden rounded w-50px" style="height: 50px;">
+                                                        <img class="h-100 fit-object"
+                                                             src="{{ $item?->value['image'] ? asset('storage/app/public/business/landing-pages/portfolio/'.$item?->value['image']) : asset('public/assets/admin-module/img/media/bike.png') }}"
+                                                             alt="">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{ $item?->value['title'] ?? "" }}</td>
+                                            <td>
+                                                <div class="truncate-line2">{{ $item?->value['description'] ?? "" }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-center gap-2 align-items-center">
+                                                    <button data-id="delete-{{ $item->id }}"
+                                                            data-message="{{ translate('want_to_delete_this_item?') }}"
+                                                            type="button"
+                                                            class="btn btn-outline-danger btn-action form-alert">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+
+                                                    <form
+                                                        action="{{ route('admin.business.pages-media.landing-page.portfolio.delete', ['id' => $item->id]) }}"
+                                                        id="delete-{{ $item->id }}" method="post">
+                                                        @csrf
+                                                        @method('delete')
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5"
+                                                class="text-center">{{ translate('no_data_available') }}</td>
+                                        </tr>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-3">
+                    {{ $portfolioData->links() }}
+                </div>
+            @endif
         </div>
     </div>
     <!-- End Main Content -->
