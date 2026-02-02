@@ -23,9 +23,10 @@ const OUR_SOLUTIONS_DATA = "our_solutions_data";
 const BUSINESS_STATISTICS = "business_statistics";
 const EARN_MONEY = "earn_money";
 const EARN_MONEY_IMAGE = "earn_money_image";
-const TESTIMONIAL = "testimonial";
 const CTA = "cta";
 const CTA_IMAGE = "cta_image";
+const PORTFOLIO = "portfolio";
+const PORTFOLIO_DATA = "portfolio_data";
 
 const EMAIL_CONFIG = "email_config";
 const SMS_CONFIG = "sms_config";

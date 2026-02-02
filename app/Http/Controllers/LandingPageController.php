@@ -55,7 +55,14 @@ class LandingPageController extends Controller
 
         $data = $this->businessSetting->findOneBy(criteria: ['key_name' => 'about_us', 'settings_type' => PAGES_SETTINGS]);
         //    NewMessage::dispatch("test");
-        return view('landing-page.about', compact('data'));
+        return view('landing-page.about-us', compact('data'));
+    }
+
+    public function portfolio()
+    {
+        $data = $this->businessSetting->findOneBy(criteria: ['key_name' => 'portfolio', 'settings_type' => PAGES_SETTINGS]);
+        $portfolioData = $this->businessSetting->getBy(criteria: ['key_name' => PORTFOLIO_DATA, 'settings_type' => LANDING_PAGES_SETTINGS]);
+        return view('landing-page.portfolio', compact('data', 'portfolioData'));
     }
 
     public function contactUs()
