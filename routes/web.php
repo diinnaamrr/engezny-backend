@@ -76,6 +76,7 @@ Route::get('/sender', function () {
 Route::controller(LandingPageController::class)->group(function () {
     Route::get('/contact-us', 'contactUs')->name('contact-us');
     Route::get('/about-us', 'aboutUs')->name('about-us');
+    Route::get('/portfolio', 'portfolio')->name('portfolio');
     Route::get('/privacy', 'privacy')->name('privacy');
     Route::get('/terms', 'terms')->name('terms');
     Route::get('/test-connection', function () {
