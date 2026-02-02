@@ -226,6 +226,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], f
                         Route::get('/', 'cta')->name('index');
                         Route::post('update', 'updateCta')->name('update');
                     });
+                    Route::group(['prefix' => 'portfolio', 'as' => 'portfolio.'], function () {
+                        Route::get('/', 'portfolio')->name('index');
+                        Route::post('update', 'updatePortfolio')->name('update');
+                        Route::get('status', 'statusPortfolio')->name('status');
+                        // Route::get('edit/{id}', 'editPortfolio')->name('edit');
+                        Route::delete('delete/{id}', 'deletePortfolio')->name('delete');
+                    });
                 });
             });
         });

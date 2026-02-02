@@ -237,4 +237,39 @@ class LandingPageController extends BaseController
         Toastr::success(LANDING_PAGE_UPDATE_200['message']);
         return back();
     }
+
+    public function portfolio(Request $request)
+    {
+        $this->authorize('business_view');
+        $attributes = ['key_name' => PORTFOLIO_DATA, 'settings_type' => LANDING_PAGES_SETTINGS];
+        $portfolioData = $this->businessSettingService->getBy(criteria: $attributes, limit: paginationLimit(), offset: $request->get('page', 1));
+        return view('businessmanagement::admin.pages.business-pages', [
+            'type' => 'portfolio',
+            'portfolioData' => $portfolioData,
+            'data' => $this->businessSettingService->findOneBy(criteria: ['key_name' => 'portfolio', 'settings_type' => PAGES_SETTINGS])
+        ]);
+    }
+
+    public function updatePortfolio(Request $request)
+    {
+        $this->authorize('business_edit');
+        $this->businessSettingService->storeLandingPagePortfolioData($request->all());
+        Toastr::success(LANDING_PAGE_UPDATE_200['message']);
+        return back();
+    }
+
+    public function statusPortfolio(Request $request)
+    {
+        $this->authorize('business_edit');
+        $model = $this->businessSettingService->statusChangeSimple(id: $request->id, data: $request->all()); // Need to ensure statusChange works or add a simple one
+        return response()->json($model);
+    }
+
+    public function deletePortfolio($id)
+    {
+        $this->authorize('business_edit');
+        $this->businessSettingService->deletePortfolio(id: $id);
+        Toastr::success(TESTIMONIAL_DELETE_200['message']);
+        return back();
+    }
 }

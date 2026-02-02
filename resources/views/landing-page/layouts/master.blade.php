@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('public/landing-page') }}/assets/css/owl.min.css" />
     <link rel="stylesheet" href="{{ asset('public/landing-page') }}/assets/css/main.css" />
         @include('landing-page.layouts.css')
+    @stack('style')
     <link rel="shortcut icon" href="{{ $favicon ? asset("storage/app/public/business/".$favicon) : asset('public/landing-page/assets/img/favicon.png') }}" type="image/x-icon" />
 </head>
 
