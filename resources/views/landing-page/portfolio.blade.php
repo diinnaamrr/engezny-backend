@@ -11,38 +11,16 @@
 @endphp
 
 @php
-$portfolioItems = [
-    [
-        'image' => 'public/landing-page/assets/img/clients/٢٠٢٥١٠١٤_١٢١٠٣٨.jpg',
-        'title' => 'Coral Paradise',
-        'description' => 'Exploring vibrant coral gardens teeming with marine life'
-    ],
-    [
-        'image' => 'public/landing-page/assets/img/clients/٢٠٢٥١٠٣١_١٠٠٥٢١.jpg',
-        'title' => 'Deep Blue Encounters',
-        'description' => 'Face-to-face with majestic sea creatures'
-    ],
-    [
-        'image' => 'public/landing-page/assets/img/clients/٢٠٢٥١١٠٣_١١٤٧٣٦.jpg',
-        'title' => 'Wreck Diving Adventure',
-        'description' => 'Discovering historic underwater treasures'
-    ],
-    [
-        'image' => 'public/landing-page/assets/img/clients/٢٠٢٥١١٠٩_١١٣٣١٥.jpg',
-        'title' => 'Group Expedition',
-        'description' => 'Unforgettable moments with fellow diving enthusiasts'
-    ],
-    [
-        'image' => 'public/landing-page/assets/img/clients/٢٠٢٥١٢٠٥_١٤٢٦٣٤.jpg',
-        'title' => 'Sunset Safari',
-        'description' => 'Evening diving experiences under golden skies'
-    ],
-    [
-        'image' => 'public/landing-page/assets/img/clients/٢٠٢٥١٢١٩_٠٧١٠١٣.jpg',
-        'title' => 'Marine Wonderland',
-        'description' => 'Immersed in the Red Sea\'s natural beauty'
-    ]
-];
+$portfolioGallery = [];
+foreach($portfolioData as $item) {
+    if($item?->value['status'] == 1) {
+        $portfolioGallery[] = [
+            'image' => asset('storage/app/public/business/landing-pages/portfolio/' . $item->value['image']),
+            'title' => $item->value['title'],
+            'description' => $item->value['description']
+        ];
+    }
+}
 @endphp
 
 {{-- ===========================
@@ -53,7 +31,7 @@ $portfolioItems = [
     <div class="container">
         <div class="hero-content text-center">
             <h1 class="hero-title">Our Adventures Gallery</h1>
-            <p class="hero-subtitle">Explore the breathtaking moments captured during our diving expeditions</p>
+            <p class="hero-subtitle">{{ $data?->value['short_description'] ?? 'Explore the breathtaking moments captured during our diving expeditions' }}</p>
         </div>
     </div>
 </section>
@@ -72,11 +50,11 @@ $portfolioItems = [
         </div>
 
         <div class="portfolio-grid">
-            @foreach($portfolioItems as $index => $item)
+            @foreach($portfolioGallery as $index => $item)
                 <div class="portfolio-item" data-index="{{ $index }}">
                     <div class="portfolio-card">
                         <div class="portfolio-image-wrapper">
-                            <img src="{{ asset($item['image']) }}" 
+                            <img src="{{ $item['image'] }}" 
                                  alt="{{ $item['title'] }}" 
                                  class="portfolio-image">
                             <div class="portfolio-overlay">
@@ -526,7 +504,7 @@ $portfolioItems = [
 
 @push('script')
 <script>
-    const portfolioData = @json($portfolioItems);
+    const portfolioData = @json($portfolioGallery);
     let currentImageIndex = 0;
 
     function openLightbox(index) {

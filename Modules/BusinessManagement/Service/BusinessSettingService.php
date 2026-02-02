@@ -812,6 +812,44 @@ class BusinessSettingService extends BaseService implements BusinessSettingServi
         }
     }
 
+    public function storeLandingPagePortfolioData(array $data): void
+    {
+        $value = [
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'status' => 1,
+        ];
+        if (array_key_exists('id', $data)) {
+            $attributes = ['id' => $data['id'], 'key_name' => PORTFOLIO_DATA, 'settings_type' => LANDING_PAGES_SETTINGS];
+            $portfolioData = $this->businessSettingRepository->findOneBy(criteria: $attributes);
+        }
+
+        if (array_key_exists('image', $data)) {
+            $fileName = fileUploader('business/landing-pages/portfolio/', $data['image']->extension(), $data['image'], (array_key_exists('id', $data) && $portfolioData?->value['image'] ? $portfolioData?->value['image'] : ''));
+            $value['image'] = $fileName;
+        }
+
+        if (array_key_exists('id', $data)) {
+            if (!array_key_exists('image', $data)) {
+                $value['image'] = $portfolioData->value['image'] ?? '';
+            }
+            $this->businessSettingRepository->update(id: $data['id'], data: ['key_name' => PORTFOLIO_DATA, 'settings_type' => LANDING_PAGES_SETTINGS, 'value' => $value]);
+        } else {
+            $this->businessSettingRepository->create(data: ['key_name' => PORTFOLIO_DATA, 'settings_type' => LANDING_PAGES_SETTINGS, 'value' => $value]);
+        }
+    }
+
+    public function deletePortfolio(string|int $id): bool
+    {
+        $attributes = ['id' => $id, 'key_name' => PORTFOLIO_DATA, 'settings_type' => LANDING_PAGES_SETTINGS];
+        $portfolioData = $this->businessSettingRepository->findOneBy(criteria: $attributes);
+        $image = $portfolioData?->value['image'] ?? '';
+        if ($image) {
+            fileRemover('business/landing-pages/portfolio/', $image);
+        }
+        return $this->businessSettingRepository->delete(id: $id);
+    }
+
     public function storeAllZoneExtraFare(array $data)
     {
         if (array_key_exists('zone_edit', $data) && $data['zone_edit']) {

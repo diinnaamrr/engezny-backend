@@ -82,7 +82,7 @@ class PagesMediaController extends BaseController
     {
         $this->authorize('business_view');
         $request->validate([
-            'type' => 'in:about_us,privacy_policy,terms_and_conditions,legal,refund_policy',
+            'type' => 'in:about_us,privacy_policy,terms_and_conditions,legal,refund_policy,portfolio',
         ]);
         $type = $request['type'] ?? 'about_us';
         $criteria = ['key_name' => $type, 'settings_type' => PAGES_SETTINGS];
