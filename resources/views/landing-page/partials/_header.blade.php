@@ -1,7 +1,7 @@
 @php($primary_color = '#3E69AD')
 
 <header id="main-header" class="sticky-top shadow-none">
-    <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top {{ request()->routeIs('contact-us') ? 'scrolled' : '' }}" id="nemo-navbar">
+    <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top {{ request()->routeIs('contact-us') || request()->routeIs('about-us') || request()->routeIs('portfolio') ? 'scrolled' : '' }}" id="nemo-navbar">
         <div class="container">
 
             {{-- Logo --}}
@@ -33,6 +33,12 @@
                     {{-- Nav Links --}}
                     <li class="nav-item">
                         <a class="nav-link fw-normal text-base" href="{{ route('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-normal text-base" href="{{ route('about-us') }}">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-normal text-base" href="{{ route('portfolio') }}">Portfolio</a>
                     </li>
 
                     {{-- Get in Touch Button (Mobile) --}}
@@ -67,7 +73,7 @@
 
     // Scroll Effect Functionality
     function handleScroll() {
-        if (window.scrollY > 50 || '{{ request()->routeIs('contact-us') }}') {
+        if (window.scrollY > 50 || '{{ request()->routeIs('contact-us') }}' || '{{ request()->routeIs('about-us') }}' || '{{ request()->routeIs('portfolio') }}') {
             navbar.classList.add('scrolled');
             navLinks.forEach(link => link.style.color = 'white');
             togglerIcon.style.filter = 'invert(1)';
