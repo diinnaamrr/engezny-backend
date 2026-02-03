@@ -121,7 +121,7 @@ foreach($portfolioData as $item) {
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(62, 105, 173, 0.85) 0%, rgba(45, 80, 137, 0.85) 100%);
+        background: linear-gradient(135deg, rgba(62, 105, 173, 0.4) 0%, rgba(45, 80, 137, 0.4) 100%);
     }
 
     .hero-content {
@@ -136,12 +136,14 @@ foreach($portfolioData as $item) {
         font-weight: 700;
         margin-bottom: 20px;
         line-height: 1.2;
+        color: white;
     }
 
     .hero-subtitle {
         font-size: 20px;
         font-weight: 400;
         opacity: 0.95;
+        color: white;
     }
 
     /* Common Section Styles */
