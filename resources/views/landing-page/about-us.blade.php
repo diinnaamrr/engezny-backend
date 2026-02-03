@@ -17,38 +17,59 @@
     <div class="hero-overlay"></div>
     <div class="container">
         <div class="hero-content text-center">
-            <h1 class="hero-title">Discover the Depths with NEMO Tours</h1>
+            <h1 class="hero-title">About Us</h1>
             <p class="hero-subtitle">{{ $data?->value['short_description'] ?? 'Your Gateway to Unforgettable Underwater Adventures' }}</p>
         </div>
     </div>
 </section>
 
 {{-- ===========================
-    OUR STORY SECTION
+    FOUNDER PROFILE SECTION
 ============================ --}}
-<section id="our-story" class="our-story-section py-5">
+<section id="founder-profile" class="founder-profile-section py-5">
     <div class="container">
-        <div class="row align-items-center g-5">
+        <div class="text-center my-5">
+        </div>
+
+        <div class="row align-items-center g-5 mb-5">
             <div class="col-lg-6">
-                <div class="story-image-wrapper">
-                    <img src="{{ onErrorImage(
-                        $data?->value['image'],
-                        asset('storage/app/public/business/pages') . '/' . $data?->value['image'],
-                        asset('public/landing-page/assets/img/clients/٢٠٢٥١١٠٣_١١٤٧٣٦.jpg'),
-                        'business/pages/',
-                    ) }}" 
-                         alt="NEMO Tours Diving Experience" 
-                         class="story-image">
-                    <div class="image-decoration"></div>
+                <div class="founder-content">
+                    <h3 class="founder-name">Mr. Hassan</h3>
+                    <p class="story-text">
+                        Mr. Hassan, the founder of Nemo Tours, brings over 20 years of hands-on
+                        experience in diving, rentals, and tourism services across Egypt, with deep
+                        specialization in Marsa Alam. He began his journey as a one-man operation,
+                        personally managing every aspect of the guest experience—from field
+                        operations to customer relations.
+                    </p>
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="story-content">
-                    <p class="section-label">Who We Are</p>
-                    <h2 class="section-title">Our Story</h2>
-                    <div class="story-text">
-                        {!! $data?->value['long_description'] !!}
-                    </div>
+                <div class="founder-image-wrapper">
+                    <img src="{{ asset('public/landing-page/assets/img/hasan_nemo.jpg') }}" 
+                         alt="Mr. Hassan - Founder" 
+                         class="founder-image">
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 order-lg-2">
+                <div class="founder-content">
+                    <p class="story-text">
+                        Throughout his career, Mr. Hassan has also worked as a consultant for
+                        multiple tourism and diving centers, contributing his operational insight and
+                        market knowledge to help improve service quality and guest satisfaction. His
+                        long-standing, direct relationships with travelers, combined with his practical
+                        expertise, form the backbone of Nemo Tours’ philosophy and standards today.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="founder-image-wrapper">
+                    <img src="{{ asset('public/landing-page/assets/img/hasan_nemo2.jpg') }}" 
+                         alt="Mr. Hassan - Field Operations" 
+                         class="founder-image">
                 </div>
             </div>
         </div>
@@ -56,68 +77,136 @@
 </section>
 
 {{-- ===========================
-    MISSION & VALUES SECTION
+    ABOUT NEMO TOURS - INTRO
 ============================ --}}
-<section id="mission-values" class="mission-values-section py-5">
+<section id="about-nemo-intro" class="about-nemo-section py-5 bg-gradient-light">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <div class="nemo-content">
+                    <p class="section-label">A Legacy of Trust</p>
+                    <h2 class="section-title">About Nemo Tours</h2>
+                    <p class="story-text mb-4">
+                        Nemo Tours is a full-service travel and tourism company delivering
+                        comprehensive solutions across all of Egypt. Built on decades of real-world
+                        experience, the company is designed to offer seamless, reliable, and
+                        personalized travel services under one trusted brand.
+                    </p>
+                    <div class="experience-badge d-inline-flex align-items-center p-3 rounded-4 bg-white shadow-sm border">
+                        <div class="badge-icon me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-calendar-check-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0 fw-bold">20+ Years</h5>
+                            <small class="text-muted">In Tourism Excellence</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="nemo-intro-card p-5 rounded-5 shadow-lg bg-white border-0 position-relative overflow-hidden">
+                    <div class="card-gradient-overlay"></div>
+                    <p class="story-text position-relative z-1 mb-0 italic">
+                        "Our journey began with a simple goal: to provide every traveler with an authentic Egyptian experience, backed by local expertise and genuine care."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ===========================
+    OUR SERVICES SECTION
+============================ --}}
+<section id="our-services" class="our-services-section py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <p class="section-label">What Drives Us</p>
-            <h2 class="section-title">Our Mission & Values</h2>
-            <p class="section-description">
-                We're committed to sharing the wonders of the underwater world while promoting marine conservation
+            <p class="section-label">What We Offer</p>
+            <h2 class="section-title">Our Comprehensive Services</h2>
+            <p class="section-description mx-auto" style="max-width: 700px;">
+                We manage all reservations and travel arrangements within Egypt, ensuring every detail of your journey is handled with precision.
             </p>
         </div>
 
         <div class="row g-4">
-            {{-- Mission Card --}}
-            <div class="col-lg-3 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="bi bi-compass"></i>
+            @php
+                $services = [
+                    ['icon' => 'bi-building-check', 'title' => 'Accommodation', 'desc' => 'Hotel and apartment bookings across Egypt.'],
+                    ['icon' => 'bi-map', 'title' => 'Domestic Travel', 'desc' => 'Travel planning and seamless transportation.'],
+                    ['icon' => 'bi-airplane', 'title' => 'Airport Transfers', 'desc' => 'Reliable pickups from all Egyptian airports.'],
+                    ['icon' => 'bi-car-front', 'title' => 'Car Rentals', 'desc' => 'Fleet of well-maintained vehicles for your trips.'],
+                    ['icon' => 'bi-water', 'title' => 'Diving Adventures', 'desc' => 'World-class diving trips and equipment rentals.'],
+                    ['icon' => 'bi-clock-history', 'title' => '24/7 Support', 'desc' => 'Always here to assist you during your journey.'],
+                ];
+            @endphp
+
+            @foreach($services as $service)
+            <div class="col-lg-4 col-md-6">
+                <div class="service-v2-card h-100 p-4 rounded-4 bg-white border border-light-subtle shadow-sm transition-all">
+                    <div class="service-icon-box mb-3 rounded-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: rgba(62, 105, 173, 0.1); color: {{ $primary_color }};">
+                        <i class="bi {{ $service['icon'] }} fs-3"></i>
                     </div>
-                    <h4 class="value-title">Our Mission</h4>
-                    <p class="value-text">
-                        To share the wonders of the underwater world while promoting marine conservation and sustainable tourism.
-                    </p>
+                    <h4 class="fw-bold mb-2">{{ $service['title'] }}</h4>
+                    <p class="text-muted mb-0 small">{{ $service['desc'] }}</p>
                 </div>
             </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 
-            {{-- Safety Card --}}
-            <div class="col-lg-3 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
-                    <h4 class="value-title">Safety First</h4>
-                    <p class="value-text">
-                        Professional PADI-certified instructors and top-tier equipment ensure your safety on every dive.
+{{-- ===========================
+    THE NEMO PROMISE SECTION
+============================ --}}
+<section id="nemo-promise" class="py-5 bg-gradient-blue text-white">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="promise-content">
+                    <!-- <h2 class="section-title text-white">The Nemo Promise</h2> -->
+                    <p class="lead mb-4 opacity-75">
+                        Whether you are planning a leisure holiday, a diving adventure, or a fully
+                        customised itinerary, Nemo Tours provides the flexibility to design your
+                        journey around your preferences, budget, and schedule.
                     </p>
+                    <!-- <div class="d-flex align-items-center p-4 rounded-4 bg-white bg-opacity-10 backdrop-blur border border-white border-opacity-25">
+                        <div class="promise-icon me-4">
+                            <i class="bi bi-headset fs-1 text-warning"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1 text-white">24/7 Customer Support</h4>
+                            <p class="mb-0 opacity-75">Deep operational knowledge and strong local partnerships.</p>
+                        </div>
+                    </div> -->
                 </div>
             </div>
+            <div class="col-lg-6 text-center">
+                <p class="story-text text-white opacity-90 mb-0">
+                    Nemo Tours ensures every detail is handled with precision—allowing guests to explore Egypt with confidence, comfort, and authenticity.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 
-            {{-- Sustainability Card --}}
-            <div class="col-lg-3 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="bi bi-globe"></i>
-                    </div>
-                    <h4 class="value-title">Sustainability</h4>
-                    <p class="value-text">
-                        Committed to protecting marine ecosystems for future generations through responsible diving practices.
-                    </p>
+{{-- ===========================
+    MISSION & VISION SECTION
+============================ --}}
+<section id="mission-vision" class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="mv-card mission-modern p-5 rounded-5 border-0 shadow-lg h-100">
+                    <div class="card-icon mb-4"><i class="bi bi-lightning-charge-fill text-primary display-4"></i></div>
+                    <h3 class="fw-bold mb-3">Our Mission</h3>
+                    <p class="story-text">To deliver authentic, safe, and personalised travel experiences in Egypt by combining local expertise, flexible tour design, and genuine care for our guests.</p>
                 </div>
             </div>
-
-            {{-- Excellence Card --}}
-            <div class="col-lg-3 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="bi bi-star"></i>
-                    </div>
-                    <h4 class="value-title">Excellence</h4>
-                    <p class="value-text">
-                        Personalized service and attention to detail create unforgettable experiences for every guest.
-                    </p>
+            <div class="col-md-6">
+                <div class="mv-card vision-modern p-5 rounded-5 border-0 shadow-lg h-100 text-end">
+                    <div class="card-icon mb-4"><i class="bi bi-eye-fill text-warning display-4"></i></div>
+                    <h3 class="fw-bold mb-3 text-end">Our Vision</h3>
+                    <p class="story-text">To become a trusted and preferred tourism brand in Egypt, recognised for customisation, reliability, and unforgettable Red Sea experiences.</p>
                 </div>
             </div>
         </div>
@@ -125,54 +214,38 @@
 </section>
 
 {{-- ===========================
-    WHY CHOOSE US SECTION
+    CORE VALUES SECTION (ENHANCED)
 ============================ --}}
-<section id="why-choose-us" class="why-choose-section py-5">
+<section id="enhanced-values" class="py-5 bg-gradient-light">
     <div class="container">
         <div class="text-center mb-5">
-            <p class="section-label">The NEMO Difference</p>
-            <h2 class="section-title">Why Choose <span class="title-highlight">NEMO Tours</span></h2>
+            <p class="section-label">Our DNA</p>
+            <h2 class="section-title">Core Values</h2>
         </div>
 
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="feature-box">
-                    <div class="feature-icon-wrapper">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    <h5 class="feature-title">Expert Guides</h5>
-                    <p class="feature-text">Local knowledge and years of diving experience</p>
-                </div>
-            </div>
+        <div class="values-grid">
+            @php
+                $values = [
+                    ['icon' => 'bi-patch-check', 'title' => 'Authenticity', 'desc' => 'Real local experiences, not generic tours.'],
+                    ['icon' => 'bi-mortarboard', 'title' => 'Expertise', 'desc' => 'Built on years of hands-on field knowledge.'],
+                    ['icon' => 'bi-sliders', 'title' => 'Flexibility', 'desc' => 'Trips designed around the traveler, not templates.'],
+                    ['icon' => 'bi-shield-lock', 'title' => 'Trust & Safety', 'desc' => 'Clear communication and reliable service.'],
+                    ['icon' => 'bi-chat-heart', 'title' => 'Customer-Centric', 'desc' => 'Support before, during, and after every trip.'],
+                ];
+            @endphp
 
-            <div class="col-lg-3 col-md-6">
-                <div class="feature-box">
-                    <div class="feature-icon-wrapper">
-                        <i class="bi bi-person-check"></i>
+            <div class="row justify-content-center g-4">
+                @foreach($values as $val)
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-v2-card p-4 rounded-4 bg-white border-0 shadow-sm h-100 text-center transition-all">
+                        <div class="value-icon-v2 mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle gradient-icon-bg">
+                            <i class="bi {{ $val['icon'] }} text-white fs-4"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">{{ $val['title'] }}</h4>
+                        <p class="text-muted small mb-0">{{ $val['desc'] }}</p>
                     </div>
-                    <h5 class="feature-title">Small Groups</h5>
-                    <p class="feature-text">Personalized attention with limited group sizes</p>
                 </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="feature-box">
-                    <div class="feature-icon-wrapper">
-                        <i class="bi bi-gear"></i>
-                    </div>
-                    <h5 class="feature-title">Premium Equipment</h5>
-                    <p class="feature-text">Top-quality, well-maintained diving gear</p>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="feature-box">
-                    <div class="feature-icon-wrapper">
-                        <i class="bi bi-calendar-check"></i>
-                    </div>
-                    <h5 class="feature-title">Flexible Packages</h5>
-                    <p class="feature-text">Customizable tours to match your preferences</p>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -183,12 +256,20 @@
 @push('style')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
+    /* Gradient Backgrounds */
+    .bg-gradient-light {
+        background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    }
+
+    .bg-gradient-blue {
+        background: linear-gradient(135deg, {{ $primary_color }} 0%, #2d5089 100%);
+    }
+
     /* Hero Section */
     .about-hero-section {
         position: relative;
-        height: 60vh;
+        height: 50vh;
         min-height: 400px;
-        background: linear-gradient(135deg, {{ $primary_color }} 0%, #2d5089 100%);
         background-image: url('{{ asset('public/landing-page/assets/img/hero_bg.jpg') }}');
         background-size: cover;
         background-position: center;
@@ -205,7 +286,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(62, 105, 173, 0.85) 0%, rgba(45, 80, 137, 0.85) 100%);
+        background: linear-gradient(135deg, rgba(62, 105, 173, 0.4) 0%, rgba(45, 80, 137, 0.4) 100%);
     }
 
     .hero-content {
@@ -220,12 +301,14 @@
         font-weight: 700;
         margin-bottom: 20px;
         line-height: 1.2;
+        color: white;
     }
 
     .hero-subtitle {
         font-size: 22px;
         font-weight: 400;
         opacity: 0.95;
+        color: white;
     }
 
     /* Common Section Styles */
@@ -238,231 +321,126 @@
 
     .section-title {
         font-family: 'Volkhov', serif;
-        font-size: 48px;
+        font-size: 44px;
         color: {{ $dark_text }};
         font-weight: 700;
         margin-bottom: 20px;
         line-height: 1.2;
     }
 
-    .section-description {
-        font-size: 17px;
-        color: {{ $light_text }};
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    .title-highlight {
-        color: {{ $primary_color }};
-        position: relative;
-    }
-
-    /* Our Story Section */
-    .our-story-section {
-        padding: 100px 0;
-        background: #fff;
-    }
-
-    .story-image-wrapper {
-        position: relative;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .story-image {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: 450px !important;
-        object-fit: cover !important;
-        display: block !important;
-    }
-
-    .image-decoration {
-        position: absolute;
-        top: -20px;
-        right: -20px;
-        width: 150px;
-        height: 150px;
-        background: {{ $primary_color }};
-        opacity: 0.2;
-        border-radius: 50%;
-        z-index: -1;
-    }
-
-    .story-content {
-        padding-left: 20px;
-    }
-
     .story-text {
         font-size: 17px;
         color: {{ $light_text }};
         line-height: 1.8;
-        margin-bottom: 20px;
     }
 
-    /* Mission & Values Section */
-    .mission-values-section {
-        padding: 100px 0;
-        background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    /* Founder Profile */
+    .founder-image-wrapper {
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
     }
 
-    .value-card {
-        background: white;
-        padding: 40px 30px;
-        border-radius: 20px;
-        text-align: center;
-        height: 100%;
-        transition: all 0.3s ease;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    .founder-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
     }
 
-    .value-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 50px rgba(62, 105, 173, 0.15);
-    }
+    .founder-image:hover { transform: scale(1.05); }
 
-    .value-icon {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, {{ $primary_color }} 0%, #2d5089 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 24px;
-        font-size: 36px;
-        color: white;
-    }
-
-    .value-title {
-        font-size: 22px;
-        font-weight: 700;
-        color: {{ $dark_text }};
-        margin-bottom: 16px;
-    }
-
-    .value-text {
-        font-size: 16px;
-        color: {{ $light_text }};
-        line-height: 1.7;
-        margin: 0;
-    }
-
-    /* Why Choose Us Section */
-    .why-choose-section {
-        padding: 100px 0;
-        background: white;
-    }
-
-    .feature-box {
-        text-align: center;
-        padding: 30px 20px;
-        transition: all 0.3s ease;
-    }
-
-    .feature-box:hover .feature-icon-wrapper {
-        background: {{ $primary_color }};
-        color: white;
-        transform: scale(1.1);
-    }
-
-    .feature-icon-wrapper {
-        width: 70px;
-        height: 70px;
-        background: rgba(62, 105, 173, 0.1);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
+    .founder-name {
+        font-family: 'Volkhov', serif;
         font-size: 32px;
-        color: {{ $primary_color }};
-        transition: all 0.3s ease;
-    }
-
-    .feature-title {
-        font-size: 20px;
-        font-weight: 700;
         color: {{ $dark_text }};
-        margin-bottom: 12px;
+        margin-bottom: 20px;
+        position: relative;
     }
 
-    .feature-text {
-        font-size: 15px;
-        color: {{ $light_text }};
-        margin: 0;
+    .founder-name::after {
+        content: '';
+        position: absolute; bottom: -10px; left: 0;
+        width: 60px; height: 3px; background: {{ $primary_color }};
     }
 
-    /* Responsive Design */
+    /* Nemo Intro Card */
+    .nemo-intro-card {
+        background: white;
+        min-height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 40px !important;
+        transition: all 0.5s ease;
+    }
+
+    .experience-badge {
+        border-radius: 25px !important;
+        transition: all 0.5s ease;
+    }
+
+    .card-gradient-overlay {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, rgba(62, 105, 173, 0.05) 0%, rgba(255, 122, 80, 0.05) 100%);
+    }
+
+    /* Service V2 Card */
+    .service-v2-card {
+        border-radius: 30px !important;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+    }
+
+    .service-v2-card:hover {
+        transform: translateY(-10px);
+        background: linear-gradient(135deg, #ffffff 0%, rgba(62, 105, 173, 0.05) 100%);
+        border-color: {{ $primary_color }} !important;
+        box-shadow: 0 15px 35px rgba(62, 105, 173, 0.1) !important;
+    }
+
+    /* Mission/Vision Modern */
+    .mission-modern { 
+        background: linear-gradient(135deg, #ffffff 0%, rgba(62, 105, 173, 0.08) 100%); 
+        border-radius: 40px !important;
+        transition: all 0.5s ease;
+    }
+    .vision-modern { 
+        background: linear-gradient(135deg, #ffffff 0%, rgba(255, 122, 80, 0.08) 100%); 
+        border-radius: 40px !important;
+        transition: all 0.5s ease;
+    }
+
+    /* Value V2 Card */
+    .value-v2-card {
+        border-radius: 30px !important;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+    }
+
+    .value-v2-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 45px rgba(62, 105, 173, 0.15) !important;
+        border-color: {{ $primary_color }} !important;
+    }
+
+    .gradient-icon-bg {
+        width: 60px; height: 60px;
+        background: linear-gradient(135deg, {{ $primary_color }} 0%, #FF7A50 100%);
+    }
+
+    .backdrop-blur { backdrop-filter: blur(10px); }
+
+    /* Responsive */
     @media (max-width: 991px) {
-        .hero-title {
-            font-size: 42px;
-        }
-
-        .hero-subtitle {
-            font-size: 18px;
-        }
-
-        .section-title {
-            font-size: 38px;
-        }
-
-        .our-story-section,
-        .mission-values-section,
-        .why-choose-section {
-            padding: 80px 0;
-        }
-
-        .story-content {
-            padding-left: 0;
-            margin-top: 30px;
-        }
+        .hero-title { font-size: 42px; }
+        .section-title { font-size: 36px; }
     }
 
     @media (max-width: 768px) {
-        .about-hero-section {
-            height: 50vh;
-            min-height: 350px;
-        }
-
-        .hero-title {
-            font-size: 32px;
-        }
-
-        .hero-subtitle {
-            font-size: 16px;
-        }
-
-        .section-title {
-            font-size: 32px;
-        }
-
-        .story-image {
-            height: 350px;
-        }
-
-        .our-story-section,
-        .mission-values-section,
-        .why-choose-section {
-            padding: 60px 0;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .hero-title {
-            font-size: 28px;
-        }
-
-        .section-title {
-            font-size: 28px;
-        }
-
-        .value-card {
-            padding: 30px 20px;
-        }
+        .hero-title { font-size: 32px; }
+        .section-title { font-size: 30px; }
     }
 </style>
 @endpush
