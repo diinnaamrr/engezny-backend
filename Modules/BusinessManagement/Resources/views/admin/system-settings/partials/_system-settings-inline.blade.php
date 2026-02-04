@@ -8,6 +8,10 @@
            class="nav-link {{Request::is('admin/business/app-version-setup') ? 'active' : ''}}">{{translate('app_version')}}</a>
     </li>
     <li class="nav-item">
+        <a href="{{route('admin.business.force-update.index')}}"
+           class="nav-link {{Request::is('admin/business/force-update') ? 'active' : ''}}">Force Update</a>
+    </li>
+    <li class="nav-item">
         <a href="{{route('admin.business.clean-database.index')}}"
            class="nav-link {{Request::is('admin/business/clean-database') ? 'active' : ''}}">{{translate('clean_database')}}</a>
     </li>

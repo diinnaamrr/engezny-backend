@@ -7,6 +7,8 @@ Route::controller(\Modules\BusinessManagement\Http\Controllers\Api\New\Configura
     Route::get('/configurations', 'getConfiguration');
     Route::get('/get-external-configurations', 'getExternalConfiguration');
     Route::post('/store-configurations', 'updateConfiguration');
+    Route::get('/app-version-config', 'getAppVersionConfig');
+    Route::get('/force-update-config', 'getForceUpdateConfig');
 });
 
 Route::group(['prefix' => 'location', 'middleware' => ['auth:api', 'maintenance_mode']], function () {
