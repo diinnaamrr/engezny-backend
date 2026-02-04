@@ -17,7 +17,7 @@
                 {{ translate('Contact Us') }}
             </h2>
             <p class="lead" style="color: #6c757d;">
-                {{ translate('We are here to help you move forward. Reach out to the Wayak team.') }}
+                {{ translate('We are here to help you move forward. Reach out to the دينا team.') }}
             </p>
         </div>
 

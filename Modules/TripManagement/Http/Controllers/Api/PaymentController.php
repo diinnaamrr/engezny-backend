@@ -150,7 +150,7 @@ class PaymentController extends Controller
             $this->cashTransaction($trip);
         }
 
-        $this->customerLevelUpdateChecker($trip->customer);
+        // TEST DISABLED: $this->customerLevelUpdateChecker($trip->customer);
         DB::commit();
 
         $push = getNotification('payment_successful');
@@ -165,12 +165,12 @@ class PaymentController extends Controller
             user_id: $trip->driver->id
         );
         try {
-            checkPusherConnection(DriverPaymentReceivedEvent::broadcast($trip));
+            // TEST DISABLED: checkPusherConnection(DriverPaymentReceivedEvent::broadcast($trip));
         }catch(Exception $exception){
 
         }
         try {
-            checkPusherConnection(CustomerTripPaymentSuccessfulEvent::broadcast($trip));
+            // TEST DISABLED: checkPusherConnection(CustomerTripPaymentSuccessfulEvent::broadcast($trip));
         }catch(Exception $exception){
 
         }

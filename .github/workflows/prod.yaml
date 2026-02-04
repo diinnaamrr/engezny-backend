@@ -3,11 +3,12 @@ name: Prod Deploy - Nemo Tours
 on:
   push:
     branches: [main, master]
-  workflow_dispatch:   # يضيف إمكانية التشغيل اليدوي من GitHub Actions UI
+  workflow_dispatch:
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -15,40 +16,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to GHCR
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: fassla-software
           password: ${{ secrets.GITHUB_TOKEN }}
 
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/fassla-software/nemo-tours-backend
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build Docker image
+      - name: Build & Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ghcr.io/fassla-software/nemo-tours-backend:latest
+          no-cache: true 
 
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+
     steps:
-      - name: SSH to server & deploy
+      - name: Deploy to production server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -58,96 +46,51 @@ jobs:
           script: |
             cd /var/www/nemo-tours-prod
 
-            # إعداد مجلدات Docker و nginx
-            mkdir -p docker/nginx docker/php storage bootstrap/cache backups
+            # Pull latest code from GitHub
+            git fetch origin || true
+            git pull origin master || git pull origin main || true
 
-            # حذف أي nginx config قديم
-            rm -f docker/nginx/default.conf
+            docker login ghcr.io -u fassla-software -p ${{ secrets.GITHUB_TOKEN }}
 
-            # إنشاء nginx config جديد
-            cat > docker/nginx/default.conf << 'EOF'
-            server {
-                listen 80;
-                server_name _;
-
-                root /var/www/html/public;
-                index index.php;
-
-                client_max_body_size 100M;
-
-                location ^~ /storage/app/public/ {
-                    alias /var/www/html/storage/app/public/;
-                    try_files $uri =404;
-                    access_log off;
-                    log_not_found off;
-                    expires 30d;
-                }
-
-                location ^~ /storage/ {
-                    alias /var/www/html/storage/app/public/;
-                    try_files $uri =404;
-                    access_log off;
-                    log_not_found off;
-                    expires 30d;
-                }
-
-                location ^~ /public/ {
-                    alias /var/www/html/public/;
-                    try_files $uri $uri/ =404;
-                    access_log off;
-                    expires 30d;
-                }
-
-                location ~* \.(?:css|js|png|jpg|jpeg|gif|ico|svg|woff2?|eot|ttf|otf|mp4|webp|json|xml)$ {
-                    root /var/www/html/public;
-                    try_files $uri =404;
-                    access_log off;
-                    log_not_found off;
-                    expires 30d;
-                    add_header Cache-Control "public, immutable";
-                }
-
-                location / {
-                    try_files $uri $uri/ /index.php?$query_string;
-                }
-
-                location ~ \.php$ {
-                    fastcgi_pass app:9000;
-                    fastcgi_index index.php;
-                    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-                    include fastcgi_params;
-                }
-
-                location ~ /\.(?!well-known).* {
-                    deny all;
-                }
-            }
-            EOF
-            chmod 644 docker/nginx/default.conf
-
-            # تحديث .env PROD URL
-            PROD_URL="https://nemotours-hn.com"
-            cp .env .env.backup || true
-            if grep -q "^APP_URL=" .env; then
-              sed -i "s|^APP_URL=.*|APP_URL=${PROD_URL}|" .env
+            docker compose -f docker-compose.prod.yml pull
+            
+            # Copy missing resources files from image to host BEFORE starting containers
+            # This ensures files are available when volume mount happens
+            echo "📁 Copying resources files from image to host..."
+            TEMP_CONTAINER=$(docker create ghcr.io/fassla-software/nemo-tours-backend:latest 2>/dev/null || echo "")
+            if [ -n "$TEMP_CONTAINER" ]; then
+              # Ensure resources directory exists
+              mkdir -p ./resources/views/landing-page/sections
+              # Copy resources files from image
+              docker cp "$TEMP_CONTAINER:/var/www/html/resources/." ./resources/ 2>/dev/null || true
+              
+              # Copy public files (images, CSS, JS) from image to host BEFORE starting containers
+              # This ensures images are available when volume mount happens
+              echo "🖼️  Copying public files (including images) from image to host..."
+              mkdir -p ./public/landing-page/assets/img/clients
+              mkdir -p ./public/landing-page/assets
+              # Copy all landing-page assets including images
+              docker cp "$TEMP_CONTAINER:/var/www/html/public/landing-page/assets/." ./public/landing-page/assets/ 2>/dev/null || true
+              
+              docker rm "$TEMP_CONTAINER" 2>/dev/null || true
+              echo "✅ Resources and public files synced from image!"
             else
-              echo "APP_URL=${PROD_URL}" >> .env
+              echo "⚠️  Could not create temp container, files may be missing"
             fi
+            
+            # Stop containers before updating
+            docker compose -f docker-compose.prod.yml down || true
+            
+            # Set proper permissions before starting containers
+            chown -R www-data:www-data ./public 2>/dev/null || chmod -R 755 ./public
+            
+            # Start containers (volume mount will now have the files)
+            docker compose -f docker-compose.prod.yml up -d
 
-            if grep -q "^ASSET_URL=" .env; then
-              sed -i "s|^ASSET_URL=.*|ASSET_URL=${PROD_URL}|" .env
-            else
-              echo "ASSET_URL=${PROD_URL}" >> .env
-            fi
+            # Wait for container to be ready
+            sleep 5
+            
+            echo "✅ Deployment complete! Images should now be accessible."
 
-            # تشغيل Docker Compose
-            docker-compose -f docker-compose.prod.yml down || true
-            docker-compose -f docker-compose.prod.yml up -d
-
-            # تنظيف cache وstorage symlinks
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan storage:link || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan config:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan cache:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan view:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan route:clear || true
-            docker-compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear || true
+            docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force || true
+            docker compose -f docker-compose.prod.yml exec -T app php artisan optimize:clear || true

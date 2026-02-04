@@ -77,7 +77,7 @@
 
         {{-- CTA Button --}}
         <div class="text-center mt-5">
-            <a href="#download" class="btn btn-warning btn-lg fw-bold px-5 py-3">Download Wayak Now</a>
+            <a href="#download" class="btn btn-warning btn-lg fw-bold px-5 py-3">Download دينا Now</a>
         </div>
 
     </div>
