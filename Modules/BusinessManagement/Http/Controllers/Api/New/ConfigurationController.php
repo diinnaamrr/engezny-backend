@@ -107,28 +107,35 @@ class ConfigurationController extends Controller
 
         if ($setting?->value) {
             $value = $setting->value;
-            $value['android']['maintenance_mode'] = (bool)($value['android']['maintenance_mode'] ?? false);
-            $value['ios']['maintenance_mode'] = (bool)($value['ios']['maintenance_mode'] ?? false);
-            return response()->json($value);
+            $value['maintenance']['enabled'] = (bool)($value['maintenance']['enabled'] ?? false);
+            $value['android']['force_update'] = (bool)($value['android']['force_update'] ?? false);
+            $value['ios']['force_update'] = (bool)($value['ios']['force_update'] ?? false);
+
+            return response()->json([
+                'success' => true,
+                'data' => $value,
+            ]);
         }
 
         return response()->json([
-            'meta' => [
-                'updated_at' => '',
-                'updated_by' => '',
-                'change_reason' => '',
-            ],
-            'android' => [
-                'exact_blocked_version' => '',
-                'min_supported_version' => '',
-                'maintenance_mode' => false,
-                'maintenance_message' => '',
-            ],
-            'ios' => [
-                'exact_blocked_version' => '',
-                'min_supported_version' => '',
-                'maintenance_mode' => false,
-                'maintenance_message' => '',
+            'success' => true,
+            'data' => [
+                'maintenance' => [
+                    'enabled' => false,
+                    'message' => '',
+                ],
+                'android' => [
+                    'min_version' => '',
+                    'latest_version' => '',
+                    'force_update' => false,
+                    'update_url' => '',
+                ],
+                'ios' => [
+                    'min_version' => '',
+                    'latest_version' => '',
+                    'force_update' => false,
+                    'update_url' => '',
+                ],
             ],
         ]);
     }
