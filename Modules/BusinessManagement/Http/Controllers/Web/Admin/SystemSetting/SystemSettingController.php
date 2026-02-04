@@ -119,11 +119,11 @@ class SystemSettingController extends BaseController
         ]);
 
         $value = $setting?->value ?? [];
-        $meta = $value['meta'] ?? [];
+        $maintenance = $value['maintenance'] ?? [];
         $android = $value['android'] ?? [];
         $ios = $value['ios'] ?? [];
 
-        return view('businessmanagement::admin.system-settings.force-update', compact('meta', 'android', 'ios'));
+        return view('businessmanagement::admin.system-settings.force-update', compact('maintenance', 'android', 'ios'));
     }
 
     public function updateForceUpdate(Request $request): Renderable|RedirectResponse
@@ -131,36 +131,34 @@ class SystemSettingController extends BaseController
         $this->authorize('business_edit');
 
         $data = $request->validate([
-            'meta_updated_at' => 'nullable|string',
-            'meta_updated_by' => 'nullable|string',
-            'meta_change_reason' => 'nullable|string',
-            'android_exact_blocked_version' => 'nullable|string',
-            'android_min_supported_version' => 'nullable|string',
-            'android_maintenance_mode' => 'nullable|in:0,1',
-            'android_maintenance_message' => 'nullable|string',
-            'ios_exact_blocked_version' => 'nullable|string',
-            'ios_min_supported_version' => 'nullable|string',
-            'ios_maintenance_mode' => 'nullable|in:0,1',
-            'ios_maintenance_message' => 'nullable|string',
+            'maintenance_enabled' => 'nullable|in:0,1',
+            'maintenance_message' => 'nullable|string',
+            'android_min_version' => 'nullable|string',
+            'android_latest_version' => 'nullable|string',
+            'android_force_update' => 'nullable|in:0,1',
+            'android_update_url' => 'nullable|string',
+            'ios_min_version' => 'nullable|string',
+            'ios_latest_version' => 'nullable|string',
+            'ios_force_update' => 'nullable|in:0,1',
+            'ios_update_url' => 'nullable|string',
         ]);
 
         $payload = [
-            'meta' => [
-                'updated_at' => $data['meta_updated_at'] ?? '',
-                'updated_by' => $data['meta_updated_by'] ?? '',
-                'change_reason' => $data['meta_change_reason'] ?? '',
+            'maintenance' => [
+                'enabled' => isset($data['maintenance_enabled']) ? (int)$data['maintenance_enabled'] : 0,
+                'message' => $data['maintenance_message'] ?? '',
             ],
             'android' => [
-                'exact_blocked_version' => $data['android_exact_blocked_version'] ?? '',
-                'min_supported_version' => $data['android_min_supported_version'] ?? '',
-                'maintenance_mode' => isset($data['android_maintenance_mode']) ? (int)$data['android_maintenance_mode'] : 0,
-                'maintenance_message' => $data['android_maintenance_message'] ?? '',
+                'min_version' => $data['android_min_version'] ?? '',
+                'latest_version' => $data['android_latest_version'] ?? '',
+                'force_update' => isset($data['android_force_update']) ? (int)$data['android_force_update'] : 0,
+                'update_url' => $data['android_update_url'] ?? '',
             ],
             'ios' => [
-                'exact_blocked_version' => $data['ios_exact_blocked_version'] ?? '',
-                'min_supported_version' => $data['ios_min_supported_version'] ?? '',
-                'maintenance_mode' => isset($data['ios_maintenance_mode']) ? (int)$data['ios_maintenance_mode'] : 0,
-                'maintenance_message' => $data['ios_maintenance_message'] ?? '',
+                'min_version' => $data['ios_min_version'] ?? '',
+                'latest_version' => $data['ios_latest_version'] ?? '',
+                'force_update' => isset($data['ios_force_update']) ? (int)$data['ios_force_update'] : 0,
+                'update_url' => $data['ios_update_url'] ?? '',
             ],
         ];
 
