@@ -640,7 +640,8 @@
                 </li>
                 <li class="has-sub-item
                 {{Request::is('admin/business/environment-setup*') ||Request::is('admin/business/app-version-setup*') ||
-                    Request::is('admin/business/clean-database*') || Request::is('admin/business/languages*')? 'active sub-menu-opened' : ''}}">
+                    Request::is('admin/business/force-update*') || Request::is('admin/business/clean-database*') ||
+                    Request::is('admin/business/languages*')? 'active sub-menu-opened' : ''}}">
                     <a href="#">
                         <i class="bi bi-sliders2-vertical"></i>
                         <span class="link-title text-capitalize">{{translate('system_settings')}}</span>
@@ -657,6 +658,12 @@
                             <a href="{{route('admin.business.app-version-setup.index')}}" class="text-capitalize">
                                 <i class="bi bi-dash-lg"></i>
                                 {{translate('app_version_setup')}}
+                            </a>
+                        </li>
+                        <li class="{{Request::is('admin/business/force-update*') ? 'active open' : ''}}">
+                            <a href="{{route('admin.business.force-update.index')}}" class="text-capitalize">
+                                <i class="bi bi-dash-lg"></i>
+                                Force Update
                             </a>
                         </li>
                         <li class="{{Request::is('admin/business/clean-database*') ? 'active open' : ''}}">

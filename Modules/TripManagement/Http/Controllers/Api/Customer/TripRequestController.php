@@ -1048,7 +1048,7 @@ class TripRequestController extends Controller
                         );
                     }
                     try {
-                        checkPusherConnection(CustomerTripCancelledEvent::broadcast($trip->driver, $trip));
+                        // TEST DISABLED: checkPusherConnection(CustomerTripCancelledEvent::broadcast($trip->driver, $trip));
                     } catch (Exception $exception) {
 
                     }
@@ -1063,10 +1063,10 @@ class TripRequestController extends Controller
                         'type' => $trip->type,
                         'action' => 'ride_cancelled'
                     ];
-                    dispatch(new SendPushNotificationJob($notification, $data))->onQueue('high');
+                    // TEST DISABLED: dispatch(new SendPushNotificationJob($notification, $data))->onQueue('high');
                     foreach ($data as $tempNotification) {
                         try {
-                            checkPusherConnection(CustomerTripCancelledEvent::broadcast($tempNotification->user, $trip));
+                            // TEST DISABLED: checkPusherConnection(CustomerTripCancelledEvent::broadcast($tempNotification->user, $trip));
                         } catch (Exception $exception) {
 
                         }
@@ -1115,7 +1115,7 @@ class TripRequestController extends Controller
                     );
                 }
                 try {
-                    checkPusherConnection(CustomerTripCancelledAfterOngoingEvent::broadcast($trip));
+                    // TEST DISABLED: checkPusherConnection(CustomerTripCancelledAfterOngoingEvent::broadcast($trip));
                 } catch (Exception $exception) {
 
                 }
@@ -1126,12 +1126,12 @@ class TripRequestController extends Controller
         DB::beginTransaction();
         if ($request->status == 'cancelled' && $trip->driver_id && $trip->current_status == ONGOING) {
             $this->trip->updateRelationalTable($attributes);
-            $this->customerLevelUpdateChecker(auth()->user());
-            $this->driverLevelUpdateChecker($trip->driver);
+            // TEST DISABLED: $this->customerLevelUpdateChecker(auth()->user());
+            // TEST DISABLED: $this->driverLevelUpdateChecker($trip->driver);
         } elseif ($request->status == 'completed' && $trip->driver_id && $trip->current_status == ONGOING) {
             $this->trip->updateRelationalTable($attributes);
-            $this->customerLevelUpdateChecker(auth()->user());
-            $this->driverLevelUpdateChecker($trip->driver);
+            // TEST DISABLED: $this->customerLevelUpdateChecker(auth()->user());
+            // TEST DISABLED: $this->driverLevelUpdateChecker($trip->driver);
         } else {
             $this->trip->updateRelationalTable($attributes);
         }

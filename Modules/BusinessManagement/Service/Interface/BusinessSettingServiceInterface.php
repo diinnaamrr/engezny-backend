@@ -36,6 +36,7 @@ interface BusinessSettingServiceInterface extends BaseServiceInterface
     public function storeGoogleMapApi(array $data);
     public function storeRecaptha(array $data);
     public function storeAppVersion(array $data);
+    public function storeForceUpdateConfig(array $data);
     public function storeAllZoneExtraFare(array $data);
     public function storeParcelSetting(array $data);
     public function storeParcelTrackingSetting(array $data);

@@ -812,6 +812,28 @@ class BusinessSettingService extends BaseService implements BusinessSettingServi
         }
     }
 
+    public function storeForceUpdateConfig(array $data)
+    {
+        $setting = $this->businessSettingRepository->findOneBy(criteria: [
+            'settings_type' => APP_VERSION,
+            'key_name' => FORCE_UPDATE_CONFIG
+        ]);
+
+        if ($setting) {
+            $this->businessSettingRepository->update(id: $setting->id, data: [
+                'key_name' => FORCE_UPDATE_CONFIG,
+                'settings_type' => APP_VERSION,
+                'value' => $data,
+            ]);
+        } else {
+            $this->businessSettingRepository->create(data: [
+                'key_name' => FORCE_UPDATE_CONFIG,
+                'settings_type' => APP_VERSION,
+                'value' => $data,
+            ]);
+        }
+    }
+
     public function storeLandingPagePortfolioData(array $data): void
     {
         $value = [
