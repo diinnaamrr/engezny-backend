@@ -75,6 +75,12 @@
                                        class="form-control" placeholder="https://play.google.com/store"
                                        value="{{ $android['update_url'] ?? '' }}">
                             </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Blocked Versions</label>
+                                <textarea name="android_blocked_versions" id="android_blocked_versions"
+                                          class="form-control" rows="4" style="min-height: 120px;"
+                                          placeholder="1.0.0, 1.0.1 or one per line">{{ isset($android['blocked_versions']) ? implode("\n", (array)$android['blocked_versions']) : '' }}</textarea>
+                            </div>
                         </div>
                     </div>
 
@@ -109,6 +115,12 @@
                                        id="ios_update_url"
                                        class="form-control" placeholder="https://apps.apple.com"
                                        value="{{ $ios['update_url'] ?? '' }}">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Blocked Versions</label>
+                                <textarea name="ios_blocked_versions" id="ios_blocked_versions"
+                                          class="form-control" rows="4" style="min-height: 120px;"
+                                          placeholder="1.0.0, 1.0.1 or one per line">{{ isset($ios['blocked_versions']) ? implode("\n", (array)$ios['blocked_versions']) : '' }}</textarea>
                             </div>
                         </div>
                     </div>

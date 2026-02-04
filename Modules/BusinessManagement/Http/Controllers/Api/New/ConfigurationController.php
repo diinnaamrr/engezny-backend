@@ -110,6 +110,8 @@ class ConfigurationController extends Controller
             $value['maintenance']['enabled'] = (bool)($value['maintenance']['enabled'] ?? false);
             $value['android']['force_update'] = (bool)($value['android']['force_update'] ?? false);
             $value['ios']['force_update'] = (bool)($value['ios']['force_update'] ?? false);
+            $value['android']['blocked_versions'] = array_values((array)($value['android']['blocked_versions'] ?? []));
+            $value['ios']['blocked_versions'] = array_values((array)($value['ios']['blocked_versions'] ?? []));
 
             return response()->json([
                 'success' => true,
@@ -129,12 +131,14 @@ class ConfigurationController extends Controller
                     'latest_version' => '',
                     'force_update' => false,
                     'update_url' => '',
+                    'blocked_versions' => [],
                 ],
                 'ios' => [
                     'min_version' => '',
                     'latest_version' => '',
                     'force_update' => false,
                     'update_url' => '',
+                    'blocked_versions' => [],
                 ],
             ],
         ]);
