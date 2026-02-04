@@ -47,6 +47,7 @@ const CUSTOMER_APP_VERSION_CONTROL_FOR_ANDROID = "customer_app_version_control_f
 const CUSTOMER_APP_VERSION_CONTROL_FOR_IOS = "customer_app_version_control_for_ios";
 const DRIVER_APP_VERSION_CONTROL_FOR_ANDROID = "driver_app_version_control_for_android";
 const DRIVER_APP_VERSION_CONTROL_FOR_IOS = "driver_app_version_control_for_ios";
+const FORCE_UPDATE_CONFIG = "force_update_config";
 
 
 const CHATTING_SETTINGS = "chatting_settings";

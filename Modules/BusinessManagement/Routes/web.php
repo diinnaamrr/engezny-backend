@@ -246,6 +246,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], f
                 Route::get('/', 'appVersionSetup')->name('index');
                 Route::post('update', 'updateAppVersionSetup')->name('update');
             });
+            Route::group(['prefix' => 'app-version-config', 'as' => 'app-version-config.'], function () {
+                Route::get('/', 'appVersionConfig')->name('index');
+            });
+            Route::group(['prefix' => 'force-update', 'as' => 'force-update.'], function () {
+                Route::get('/', 'forceUpdate')->name('index');
+                Route::post('update', 'updateForceUpdate')->name('update');
+            });
 
             Route::group(['prefix' => 'clean-database', 'as' => 'clean-database.'], function () {
                 Route::get('/', 'dbIndex')->name('index');

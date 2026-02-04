@@ -2539,4 +2539,8 @@
   'Pay using InstaPay  card  or mobile wallet for rides or deliveries.' => 'Pay using InstaPay  card  or mobile wallet for rides or deliveries.',
   'Flexible Payments' => 'Flexible Payments',
   '                                                                                                                                                                                                               ' => '                                                                                                                                                                                                               ',
+  'tours_management' => 'Tours management',
+  'categories' => 'Categories',
+  'tours' => 'Tours',
+  'Customer' => 'Customer',
 );

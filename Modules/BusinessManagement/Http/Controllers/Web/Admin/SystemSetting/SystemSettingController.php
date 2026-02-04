@@ -64,10 +64,107 @@ class SystemSettingController extends BaseController
             compact('customerAppVersionControlForAndroid', 'customerAppVersionControlForIos', 'driverAppVersionControlForAndroid', 'driverAppVersionControlForIos'));
     }
 
+    public function appVersionConfig()
+    {
+        $this->authorize('business_view');
+
+        $settings = $this->systemSettingService->getBy(criteria: ['settings_type' => APP_VERSION]);
+        $customerAppVersionControlForAndroid = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
+        $customerAppVersionControlForIos = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_IOS)?->value;
+        $driverAppVersionControlForAndroid = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
+        $driverAppVersionControlForIos = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_IOS)?->value;
+
+        $customerConfig = [
+            'android' => [
+                'minimum_app_version' => $customerAppVersionControlForAndroid['minimum_app_version'] ?? '',
+                'app_url' => $customerAppVersionControlForAndroid['app_url'] ?? '',
+            ],
+            'ios' => [
+                'minimum_app_version' => $customerAppVersionControlForIos['minimum_app_version'] ?? '',
+                'app_url' => $customerAppVersionControlForIos['app_url'] ?? '',
+            ],
+        ];
+
+        $driverConfig = [
+            'android' => [
+                'minimum_app_version' => $driverAppVersionControlForAndroid['minimum_app_version'] ?? '',
+                'app_url' => $driverAppVersionControlForAndroid['app_url'] ?? '',
+            ],
+            'ios' => [
+                'minimum_app_version' => $driverAppVersionControlForIos['minimum_app_version'] ?? '',
+                'app_url' => $driverAppVersionControlForIos['app_url'] ?? '',
+            ],
+        ];
+
+        return view('businessmanagement::admin.system-settings.app-version-config', [
+            'customerConfigJson' => json_encode($customerConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+            'driverConfigJson' => json_encode($driverConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+        ]);
+    }
+
     public function updateAppVersionSetup(AppVersionSettingStoreOrUpdateRequest $request): Renderable|RedirectResponse
     {
         $this->authorize('business_edit');
         $this->systemSettingService->storeAppVersion($request->validated());
+        Toastr::success(SYSTEM_SETTING_UPDATE_200['message']);
+        return back();
+    }
+
+    public function forceUpdate()
+    {
+        $this->authorize('business_view');
+        $setting = $this->systemSettingService->findOneBy(criteria: [
+            'settings_type' => APP_VERSION,
+            'key_name' => FORCE_UPDATE_CONFIG
+        ]);
+
+        $value = $setting?->value ?? [];
+        $meta = $value['meta'] ?? [];
+        $android = $value['android'] ?? [];
+        $ios = $value['ios'] ?? [];
+
+        return view('businessmanagement::admin.system-settings.force-update', compact('meta', 'android', 'ios'));
+    }
+
+    public function updateForceUpdate(Request $request): Renderable|RedirectResponse
+    {
+        $this->authorize('business_edit');
+
+        $data = $request->validate([
+            'meta_updated_at' => 'nullable|string',
+            'meta_updated_by' => 'nullable|string',
+            'meta_change_reason' => 'nullable|string',
+            'android_exact_blocked_version' => 'nullable|string',
+            'android_min_supported_version' => 'nullable|string',
+            'android_maintenance_mode' => 'nullable|in:0,1',
+            'android_maintenance_message' => 'nullable|string',
+            'ios_exact_blocked_version' => 'nullable|string',
+            'ios_min_supported_version' => 'nullable|string',
+            'ios_maintenance_mode' => 'nullable|in:0,1',
+            'ios_maintenance_message' => 'nullable|string',
+        ]);
+
+        $payload = [
+            'meta' => [
+                'updated_at' => $data['meta_updated_at'] ?? '',
+                'updated_by' => $data['meta_updated_by'] ?? '',
+                'change_reason' => $data['meta_change_reason'] ?? '',
+            ],
+            'android' => [
+                'exact_blocked_version' => $data['android_exact_blocked_version'] ?? '',
+                'min_supported_version' => $data['android_min_supported_version'] ?? '',
+                'maintenance_mode' => isset($data['android_maintenance_mode']) ? (int)$data['android_maintenance_mode'] : 0,
+                'maintenance_message' => $data['android_maintenance_message'] ?? '',
+            ],
+            'ios' => [
+                'exact_blocked_version' => $data['ios_exact_blocked_version'] ?? '',
+                'min_supported_version' => $data['ios_min_supported_version'] ?? '',
+                'maintenance_mode' => isset($data['ios_maintenance_mode']) ? (int)$data['ios_maintenance_mode'] : 0,
+                'maintenance_message' => $data['ios_maintenance_message'] ?? '',
+            ],
+        ];
+
+        $this->systemSettingService->storeForceUpdateConfig($payload);
         Toastr::success(SYSTEM_SETTING_UPDATE_200['message']);
         return back();
     }
