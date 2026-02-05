@@ -134,15 +134,15 @@ class SystemSettingController extends BaseController
         $data = $request->validate([
             'maintenance_enabled' => 'nullable|in:0,1',
             'maintenance_message' => 'nullable|string',
-            'android_min_version' => 'nullable|string',
-            'android_latest_version' => 'nullable|string',
+            'android_min_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+            'android_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
             'android_force_update' => 'nullable|in:0,1',
-            'android_update_url' => 'nullable|string',
+            'android_update_url' => 'nullable|url',
             'android_blocked_versions' => 'nullable|string',
-            'ios_min_version' => 'nullable|string',
-            'ios_latest_version' => 'nullable|string',
+            'ios_min_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+            'ios_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
             'ios_force_update' => 'nullable|in:0,1',
-            'ios_update_url' => 'nullable|string',
+            'ios_update_url' => 'nullable|url',
             'ios_blocked_versions' => 'nullable|string',
         ]);
 
