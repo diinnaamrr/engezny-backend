@@ -62,4 +62,86 @@ class ConfigurationController extends Controller
         return response()->json(['status' => false]);
     }
 
+    public function getAppVersionConfig()
+    {
+        $settings = $this->businessSettingService->getBy(criteria: ['settings_type' => APP_VERSION]);
+        $customerAppVersionControlForAndroid = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
+        $customerAppVersionControlForIos = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_IOS)?->value;
+        $driverAppVersionControlForAndroid = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
+        $driverAppVersionControlForIos = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_IOS)?->value;
+
+        $customerConfig = [
+            'android' => [
+                'minimum_app_version' => $customerAppVersionControlForAndroid['minimum_app_version'] ?? '',
+                'app_url' => $customerAppVersionControlForAndroid['app_url'] ?? '',
+            ],
+            'ios' => [
+                'minimum_app_version' => $customerAppVersionControlForIos['minimum_app_version'] ?? '',
+                'app_url' => $customerAppVersionControlForIos['app_url'] ?? '',
+            ],
+        ];
+
+        $driverConfig = [
+            'android' => [
+                'minimum_app_version' => $driverAppVersionControlForAndroid['minimum_app_version'] ?? '',
+                'app_url' => $driverAppVersionControlForAndroid['app_url'] ?? '',
+            ],
+            'ios' => [
+                'minimum_app_version' => $driverAppVersionControlForIos['minimum_app_version'] ?? '',
+                'app_url' => $driverAppVersionControlForIos['app_url'] ?? '',
+            ],
+        ];
+
+        return response()->json([
+            'customer' => $customerConfig,
+            'driver' => $driverConfig,
+        ]);
+    }
+
+    public function getForceUpdateConfig()
+    {
+        $setting = $this->businessSettingService->findOneBy(criteria: [
+            'settings_type' => APP_VERSION,
+            'key_name' => FORCE_UPDATE_CONFIG
+        ]);
+
+        if ($setting?->value) {
+            $value = $setting->value;
+            $value['maintenance']['enabled'] = (bool)($value['maintenance']['enabled'] ?? false);
+            $value['android']['force_update'] = (bool)($value['android']['force_update'] ?? false);
+            $value['ios']['force_update'] = (bool)($value['ios']['force_update'] ?? false);
+            $value['android']['blocked_versions'] = array_values((array)($value['android']['blocked_versions'] ?? []));
+            $value['ios']['blocked_versions'] = array_values((array)($value['ios']['blocked_versions'] ?? []));
+
+            return response()->json([
+                'success' => true,
+                'data' => $value,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'maintenance' => [
+                    'enabled' => false,
+                    'message' => '',
+                ],
+                'android' => [
+                    'min_version' => '',
+                    'latest_version' => '',
+                    'force_update' => false,
+                    'update_url' => '',
+                    'blocked_versions' => [],
+                ],
+                'ios' => [
+                    'min_version' => '',
+                    'latest_version' => '',
+                    'force_update' => false,
+                    'update_url' => '',
+                    'blocked_versions' => [],
+                ],
+            ],
+        ]);
+    }
+
 }
