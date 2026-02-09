@@ -9,8 +9,8 @@
                 <img
                     src="{{asset('public/landing-page/assets/img/footer_logo.png')}}"
                     alt="NEMO Logo"
-                    class="img-fluid"
-                    style="height: 45px; transition: height 0.3s ease;"
+                    class="img-fluid rounded-3"
+                    style="height: 60px; transition: height 0.3s ease; "
                 >
             </a>
 
