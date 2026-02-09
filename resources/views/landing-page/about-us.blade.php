@@ -359,7 +359,7 @@
 ============================ --}}
 <section id="about-cta" class="py-5 mb-5">
     <div class="container">
-        <div class="cta-box p-5 rounded-5 text-center shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, #ee212e 0%, #ff7d01 50%, #08aaf4 100%);">
+        <div class="cta-box p-5 rounded-5 text-center shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, #08aaf4 0%, #6ed5f9 100%);">
             <div class="cta-decoration"></div>
             <div class="position-relative z-1">
                 <p class="text-white text-uppercase fw-bold mb-2 tracking-wider">Ready for your adventure?</p>
