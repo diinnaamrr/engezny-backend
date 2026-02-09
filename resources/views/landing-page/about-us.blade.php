@@ -77,6 +77,107 @@
 </section>
 
 {{-- ===========================
+    CERTIFICATES SECTION
+============================ --}}
+<section id="certificates" class="certificates-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <p class="section-label">Our Achievements</p>
+            <h2 class="section-title">Certificates & Accreditations</h2>
+            <p class="section-description mx-auto" style="max-width: 700px;">
+                Recognized for excellence in tourism and diving services across Egypt.
+            </p>
+        </div>
+
+        <div id="certificatesCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                {{-- Slide 1 --}}
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer1.png') }}" 
+                                         alt="Certificate 1" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer2.png') }}" 
+                                         alt="Certificate 2" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer3.png') }}" 
+                                         alt="Certificate 3" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Slide 2 --}}
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer4.png') }}" 
+                                         alt="Certificate 4" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer5.png') }}" 
+                                         alt="Certificate 5" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer6.png') }}" 
+                                         alt="Certificate 6" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Carousel Controls --}}
+            <button class="carousel-control-prev" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+            {{-- Carousel Indicators --}}
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#certificatesCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#certificatesCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ===========================
     ABOUT NEMO TOURS - INTRO
 ============================ --}}
 <section id="about-nemo-intro" class="about-nemo-section py-5 bg-gradient-light">
@@ -250,6 +351,8 @@
         </div>
     </div>
 </section>
+
+
 
 @endsection
 
@@ -431,6 +534,99 @@
     }
 
     .backdrop-blur { backdrop-filter: blur(10px); }
+
+    /* Certificates Section */
+    .certificates-section {
+        background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    }
+
+    .certificates-section .carousel-inner {
+        padding: 20px 10px 50px 10px; /* Add padding to prevent clipping on hover */
+    }
+
+    .certificate-card {
+        border-radius: 30px !important;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+    }
+
+    .certificate-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 45px rgba(62, 105, 173, 0.15) !important;
+        border-color: {{ $primary_color }} !important;
+    }
+
+    .certificate-image-wrapper {
+        border-radius: 20px;
+        overflow: hidden;
+        background: transparent;
+        height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .certificate-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+
+    .certificate-card:hover .certificate-image {
+        transform: scale(1.05);
+    }
+
+    /* Custom Carousel Controls */
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 50px;
+        height: 50px;
+        background: {{ $primary_color }};
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.8;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-control-prev {
+        left: -25px;
+    }
+
+    .carousel-control-next {
+        right: -25px;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 1;
+        background: #2d5089;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .carousel-indicators {
+        margin-bottom: -40px;
+    }
+
+    .carousel-indicators button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: {{ $primary_color }};
+        opacity: 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-indicators button.active {
+        opacity: 1;
+        transform: scale(1.2);
+    }
 
     /* Responsive */
     @media (max-width: 991px) {
