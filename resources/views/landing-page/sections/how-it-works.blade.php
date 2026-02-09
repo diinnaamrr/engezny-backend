@@ -76,7 +76,7 @@
 
     .section-subtitle-small {
         font-size: 18px;
-        color: #3E69AD;
+        color: #ee212e;
         font-weight: 600;
         margin-bottom: 0.5rem;
     }
@@ -117,7 +117,7 @@
     .step-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #3E69AD, #2d5089);
+        background: linear-gradient(135deg, #ee212e, #08aaf4);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -181,7 +181,7 @@
     .step-decoration-1 {
         width: 120px;
         height: 120px;
-        background: linear-gradient(135deg, #3E69AD, #2d5089);
+        background: linear-gradient(135deg, #ee212e, #08aaf4);
         top: -20px;
         right: -20px;
     }

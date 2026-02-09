@@ -166,7 +166,7 @@
         align-items: center;
         gap: 8px;
         font-size: 16px;
-        color: #3E69AD;
+        color: #ee212e;
         font-weight: 600;
         margin-bottom: 16px;
         padding: 8px 20px;
@@ -187,7 +187,7 @@
     }
 
     .title-highlight {
-        color: #3E69AD;
+        color: #ee212e;
         position: relative;
         display: inline-block;
     }
