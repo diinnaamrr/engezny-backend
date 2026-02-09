@@ -1,6 +1,7 @@
 <?php
 namespace Modules\TripManagement\Http\Controllers\Api\New\Customer;
 
+
 use App\Jobs\SendPushNotificationJob;
 use Doctrine\Common\Cache\Cache;
 use Illuminate\Http\JsonResponse;
@@ -348,7 +349,7 @@ public function __construct(TripRequestServiceInterface $tripRequest,TripRequest
     if ($distance !== null) {
         return $distance;
     }
-    $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
+    $apiKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? '';
     $response = Http::get("https://maps.googleapis.com/maps/api/directions/json", [
         'origin' => "$startLat,$startLng",
         'destination' => "$endLat,$endLng",
@@ -373,7 +374,7 @@ public function __construct(TripRequestServiceInterface $tripRequest,TripRequest
         return $address;
     }
 
-    $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
+    $apiKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? '';
     $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
         'latlng' => "$lat,$lng",
         'key' => $apiKey,
@@ -602,7 +603,7 @@ public function createCarpoolRequest(Request $request)
 
  private function getEstimatedDurationInMinutes(float $startLat, float $startLng, float $endLat, float $endLng): int
         {
-            $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
+            $apiKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? '';
             $response = Http::get("https://maps.googleapis.com/maps/api/directions/json", [
                 'origin' => "$startLat,$startLng",
                 'destination' => "$endLat,$endLng",
