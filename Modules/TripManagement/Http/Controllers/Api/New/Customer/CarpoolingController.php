@@ -374,7 +374,7 @@ public function __construct(TripRequestServiceInterface $tripRequest,TripRequest
         return $address;
     }
 
-    $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
+    $apiKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? '';
     $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
         'latlng' => "$lat,$lng",
         'key' => $apiKey,
