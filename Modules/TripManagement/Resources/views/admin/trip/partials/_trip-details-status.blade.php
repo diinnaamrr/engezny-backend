@@ -199,7 +199,9 @@
                 });
         }
     </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key={{businessConfig(GOOGLE_MAP_API)?->value['map_api_key'] ?? null}}&callback=initMap">
+    <script>
+        $(document).ready(function() {
+            initMap();
+        });
     </script>
 @endpush

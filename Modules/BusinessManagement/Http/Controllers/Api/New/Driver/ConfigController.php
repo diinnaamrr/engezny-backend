@@ -194,7 +194,7 @@ class ConfigController extends Controller
         if ($validator->fails()) {
             return response()->json(responseFormatter(DEFAULT_400, null, null, null, errorProcessor($validator)), 400);
         }
-        $mapKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? null;
+        $mapKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? null;
         $response = Http::get(MAP_API_BASE_URI . '/place/autocomplete/json?input=' . $request['search_text'] . '&key=' . $mapKey);
         return response()->json(responseFormatter(DEFAULT_200, $response->json()), 200);
     }
@@ -213,7 +213,7 @@ class ConfigController extends Controller
             return response()->json(responseFormatter(DEFAULT_400, null, null, null, errorProcessor($validator)), 400);
         }
 
-        $mapKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? null;
+        $mapKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? null;
         $response = Http::get(MAP_API_BASE_URI . '/distancematrix/json?origins=' . $request['origin_lat'] . ',' . $request['origin_lng'] . '&destinations=' . $request['destination_lat'] . ',' . $request['destination_lng'] . '&travelmode=' . $request['mode'] . '&key=' . $mapKey);
 
         return response()->json(responseFormatter(DEFAULT_200, $response->json()), 200);
@@ -228,7 +228,7 @@ class ConfigController extends Controller
         if ($validator->fails()) {
             return response()->json(responseFormatter(DEFAULT_400, null, null, null, errorProcessor($validator)), 400);
         }
-        $mapKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? null;
+        $mapKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? null;
         $response = Http::get(MAP_API_BASE_URI . '/place/details/json?placeid=' . $request['placeid'] . '&key=' . $mapKey);
 
         return response()->json(responseFormatter(DEFAULT_200, $response->json()), 200);
@@ -245,7 +245,7 @@ class ConfigController extends Controller
             return response()->json(responseFormatter(DEFAULT_400, null, null, null, errorProcessor($validator)), 400);
         }
         
-        $mapKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? null;
+        $mapKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? null;
         
         if (!$mapKey) {
             return response()->json(responseFormatter(DEFAULT_400, null, null, null, ['Google Maps API key not configured']), 400);
