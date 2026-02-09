@@ -8,9 +8,9 @@
     <!-- Page Title -->
     <title>@yield('title')</title>
 
-    @php($map_key = businessConfig(GOOGLE_MAP_API)?->value['map_api_key'] ?? '')
+    @php($map_key = businessConfig('google_map_api', 'google_map_api')?->value['map_api_key'] ?? '')
     @if($map_key)
-        <script src="https://maps.googleapis.com/maps/api/js?key={{$map_key}}&libraries=places,drawing,geometry"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key={{$map_key}}&libraries=places,drawing,geometry&v=3.50"></script>
     @endif
 
     <!-- Meta Data -->

@@ -76,8 +76,8 @@ class ThirdPartyController extends BaseController
     {
         $this->authorize('business_view');
         $attributes = [
-            'settings_type' => GOOGLE_MAP_API,
-            'key_name' => GOOGLE_MAP_API
+            'settings_type' => 'google_map_api',
+            'key_name' => 'google_map_api'
         ];
         $setting = $this->businessSettingService
             ->findOneBy(criteria: $attributes)?->value;
