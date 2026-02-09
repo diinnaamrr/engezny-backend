@@ -518,9 +518,6 @@
 @endsection
 
 @push('script')
-    @php($map_key = businessConfig(GOOGLE_MAP_API)?->value['map_api_key'] ?? null)
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key={{ $map_key }}&libraries=drawing,places&v=3.50"></script>
     <script src="{{asset('public/assets/admin-module/js/zone-management/zone/index.js') }}"></script>
     <script>
         "use strict";

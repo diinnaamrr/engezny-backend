@@ -348,7 +348,7 @@ public function __construct(TripRequestServiceInterface $tripRequest,TripRequest
     if ($distance !== null) {
         return $distance;
     }
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
+    $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
     $response = Http::get("https://maps.googleapis.com/maps/api/directions/json", [
         'origin' => "$startLat,$startLng",
         'destination' => "$endLat,$endLng",
@@ -373,7 +373,7 @@ public function __construct(TripRequestServiceInterface $tripRequest,TripRequest
         return $address;
     }
 
-    $apiKey = env('GOOGLE_MAPS_API_KEY');
+    $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
     $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
         'latlng' => "$lat,$lng",
         'key' => $apiKey,
@@ -602,7 +602,7 @@ public function createCarpoolRequest(Request $request)
 
  private function getEstimatedDurationInMinutes(float $startLat, float $startLng, float $endLat, float $endLng): int
         {
-            $apiKey = env('GOOGLE_MAPS_API_KEY');
+            $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
             $response = Http::get("https://maps.googleapis.com/maps/api/directions/json", [
                 'origin' => "$startLat,$startLng",
                 'destination' => "$endLat,$endLng",
