@@ -56,7 +56,7 @@
 
     .section-subtitle-small {
         font-size: 18px;
-        color: #3E69AD;
+        color: #ee212e;
         font-weight: 600;
         margin-bottom: 0.5rem;
     }
@@ -105,7 +105,7 @@
     .category-icon-fallback {
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #3E69AD, #2d5089);
+        background: linear-gradient(135deg, #ee212e, #08aaf4);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -145,7 +145,7 @@
 
     .tour-count, .subcategory-count {
         background: rgba(62, 105, 173, 0.1);
-        color: #3E69AD;
+        color: #ee212e;
         padding: 5px 15px;
         border-radius: 20px;
         font-size: 14px;
@@ -156,7 +156,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: #3E69AD;
+        background: #ee212e;
         color: white;
         padding: 12px 25px;
         border-radius: 25px;
@@ -166,7 +166,7 @@
     }
 
     .category-link:hover {
-        background: #2d5089;
+        background: #08aaf4;
         color: white;
         transform: translateX(5px);
     }

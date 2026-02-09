@@ -5,7 +5,7 @@
 @section('content')
 
 @php
-    $primary_color = '#3E69AD';
+    $primary_color = '#ee212e';
     $dark_text = '#181E4B';
     $light_text = '#5E6282';
 @endphp
@@ -104,7 +104,7 @@ foreach($portfolioData as $item) {
         position: relative;
         height: 50vh;
         min-height: 350px;
-        background: linear-gradient(135deg, {{ $primary_color }} 0%, #2d5089 100%);
+        background: linear-gradient(135deg, {{ $primary_color }} 0%, #08aaf4 100%);
         background-image: url('{{ asset('public/landing-page/assets/img/hero_bg.jpg') }}');
         background-size: cover;
         background-position: center;
@@ -121,7 +121,7 @@ foreach($portfolioData as $item) {
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(62, 105, 173, 0.4) 0%, rgba(45, 80, 137, 0.4) 100%);
+        background: linear-gradient(135deg, rgba(238, 33, 46, 0.4) 0%, rgba(8, 170, 244, 0.4) 100%);
     }
 
     .hero-content {
@@ -251,9 +251,9 @@ foreach($portfolioData as $item) {
         right: 0;
         bottom: 0;
         background: linear-gradient(180deg, 
-            rgba(62, 105, 173, 0) 0%, 
-            rgba(62, 105, 173, 0.7) 50%,
-            rgba(62, 105, 173, 0.95) 100%);
+            rgba(238, 33, 46, 0) 0%, 
+            rgba(238, 33, 46, 0.7) 50%,
+            rgba(238, 33, 46, 0.95) 100%);
         display: flex;
         align-items: flex-end;
         padding: 30px;
@@ -493,8 +493,8 @@ foreach($portfolioData as $item) {
         .portfolio-overlay {
             opacity: 1;
             background: linear-gradient(180deg, 
-                rgba(62, 105, 173, 0) 0%, 
-                rgba(62, 105, 173, 0.85) 100%);
+                rgba(238, 33, 46, 0) 0%, 
+                rgba(238, 33, 46, 0.85) 100%);
         }
 
         .portfolio-content {

@@ -1,15 +1,15 @@
 <footer class="simple-footer py-5 mt-5">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-4 text-start mb-4">
+        <div class="row align-items-baseline">
+            <div class="col-md-3 text-start mb-4">
                 <img src="{{ asset('public/landing-page/assets/img/footer_logo.png') }}" 
                      alt="Nemo Logo" 
                      class="footer-logo">
             </div>
-            <div class="col-md-4 text-start mb-4">
+            <div class="col-md-3 text-start mb-4">
                 <h5 class="footer-title">Contact Us</h5>
                 <div class="contact-info">
-                    <p class="contact-email">Email: <a href="mailto:Hassannemo.hn@gmail.com">Hassannemo.hn@gmail.com</a></p>
+                    <p class="contact-email mb-3">Email: <a href="mailto:info@nemotours-hn.com">info@nemotours-hn.com</a></p>
                     <div class="contact-phones">
                         <a href="https://wa.me/201092958475" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01092958475</a>
                         <a href="https://wa.me/201208686821" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01208686821</a>
@@ -17,11 +17,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 text-center mb-4">
+            <div class="col-md-3 text-start mb-4">
+                <h5 class="footer-title">Our Office</h5>
+                <p class="contact-address text-muted small">
+                    <i class="bi bi-geo-alt-fill me-1" style="color: #ff7d01;"></i>
+                    مرسي علم شارع ١٩ بجوار سوبر ماركت النهيسى و امام مدرسه البرهان
+                </p>
+            </div>
+            <div class="col-md-3 text-center mb-4">
                 <h5 class="footer-title">Follow Us</h5>
                 <div class="social-links">
                     <a href="https://www.facebook.com/share/1EqWcGtraw/" class="social-link" target="_blank"><i class="bi bi-facebook"></i></a>
-                    <a href="https://www.instagram.com/hassannemo1102?igsh=b3Iyc3F4MXRwMXd3" class="social-link" target="_blank"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.instagram.com/nemotourss/" class="social-link" target="_blank"><i class="bi bi-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -62,7 +69,7 @@
         justify-content: center;
         width: 40px;
         height: 40px;
-        background-color: #3E69AD;
+        background-color: #08aaf4;
         color: white;
         border-radius: 50%;
         text-decoration: none;
@@ -86,7 +93,7 @@
     }
 
     .contact-email a {
-        color: #3E69AD;
+        color: #6ed5f9;
         text-decoration: none;
     }
 
