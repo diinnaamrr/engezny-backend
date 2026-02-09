@@ -1,7 +1,7 @@
-@php($primary_color = '#3E69AD')
+@php($primary_color = '#ee212e')
 
 <header id="main-header" class="sticky-top shadow-none">
-    <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top {{ request()->routeIs('contact-us') || request()->routeIs('about-us') || request()->routeIs('portfolio') ? 'scrolled' : '' }}" id="nemo-navbar">
+    <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top" id="nemo-navbar">
         <div class="container">
 
             {{-- Logo --}}
@@ -43,8 +43,8 @@
 
                     {{-- Get in Touch Button (Mobile) --}}
                     <li class="nav-item d-lg-none">
-                        <a class="btn w-100 mt-2 text-white fw-bold" href="{{ route('contact-us') }}"
-                           style="background-color: {{ $primary_color }};">
+                        <a class="btn w-100 mt-2 text-white fw-bold gear-btn-mobile" href="{{ route('contact-us') }}"
+                           style="background-color: #ff7d01;">
                             Get in Touch
                         </a>
                     </li>
@@ -53,8 +53,8 @@
                 {{-- Get in Touch Button (Desktop) --}}
                 <div class="d-none d-lg-block">
                     <a href="{{ route('contact-us') }}"
-                    class="btn text-white fw-bold px-4 py-2"
-                    style="background-color: {{ $primary_color }}; transition: all 0.3s ease;"
+                    class="btn btn-outline-primary fw-bold px-4 py-2 gear-btn"
+                    style="border-color: #ff7d01; color: white; background-color: #ff7d01; transition: all 0.3s ease;"
                     >
                         Get in Touch
                     </a>
@@ -69,20 +69,31 @@
     const primaryColor = '{{ $primary_color }}';
     const navbar = document.getElementById('nemo-navbar');
     const navLinks = navbar.querySelectorAll('.nav-link');
-    const togglerIcon = navbar.querySelector('.navbar-toggler-icon');
+    const desktopBtn = navbar.querySelector('.gear-btn');
+    const mobileBtn = navbar.querySelector('.gear-btn-mobile');
 
     // Scroll Effect Functionality
     function handleScroll() {
-        if (window.scrollY > 50 || '{{ request()->routeIs('contact-us') }}' || '{{ request()->routeIs('about-us') }}' || '{{ request()->routeIs('portfolio') }}') {
+        if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
             navLinks.forEach(link => link.style.color = 'white');
-            togglerIcon.style.filter = 'invert(1)';
+            togglerIcon.style.filter = 'none';
             togglerIcon.style.borderColor = 'white';
+            if (desktopBtn) {
+                desktopBtn.style.backgroundColor = 'white';
+                desktopBtn.style.color = primaryColor;
+                desktopBtn.style.borderColor = 'white';
+            }
         } else {
             navbar.classList.remove('scrolled');
-            navLinks.forEach(link => link.style.color = 'white');
-            togglerIcon.style.filter = 'invert(1)';
-            togglerIcon.style.borderColor = 'white';
+            navLinks.forEach(link => link.style.color = primaryColor);
+            togglerIcon.style.filter = 'none';
+            togglerIcon.style.borderColor = primaryColor;
+            if (desktopBtn) {
+                desktopBtn.style.backgroundColor = 'transparent';
+                desktopBtn.style.color = primaryColor;
+                desktopBtn.style.borderColor = primaryColor;
+            }
         }
     }
 
@@ -122,18 +133,22 @@
 <style>
     /* Base Styles for Header */
     #nemo-navbar {
-        background-color: transparent;
+        background-color: white;
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
         padding-top: 0.75rem !important;
         padding-bottom: 0.75rem !important;
     }
 
     .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='{{ str_replace('#', '%23', $primary_color) }}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    #nemo-navbar.scrolled .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
     
     .nav-link {
-        color: white !important;
+        color: {{ $primary_color }} !important;
         font-size: 1rem;
         position: relative;
         padding-bottom: 0.5rem !important;
@@ -159,6 +174,14 @@
     #nemo-navbar.scrolled {
         background-color: {{ $primary_color }} !important;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    #nemo-navbar.scrolled .nav-link {
+        color: white !important;
+    }
+
+    #nemo-navbar.scrolled .nav-link::after {
+        background-color: white;
     }
 
     /* Mobile Menu */

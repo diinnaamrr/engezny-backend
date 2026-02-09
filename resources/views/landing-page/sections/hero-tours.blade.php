@@ -83,7 +83,7 @@
     }
 
     .nemo-brand {
-        color: #3E69AD;
+        color: #ee212e;
     }
 
     .zigzag-decoration {
@@ -155,7 +155,7 @@
     }
 
     .search-btn {
-        background: #3E69AD;
+        background: #ee212e;
         color: white;
         border: none;
         border-radius: 5px;
@@ -167,7 +167,7 @@
     }
 
     .search-btn:hover {
-        background: #2d5089;
+        background: #08aaf4;
         transform: translateY(-2px);
     }
 

@@ -114,7 +114,7 @@
         align-items: center;
         gap: 8px;
         font-size: 16px;
-        color: #3E69AD;
+        color: #ee212e;
         font-weight: 600;
         margin-bottom: 16px;
         padding: 8px 20px;
@@ -135,7 +135,7 @@
     }
 
     .title-highlight {
-        color: #3E69AD;
+        color: #ee212e;
         position: relative;
         display: inline-block;
     }
@@ -221,7 +221,7 @@
     }
 
     .custom-carousel-control:hover {
-        background: #3E69AD;
+        background: #ee212e;
         box-shadow: 0 12px 32px rgba(62, 105, 173, 0.3);
     }
 
@@ -246,7 +246,7 @@
     }
 
     .custom-carousel-icon svg {
-        stroke: #3E69AD;
+        stroke: #ee212e;
         transition: stroke 0.3s ease;
     }
 
@@ -270,11 +270,11 @@
     .custom-indicators button.active {
         width: 32px;
         border-radius: 6px;
-        background-color: #3E69AD;
+        background-color: #ee212e;
     }
 
     .custom-indicators button:hover {
-        background-color: #3E69AD;
+        background-color: #ee212e;
     }
 
     /* Responsive Design */

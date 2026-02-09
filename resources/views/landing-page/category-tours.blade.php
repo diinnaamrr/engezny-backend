@@ -182,7 +182,7 @@
 
     .subcategory-count {
         font-size: 0.9rem;
-        color: #3E69AD;
+        color: #ee212e;
         font-weight: 500;
     }
 
@@ -244,7 +244,7 @@
     .tour-price {
         font-size: 1.3rem;
         font-weight: 700;
-        color: #3E69AD;
+        color: #ee212e;
     }
 
     .tour-date {
@@ -253,7 +253,7 @@
     }
 
     .btn-primary {
-        background: #3E69AD;
+        background: #ee212e;
         border: none;
         padding: 0.75rem;
         font-weight: 600;
@@ -261,7 +261,7 @@
     }
 
     .btn-primary:hover {
-        background: #2d5089;
+        background: #08aaf4;
         transform: translateY(-2px);
     }
 
