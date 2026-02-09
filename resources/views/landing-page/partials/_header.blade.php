@@ -1,4 +1,5 @@
-@php($primary_color = '#ee212e')
+resources/views/landing-page/about-us.blade.php
+@php($primary_color = '#08aaf4')
 
 <header id="main-header" class="sticky-top shadow-none">
     <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top" id="nemo-navbar">
@@ -10,8 +11,7 @@
                     src="{{asset('public/landing-page/assets/img/footer_logo.png')}}"
                     alt="NEMO Logo"
                     class="img-fluid rounded-3"
-                    style="height: 60px; transition: height 0.3s ease; "
-                >
+                    style="height: 60px; transition: height 0.3s ease; ">
             </a>
 
             {{-- Hamburger --}}
@@ -22,8 +22,7 @@
                 data-bs-target="#landingNavbar"
                 aria-controls="landingNavbar"
                 aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon" style="filter: invert(1); border: 1px solid white; border-radius: 3px;"></span>
             </button>
 
@@ -44,7 +43,7 @@
                     {{-- Get in Touch Button (Mobile) --}}
                     <li class="nav-item d-lg-none">
                         <a class="btn w-100 mt-2 text-white fw-bold gear-btn-mobile" href="{{ route('contact-us') }}"
-                           style="background-color: #ff7d01;">
+                            style="background-color: #6ed5f9;">
                             Get in Touch
                         </a>
                     </li>
@@ -53,9 +52,8 @@
                 {{-- Get in Touch Button (Desktop) --}}
                 <div class="d-none d-lg-block">
                     <a href="{{ route('contact-us') }}"
-                    class="btn btn-outline-primary fw-bold px-4 py-2 gear-btn"
-                    style="border-color: #ff7d01; color: white; background-color: #ff7d01; transition: all 0.3s ease;"
-                    >
+                        class="btn btn-outline-primary fw-bold px-4 py-2 gear-btn"
+                        style="border-color: #ff7d01; color: white; background-color: #ff7d01; transition: all 0.3s ease;">
                         Get in Touch
                     </a>
                 </div>
@@ -103,20 +101,20 @@
     // Smooth Scrolling
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
                 const target = document.querySelector(href);
                 if (target) {
                     e.preventDefault();
                     let offset = 0;
-                    if(href !== '#home') {
+                    if (href !== '#home') {
                         offset = navbar.offsetHeight + 10;
                     }
                     window.scrollTo({
                         top: target.offsetTop - offset,
                         behavior: 'smooth'
                     });
-                    
+
                     // Close mobile menu
                     if (window.innerWidth < 992 && navbar.classList.contains('show')) {
                         const bsCollapse = new bootstrap.Collapse(document.getElementById('landingNavbar'), {
@@ -146,9 +144,15 @@
     #nemo-navbar.scrolled .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
-    
+
     .nav-link {
-        color: {{ $primary_color }} !important;
+        color: {
+                {
+                $primary_color
+            }
+        }
+
+        !important;
         font-size: 1rem;
         position: relative;
         padding-bottom: 0.5rem !important;
@@ -162,7 +166,14 @@
         left: 0;
         width: 0;
         height: 3px;
-        background-color: {{ $primary_color }};
+
+        background-color: {
+                {
+                $primary_color
+            }
+        }
+
+        ;
         transition: width 0.3s ease;
     }
 
@@ -172,7 +183,13 @@
 
     /* Scrolled State */
     #nemo-navbar.scrolled {
-        background-color: {{ $primary_color }} !important;
+        background-color: {
+                {
+                $primary_color
+            }
+        }
+
+        !important;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
     }
 
@@ -186,7 +203,13 @@
 
     /* Mobile Menu */
     .navbar-collapse.show {
-        background-color: {{ $primary_color }};
+        background-color: {
+                {
+                $primary_color
+            }
+        }
+
+        ;
         padding: 10px;
         border-radius: 5px;
     }
