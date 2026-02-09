@@ -165,7 +165,6 @@ class CarpoolingExtensionController
 
  //   private function getAddressFromLatLng(float $lat, float $lng): ?string
    //     {
-     //       $apiKey = env('GOOGLE_MAPS_API_KEY');
        //     $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
          //       'latlng' => "$lat,$lng",
            //     'key' => $apiKey,
@@ -1298,7 +1297,7 @@ private function haversineDistance(float $lat1, float $lon1, float $lat2, float 
         return $address;
     }
 
-    $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
+    $apiKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? '';
     $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
         'latlng' => "$lat,$lng",
         'key' => $apiKey,
@@ -1321,7 +1320,7 @@ private function haversineDistance(float $lat1, float $lon1, float $lat2, float 
 
   private function getDistanceInKm(float $startLat, float $startLng, float $endLat, float $endLng): float
 {
-    $apiKey = businessConfig(GOOGLE_MAP_API)?->value['map_api_key_server'] ?? '';
+    $apiKey = businessConfig('google_map_api')?->value['map_api_key_server'] ?? '';
     $response = Http::get("https://maps.googleapis.com/maps/api/directions/json", [
         'origin' => "$startLat,$startLng",
         'destination' => "$endLat,$endLng",
