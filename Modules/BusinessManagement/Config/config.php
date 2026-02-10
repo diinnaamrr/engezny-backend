@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'name' => 'BusinessManagement'
+    'name' => 'BusinessManagement',
+    
 ];
