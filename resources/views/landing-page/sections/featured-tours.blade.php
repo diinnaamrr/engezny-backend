@@ -62,7 +62,7 @@
 
     .section-subtitle-small {
         font-size: 18px;
-        color: #3E69AD;
+        color: #ee212e;
         font-weight: 600;
         margin-bottom: 0.5rem;
     }
@@ -154,7 +154,7 @@
     }
 
     .details-icon-wrapper:hover {
-        background-color: #3E69AD;
+        background-color: #ee212e;
         color: #fff;
     }
 
@@ -164,7 +164,7 @@
 
     .btn-see-all {
         display: inline-block;
-        background-color: #3E69AD;
+        background-color: #ee212e;
         color: #fff;
         padding: 12px 35px;
         border-radius: 10px;
@@ -175,7 +175,7 @@
     }
 
     .btn-see-all:hover {
-        background-color: #2d5089;
+        background-color: #08aaf4;
         color: #fff;
         transform: translateY(-3px);
         box-shadow: 0px 25px 45px rgba(62, 105, 173, 0.25);

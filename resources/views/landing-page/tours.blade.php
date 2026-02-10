@@ -71,7 +71,7 @@
 <style>
     /* Page Header */
     .page-header {
-        background: linear-gradient(135deg, #3E69AD 0%, #2d5089 100%);
+        background: linear-gradient(135deg, #ee212e 0%, #08aaf4 100%);
         padding: 120px 0 80px;
         margin-top: 70px;
         text-align: center;
@@ -125,7 +125,7 @@
         position: absolute;
         top: 15px;
         right: 15px;
-        background: #3E69AD;
+        background: #ee212e;
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 20px;
@@ -160,7 +160,7 @@
     .tour-price {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #3E69AD;
+        color: #ee212e;
     }
 
     .tour-date {
@@ -169,7 +169,7 @@
     }
 
     .btn-primary {
-        background: #3E69AD;
+        background: #ee212e;
         border: none;
         padding: 0.75rem;
         font-weight: 600;
@@ -177,7 +177,7 @@
     }
 
     .btn-primary:hover {
-        background: #2d5089;
+        background: #08aaf4;
         transform: translateY(-2px);
     }
 
@@ -187,21 +187,21 @@
     }
 
     .page-link {
-        color: #3E69AD;
-        border: 2px solid #3E69AD;
+        color: #ee212e;
+        border: 2px solid #ee212e;
         border-radius: 8px;
         padding: 0.5rem 1rem;
         transition: all 0.3s ease;
     }
 
     .page-link:hover {
-        background: #3E69AD;
+        background: #ee212e;
         color: white;
     }
 
     .page-item.active .page-link {
-        background: #3E69AD;
-        border-color: #3E69AD;
+        background: #ee212e;
+        border-color: #ee212e;
     }
 
     /* Responsive */

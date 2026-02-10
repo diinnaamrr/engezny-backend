@@ -27,7 +27,7 @@
                     </div>
                     <div class="cont">
                         <h6 class="subtitle">{{translate('My Email')}}:</h6>
-                        <a href="mailto:hassannemo.hn@gmail.com" class="txt">hassannemo.hn@gmail.com</a>
+                        <a href="mailto:info@nemotours-hn.com" class="txt">info@nemotours-hn.com</a>
                     </div>
                 </div>
                 <div class="item">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="cont">
                         <h6 class="subtitle">{{translate('Call Me Now')}}:</h6>
-                        <a href="tel:01020515054" class="txt">01020515054</a>
+                        <a href="tel:01092958475" class="txt">01092958475</a>
                     </div>
                 </div>
 

@@ -8,7 +8,10 @@
     <!-- Page Title -->
     <title>@yield('title')</title>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeF4BHLDezqD1pH7mlzxEchtX962QU9Os&libraries=places"></script>
+    @php($map_key = businessConfig('google_map_api', 'google_map_api')?->value['map_api_key'] ?? '')
+    @if($map_key)
+        <script src="https://maps.googleapis.com/maps/api/js?key={{$map_key}}&libraries=places,drawing,geometry&v=3.50"></script>
+    @endif
 
     <!-- Meta Data -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>

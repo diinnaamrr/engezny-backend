@@ -159,7 +159,6 @@
 <!-- Keep your existing JavaScript -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeF4BHLDezqD1pH7mlzxEchtX962QU9Os&libraries=places"></script>
 
 <script>
 // Your existing JavaScript code remains the same

@@ -3,8 +3,6 @@
 @extends('adminmodule::layouts.master')
 
 @push('css_or_js')
-    @php($map_key = businessConfig(GOOGLE_MAP_API)?->value['map_api_key'] ?? null)
-    <script src="https://maps.googleapis.com/maps/api/js?key={{$map_key}}&libraries=places"></script>
     <script src="{{asset('public/assets/admin-module/js/maps/markerclusterer.js')}}"></script>
 @endpush
 
