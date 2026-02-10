@@ -132,15 +132,15 @@ foreach($portfolioData as $item) {
 
     .hero-title {
         font-family: 'Volkhov', serif;
-        font-size: 52px;
+        font-size: 72px;
         font-weight: 700;
-        margin-bottom: 20px;
-        line-height: 1.2;
+        margin-bottom: 24px;
+        line-height: 1.1;
         color: white;
     }
 
     .hero-subtitle {
-        font-size: 20px;
+        font-size: 26px;
         font-weight: 400;
         opacity: 0.95;
         color: white;
@@ -412,7 +412,11 @@ foreach($portfolioData as $item) {
         }
 
         .hero-title {
-            font-size: 40px;
+            font-size: 56px;
+        }
+
+        .hero-subtitle {
+            font-size: 22px;
         }
 
         .section-title {
@@ -431,11 +435,11 @@ foreach($portfolioData as $item) {
         }
 
         .hero-title {
-            font-size: 32px;
+            font-size: 42px;
         }
 
         .hero-subtitle {
-            font-size: 16px;
+            font-size: 20px;
         }
 
         .section-title {
@@ -483,7 +487,11 @@ foreach($portfolioData as $item) {
         }
 
         .hero-title {
-            font-size: 28px;
+            font-size: 32px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
         }
 
         .section-title {
