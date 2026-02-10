@@ -98,50 +98,43 @@ class ConfigurationController extends Controller
         ]);
     }
 
-    public function getForceUpdateConfig()
+    public function getForceUpdateConfigUser()
     {
         $setting = $this->businessSettingService->findOneBy(criteria: [
             'settings_type' => APP_VERSION,
-            'key_name' => FORCE_UPDATE_CONFIG
+            'key_name' => 'force_update_config_user'
         ]);
 
-        if ($setting?->value) {
-            $value = $setting->value;
-            $value['maintenance']['enabled'] = (bool)($value['maintenance']['enabled'] ?? false);
-            $value['android']['force_update'] = (bool)($value['android']['force_update'] ?? false);
-            $value['ios']['force_update'] = (bool)($value['ios']['force_update'] ?? false);
-            $value['android']['blocked_versions'] = array_values((array)($value['android']['blocked_versions'] ?? []));
-            $value['ios']['blocked_versions'] = array_values((array)($value['ios']['blocked_versions'] ?? []));
-
-            return response()->json([
-                'success' => true,
-                'data' => $value,
-            ]);
-        }
+        $value = $this->decodeJsonValue($setting?->value);
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'maintenance' => [
-                    'enabled' => false,
-                    'message' => '',
-                ],
-                'android' => [
-                    'min_version' => '',
-                    'latest_version' => '',
-                    'force_update' => false,
-                    'update_url' => '',
-                    'blocked_versions' => [],
-                ],
-                'ios' => [
-                    'min_version' => '',
-                    'latest_version' => '',
-                    'force_update' => false,
-                    'update_url' => '',
-                    'blocked_versions' => [],
-                ],
-            ],
+            'data' => $value,
         ]);
+    }
+
+    public function getForceUpdateConfigDriver()
+    {
+        $setting = $this->businessSettingService->findOneBy(criteria: [
+            'settings_type' => APP_VERSION,
+            'key_name' => 'force_update_config_driver'
+        ]);
+
+        $value = $this->decodeJsonValue($setting?->value);
+
+        return response()->json([
+            'success' => true,
+            'data' => $value,
+        ]);
+    }
+
+    private function decodeJsonValue($value): array
+    {
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            return is_array($decoded) ? $decoded : [];
+        }
+        return is_array($value) ? $value : [];
     }
 
 }
