@@ -12,8 +12,6 @@
                     <p class="contact-email mb-3">Email: <a href="mailto:info@nemotours-hn.com">info@nemotours-hn.com</a></p>
                     <div class="contact-phones">
                         <a href="https://wa.me/201092958475" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01092958475</a>
-                        <a href="https://wa.me/201208686821" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01208686821</a>
-                        <a href="https://wa.me/201020515054" class="contact-link whatsapp" target="_blank"><i class="bi bi-whatsapp"></i> 01020515054</a>
                     </div>
                 </div>
             </div>
