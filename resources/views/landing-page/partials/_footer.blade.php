@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row align-items-baseline">
             <div class="col-md-3 text-start mb-4">
-                <img src="{{ asset('public/landing-page/assets/img/footer_logo.png') }}" 
-                     alt="Nemo Logo" 
-                     class="footer-logo">
+                <img src="{{ asset('public/landing-page/assets/img/footer_logo.png') }}"
+                    alt="Nemo Logo"
+                    class="footer-logo">
             </div>
             <div class="col-md-3 text-start mb-4">
                 <h5 class="footer-title">Contact Us</h5>
@@ -19,7 +19,7 @@
                 <h5 class="footer-title">Our Office</h5>
                 <p class="contact-address text-muted small">
                     <i class="bi bi-geo-alt-fill me-1" style="color: #ff7d01;"></i>
-                    مرسي علم شارع ١٩ بجوار سوبر ماركت النهيسى و امام مدرسه البرهان
+                    19th Street, Marsa Alam, next to Al-Nahisi Supermarket, and opposite Al-Burhan School.
                 </p>
             </div>
             <div class="col-md-3 text-center mb-4">
@@ -134,15 +134,15 @@
     }
 
     @media (max-width: 768px) {
-        .simple-footer .row > div {
+        .simple-footer .row>div {
             text-align: center !important;
             margin-bottom: 20px;
         }
-        
-        .simple-footer .row > div:last-child {
+
+        .simple-footer .row>div:last-child {
             margin-bottom: 0;
         }
-        
+
         .contact-phones {
             flex-direction: row;
             justify-content: center;
