@@ -812,28 +812,51 @@ class BusinessSettingService extends BaseService implements BusinessSettingServi
         }
     }
 
-    public function storeForceUpdateConfig(array $data)
-    {
-        $setting = $this->businessSettingRepository->findOneBy(criteria: [
+public function storeForceUpdateConfig(array $data, array $driverData = null)
+{
+    // حفظ إعدادات User
+    $userSetting = $this->businessSettingRepository->findOneBy(criteria: [
+        'settings_type' => APP_VERSION,
+        'key_name' => 'force_update_config_user'
+    ]);
+
+    if ($userSetting) {
+        $this->businessSettingRepository->update(id: $userSetting->id, data: [
+            'key_name' => 'force_update_config_user',
             'settings_type' => APP_VERSION,
-            'key_name' => FORCE_UPDATE_CONFIG
+            'value' => $data,
+        ]);
+    } else {
+        $this->businessSettingRepository->create(data: [
+            'key_name' => 'force_update_config_user',
+            'settings_type' => APP_VERSION,
+            'value' => $data,
+        ]);
+    }
+
+    // فقط إذا كان driverData ليس null
+    if ($driverData !== null) {
+        // حفظ إعدادات Driver
+        $driverSetting = $this->businessSettingRepository->findOneBy(criteria: [
+            'settings_type' => APP_VERSION,
+            'key_name' => 'force_update_config_driver'
         ]);
 
-        if ($setting) {
-            $this->businessSettingRepository->update(id: $setting->id, data: [
-                'key_name' => FORCE_UPDATE_CONFIG,
+        if ($driverSetting) {
+            $this->businessSettingRepository->update(id: $driverSetting->id, data: [
+                'key_name' => 'force_update_config_driver',
                 'settings_type' => APP_VERSION,
-                'value' => $data,
+                'value' => $driverData,
             ]);
         } else {
             $this->businessSettingRepository->create(data: [
-                'key_name' => FORCE_UPDATE_CONFIG,
+                'key_name' => 'force_update_config_driver',
                 'settings_type' => APP_VERSION,
-                'value' => $data,
+                'value' => $driverData,
             ]);
         }
     }
-
+}
     public function storeLandingPagePortfolioData(array $data): void
     {
         $value = [
