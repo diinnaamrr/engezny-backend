@@ -57,12 +57,28 @@ class SystemSettingController extends BaseController
     {
         $this->authorize('business_view');
         $settings = $this->systemSettingService->getBy(criteria: ['settings_type' => APP_VERSION]);
-        $customerAppVersionControlForAndroid = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
-        $customerAppVersionControlForIos = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_IOS)?->value;
-        $driverAppVersionControlForAndroid = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
-        $driverAppVersionControlForIos = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_IOS)?->value;
-        return view('businessmanagement::admin.system-settings.app-version-setup',
-            compact('customerAppVersionControlForAndroid', 'customerAppVersionControlForIos', 'driverAppVersionControlForAndroid', 'driverAppVersionControlForIos'));
+
+        $userSetting = $settings->firstWhere('key_name', 'force_update_config_user')?->value;
+        $driverSetting = $settings->firstWhere('key_name', 'force_update_config_driver')?->value;
+
+        $userValue = $this->decodeJsonValue($userSetting);
+        $driverValue = $this->decodeJsonValue($driverSetting);
+
+        if (empty($userValue) && empty($driverValue)) {
+            $commonSetting = $settings->firstWhere('key_name', FORCE_UPDATE_CONFIG)?->value;
+            $commonValue = $this->decodeJsonValue($commonSetting);
+            $userValue = $commonValue;
+            $driverValue = $commonValue;
+        }
+
+        return view('businessmanagement::admin.system-settings.app-version-setup', [
+            'maintenance' => $userValue['maintenance'] ?? [],
+            'driverMaintenance' => $driverValue['maintenance'] ?? [],
+            'userAndroid' => $userValue['android'] ?? [],
+            'userIos' => $userValue['ios'] ?? [],
+            'driverAndroid' => $driverValue['android'] ?? [],
+            'driverIos' => $driverValue['ios'] ?? [],
+        ]);
     }
 
     public function appVersionConfig()
@@ -70,32 +86,44 @@ class SystemSettingController extends BaseController
         $this->authorize('business_view');
 
         $settings = $this->systemSettingService->getBy(criteria: ['settings_type' => APP_VERSION]);
-        $customerAppVersionControlForAndroid = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
-        $customerAppVersionControlForIos = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_IOS)?->value;
-        $driverAppVersionControlForAndroid = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
-        $driverAppVersionControlForIos = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_IOS)?->value;
 
-        $customerConfig = [
-            'android' => [
-                'minimum_app_version' => $customerAppVersionControlForAndroid['minimum_app_version'] ?? '',
-                'app_url' => $customerAppVersionControlForAndroid['app_url'] ?? '',
-            ],
-            'ios' => [
-                'minimum_app_version' => $customerAppVersionControlForIos['minimum_app_version'] ?? '',
-                'app_url' => $customerAppVersionControlForIos['app_url'] ?? '',
-            ],
-        ];
+        $userSetting = $settings->firstWhere('key_name', 'force_update_config_user')?->value;
+        $driverSetting = $settings->firstWhere('key_name', 'force_update_config_driver')?->value;
 
-        $driverConfig = [
-            'android' => [
-                'minimum_app_version' => $driverAppVersionControlForAndroid['minimum_app_version'] ?? '',
-                'app_url' => $driverAppVersionControlForAndroid['app_url'] ?? '',
-            ],
-            'ios' => [
-                'minimum_app_version' => $driverAppVersionControlForIos['minimum_app_version'] ?? '',
-                'app_url' => $driverAppVersionControlForIos['app_url'] ?? '',
-            ],
-        ];
+        $userValue = $this->decodeJsonValue($userSetting);
+        $driverValue = $this->decodeJsonValue($driverSetting);
+
+        if (empty($userValue) && empty($driverValue)) {
+            $customerAppVersionControlForAndroid = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
+            $customerAppVersionControlForIos = $settings->firstWhere('key_name', CUSTOMER_APP_VERSION_CONTROL_FOR_IOS)?->value;
+            $driverAppVersionControlForAndroid = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_ANDROID)?->value;
+            $driverAppVersionControlForIos = $settings->firstWhere('key_name', DRIVER_APP_VERSION_CONTROL_FOR_IOS)?->value;
+
+            $customerConfig = [
+                'android' => [
+                    'minimum_app_version' => $customerAppVersionControlForAndroid['minimum_app_version'] ?? '',
+                    'app_url' => $customerAppVersionControlForAndroid['app_url'] ?? '',
+                ],
+                'ios' => [
+                    'minimum_app_version' => $customerAppVersionControlForIos['minimum_app_version'] ?? '',
+                    'app_url' => $customerAppVersionControlForIos['app_url'] ?? '',
+                ],
+            ];
+
+            $driverConfig = [
+                'android' => [
+                    'minimum_app_version' => $driverAppVersionControlForAndroid['minimum_app_version'] ?? '',
+                    'app_url' => $driverAppVersionControlForAndroid['app_url'] ?? '',
+                ],
+                'ios' => [
+                    'minimum_app_version' => $driverAppVersionControlForIos['minimum_app_version'] ?? '',
+                    'app_url' => $driverAppVersionControlForIos['app_url'] ?? '',
+                ],
+            ];
+        } else {
+            $customerConfig = $userValue;
+            $driverConfig = !empty($driverValue) ? $driverValue : $userValue;
+        }
 
         return view('businessmanagement::admin.system-settings.app-version-config', [
             'customerConfigJson' => json_encode($customerConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
@@ -103,7 +131,7 @@ class SystemSettingController extends BaseController
         ]);
     }
 
-    public function updateAppVersionSetup(AppVersionSettingStoreOrUpdateRequest $request): Renderable|RedirectResponse
+    public function updateAppVersionSetup(Request $request): Renderable|RedirectResponse
     {
         $this->authorize('business_edit');
         $this->systemSettingService->storeAppVersion($request->validated());
@@ -111,78 +139,165 @@ class SystemSettingController extends BaseController
         return back();
     }
 
-    public function forceUpdate()
-    {
-        $this->authorize('business_view');
-        $setting = $this->systemSettingService->findOneBy(criteria: [
+public function forceUpdate()
+{
+    $this->authorize('business_view');
+
+    $userSetting = $this->systemSettingService->findOneBy([
+        'settings_type' => APP_VERSION,
+        'key_name' => 'force_update_config_user'
+    ]);
+
+    $driverSetting = $this->systemSettingService->findOneBy([
+        'settings_type' => APP_VERSION,
+        'key_name' => 'force_update_config_driver'
+    ]);
+
+    // تحويل JSON string إلى array
+    $userValue = $this->decodeJsonValue($userSetting?->value);
+    $driverValue = $this->decodeJsonValue($driverSetting?->value);
+
+    // fallback لو البيانات فاضية
+    if (empty($userValue) && empty($driverValue)) {
+        $commonSetting = $this->systemSettingService->findOneBy([
             'settings_type' => APP_VERSION,
-            'key_name' => FORCE_UPDATE_CONFIG
+            'key_name' => 'force_update_config'
         ]);
 
-        $value = $setting?->value ?? [];
-        $maintenance = $value['maintenance'] ?? [];
-        $android = $value['android'] ?? [];
-        $ios = $value['ios'] ?? [];
-
-        return view('businessmanagement::admin.system-settings.force-update', compact('maintenance', 'android', 'ios'));
+        $commonValue = $this->decodeJsonValue($commonSetting?->value);
+        $userValue = $commonValue;
+        $driverValue = $commonValue;
     }
 
-    public function updateForceUpdate(Request $request): Renderable|RedirectResponse
-    {
-        $this->authorize('business_edit');
+    return view('businessmanagement::admin.system-settings.app-version-setup', [
+        'maintenance' => $userValue['maintenance'] ?? [],
+        'driverMaintenance' => $driverValue['maintenance'] ?? [],
+        'userAndroid' => $userValue['android'] ?? [],
+        'userIos' => $userValue['ios'] ?? [],
+        'driverAndroid' => $driverValue['android'] ?? [],
+        'driverIos' => $driverValue['ios'] ?? [],
+    ]);
+}
 
-        $data = $request->validate([
-            'maintenance_enabled' => 'nullable|in:0,1',
-            'maintenance_message' => 'nullable|string',
-            'android_min_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
-            'android_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
-            'android_force_update' => 'nullable|in:0,1',
-            'android_update_url' => 'nullable|url',
-            'android_blocked_versions' => 'nullable|string',
-            'ios_min_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
-            'ios_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
-            'ios_force_update' => 'nullable|in:0,1',
-            'ios_update_url' => 'nullable|url',
-            'ios_blocked_versions' => 'nullable|string',
-        ]);
+private function decodeJsonValue($value): array
+{
+    if (is_string($value)) {
+        $decoded = json_decode($value, true);
+        return is_array($decoded) ? $decoded : [];
+    }
+    return is_array($value) ? $value : [];
+}
 
-        $androidBlocked = $this->parseBlockedVersions($data['android_blocked_versions'] ?? '');
-        $iosBlocked = $this->parseBlockedVersions($data['ios_blocked_versions'] ?? '');
-        $invalid = array_merge(
-            $this->invalidVersions($androidBlocked),
-            $this->invalidVersions($iosBlocked)
-        );
-        if (!empty($invalid)) {
-            Toastr::error('Blocked versions must be in the format x.y.z (e.g., 1.0.0).');
-            return back()->withInput();
-        }
 
-        $payload = [
-            'maintenance' => [
-                'enabled' => isset($data['maintenance_enabled']) ? (int)$data['maintenance_enabled'] : 0,
-                'message' => $data['maintenance_message'] ?? '',
-            ],
-            'android' => [
-                'min_version' => $data['android_min_version'] ?? '',
-                'latest_version' => $data['android_latest_version'] ?? '',
-                'force_update' => isset($data['android_force_update']) ? (int)$data['android_force_update'] : 0,
-                'update_url' => $data['android_update_url'] ?? '',
-                'blocked_versions' => $androidBlocked,
-            ],
-            'ios' => [
-                'min_version' => $data['ios_min_version'] ?? '',
-                'latest_version' => $data['ios_latest_version'] ?? '',
-                'force_update' => isset($data['ios_force_update']) ? (int)$data['ios_force_update'] : 0,
-                'update_url' => $data['ios_update_url'] ?? '',
-                'blocked_versions' => $iosBlocked,
-            ],
-        ];
+  public function updateForceUpdate(Request $request): Renderable|RedirectResponse
+{
+    $this->authorize('business_edit');
 
-        $this->systemSettingService->storeForceUpdateConfig($payload);
-        Toastr::success(SYSTEM_SETTING_UPDATE_200['message']);
-        return back();
+    $data = $request->validate([
+        'maintenance_enabled_user' => 'nullable|in:0,1',
+        'maintenance_message_user' => 'nullable|string',
+        'maintenance_enabled_driver' => 'nullable|in:0,1',
+        'maintenance_message_driver' => 'nullable|string',
+        
+        // User Android
+        'user_android_minimum_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'user_android_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'user_android_force_update' => 'nullable|in:0,1',
+        'user_android_download_url' => 'nullable|url',
+        'user_android_blocked_versions' => 'nullable|string',
+        
+        // User iOS
+        'user_ios_minimum_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'user_ios_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'user_ios_force_update' => 'nullable|in:0,1',
+        'user_ios_download_url' => 'nullable|url',
+        'user_ios_blocked_versions' => 'nullable|string',
+        
+        // Driver Android
+        'driver_android_minimum_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'driver_android_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'driver_android_force_update' => 'nullable|in:0,1',
+        'driver_android_download_url' => 'nullable|url',
+        'driver_android_blocked_versions' => 'nullable|string',
+        
+        // Driver iOS
+        'driver_ios_minimum_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'driver_ios_latest_version' => 'nullable|regex:/^\d+\.\d+\.\d+$/',
+        'driver_ios_force_update' => 'nullable|in:0,1',
+        'driver_ios_download_url' => 'nullable|url',
+        'driver_ios_blocked_versions' => 'nullable|string',
+    ]);
+
+    // Parse blocked versions لكل نوع
+    $userAndroidBlocked = $this->parseBlockedVersions($data['user_android_blocked_versions'] ?? '');
+    $userIosBlocked = $this->parseBlockedVersions($data['user_ios_blocked_versions'] ?? '');
+    $driverAndroidBlocked = $this->parseBlockedVersions($data['driver_android_blocked_versions'] ?? '');
+    $driverIosBlocked = $this->parseBlockedVersions($data['driver_ios_blocked_versions'] ?? '');
+    
+    $invalid = array_merge(
+        $this->invalidVersions($userAndroidBlocked),
+        $this->invalidVersions($userIosBlocked),
+        $this->invalidVersions($driverAndroidBlocked),
+        $this->invalidVersions($driverIosBlocked)
+    );
+    
+    if (!empty($invalid)) {
+        Toastr::error('Blocked versions must be in the format x.y.z (e.g., 1.0.0).');
+        return back()->withInput();
     }
 
+    // إعدادات Maintenance لكل نوع
+    $maintenanceUserData = [
+        'enabled' => isset($data['maintenance_enabled_user']) ? (int)$data['maintenance_enabled_user'] : 0,
+        'message' => $data['maintenance_message_user'] ?? '',
+    ];
+    $maintenanceDriverData = [
+        'enabled' => isset($data['maintenance_enabled_driver']) ? (int)$data['maintenance_enabled_driver'] : 0,
+        'message' => $data['maintenance_message_driver'] ?? '',
+    ];
+
+    // حفظ User settings
+    $userPayload = [
+        'maintenance' => $maintenanceUserData,
+        'android' => [
+            'minimum_version' => $data['user_android_minimum_version'] ?? '',
+            'latest_version' => $data['user_android_latest_version'] ?? '',
+            'force_update' => isset($data['user_android_force_update']) ? (int)$data['user_android_force_update'] : 0,
+            'blocked_versions' => $userAndroidBlocked,
+            'update_url' => $data['user_android_download_url'] ?? '',
+        ],
+        'ios' => [
+            'minimum_version' => $data['user_ios_minimum_version'] ?? '',
+            'latest_version' => $data['user_ios_latest_version'] ?? '',
+            'force_update' => isset($data['user_ios_force_update']) ? (int)$data['user_ios_force_update'] : 0,
+            'blocked_versions' => $userIosBlocked,
+            'update_url' => $data['user_ios_download_url'] ?? '',
+        ]
+    ];
+
+    // حفظ Driver settings
+    $driverPayload = [
+        'maintenance' => $maintenanceDriverData,
+        'android' => [
+            'minimum_version' => $data['driver_android_minimum_version'] ?? '',
+            'latest_version' => $data['driver_android_latest_version'] ?? '',
+            'force_update' => isset($data['driver_android_force_update']) ? (int)$data['driver_android_force_update'] : 0,
+            'blocked_versions' => $driverAndroidBlocked,
+            'update_url' => $data['driver_android_download_url'] ?? '',
+        ],
+        'ios' => [
+            'minimum_version' => $data['driver_ios_minimum_version'] ?? '',
+            'latest_version' => $data['driver_ios_latest_version'] ?? '',
+            'force_update' => isset($data['driver_ios_force_update']) ? (int)$data['driver_ios_force_update'] : 0,
+            'blocked_versions' => $driverIosBlocked,
+            'update_url' => $data['driver_ios_download_url'] ?? '',
+        ]
+    ];
+
+$this->systemSettingService->storeForceUpdateConfig($userPayload, $driverPayload);
+    Toastr::success(SYSTEM_SETTING_UPDATE_200['message']);
+    return back();
+}
     private function parseBlockedVersions(string $raw): array
     {
         $parts = preg_split('/[\s,]+/', $raw, -1, PREG_SPLIT_NO_EMPTY);
