@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="{{asset('public/assets/admin-module/plugins/apex/apexcharts.css')}}"/>
     <link rel="stylesheet" href="{{asset('public/assets/admin-module/plugins/swiper@11/swiper-bundle.min.css')}}"/>
     {{-- callback=initLazyLoadedMaps --}}
-    @php($map_key = businessConfig(GOOGLE_MAP_API)?->value['map_api_key'] ?? null)
-    <script src="https://maps.googleapis.com/maps/api/js?key={{$map_key}}&libraries=places"></script>
     <script src="{{asset('public/assets/admin-module/js/maps/markerclusterer.js')}}"></script>
 @endpush
 

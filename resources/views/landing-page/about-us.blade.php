@@ -5,7 +5,7 @@
 @section('content')
 
 @php
-    $primary_color = '#3E69AD';
+    $primary_color = '#ee212e';
     $dark_text = '#181E4B';
     $light_text = '#5E6282';
 @endphp
@@ -77,6 +77,107 @@
 </section>
 
 {{-- ===========================
+    CERTIFICATES SECTION
+============================ --}}
+<section id="certificates" class="certificates-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <p class="section-label">Our Achievements</p>
+            <h2 class="section-title">Certificates & Accreditations</h2>
+            <p class="section-description mx-auto" style="max-width: 700px;">
+                Recognized for excellence in tourism and diving services across Egypt.
+            </p>
+        </div>
+
+        <div id="certificatesCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                {{-- Slide 1 --}}
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer1.png') }}" 
+                                         alt="Certificate 1" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer2.png') }}" 
+                                         alt="Certificate 2" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer3.png') }}" 
+                                         alt="Certificate 3" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Slide 2 --}}
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer4.png') }}" 
+                                         alt="Certificate 4" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer5.png') }}" 
+                                         alt="Certificate 5" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                <div class="certificate-image-wrapper">
+                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer6.png') }}" 
+                                         alt="Certificate 6" 
+                                         class="certificate-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Carousel Controls --}}
+            <button class="carousel-control-prev" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+            {{-- Carousel Indicators --}}
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#certificatesCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#certificatesCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ===========================
     ABOUT NEMO TOURS - INTRO
 ============================ --}}
 <section id="about-nemo-intro" class="about-nemo-section py-5 bg-gradient-light">
@@ -131,19 +232,19 @@
         <div class="row g-4">
             @php
                 $services = [
-                    ['icon' => 'bi-building-check', 'title' => 'Accommodation', 'desc' => 'Hotel and apartment bookings across Egypt.'],
-                    ['icon' => 'bi-map', 'title' => 'Domestic Travel', 'desc' => 'Travel planning and seamless transportation.'],
-                    ['icon' => 'bi-airplane', 'title' => 'Airport Transfers', 'desc' => 'Reliable pickups from all Egyptian airports.'],
-                    ['icon' => 'bi-car-front', 'title' => 'Car Rentals', 'desc' => 'Fleet of well-maintained vehicles for your trips.'],
-                    ['icon' => 'bi-water', 'title' => 'Diving Adventures', 'desc' => 'World-class diving trips and equipment rentals.'],
-                    ['icon' => 'bi-clock-history', 'title' => '24/7 Support', 'desc' => 'Always here to assist you during your journey.'],
+                    ['icon' => 'bi-building-check', 'title' => 'Accommodation', 'desc' => 'Hotel and apartment bookings across Egypt.', 'color' => '#ee212e'],
+                    ['icon' => 'bi-map', 'title' => 'Domestic Travel', 'desc' => 'Travel planning and seamless transportation.', 'color' => '#6ed5f9'],
+                    ['icon' => 'bi-airplane', 'title' => 'Airport Transfers', 'desc' => 'Reliable pickups from all Egyptian airports.', 'color' => '#08aaf4'],
+                    ['icon' => 'bi-car-front', 'title' => 'Car Rentals', 'desc' => 'Fleet of well-maintained vehicles for your trips.', 'color' => '#ff7d01'],
+                    ['icon' => 'bi-water', 'title' => 'Diving Adventures', 'desc' => 'World-class diving trips and equipment rentals.', 'color' => '#ee212e'],
+                    ['icon' => 'bi-clock-history', 'title' => '24/7 Support', 'desc' => 'Always here to assist you during your journey.', 'color' => '#6ed5f9'],
                 ];
             @endphp
 
             @foreach($services as $service)
             <div class="col-lg-4 col-md-6">
                 <div class="service-v2-card h-100 p-4 rounded-4 bg-white border border-light-subtle shadow-sm transition-all">
-                    <div class="service-icon-box mb-3 rounded-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: rgba(62, 105, 173, 0.1); color: {{ $primary_color }};">
+                    <div class="service-icon-box mb-3 rounded-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: {{ $service['color'] }}; color: white;">
                         <i class="bi {{ $service['icon'] }} fs-3"></i>
                     </div>
                     <h4 class="fw-bold mb-2">{{ $service['title'] }}</h4>
@@ -226,11 +327,11 @@
         <div class="values-grid">
             @php
                 $values = [
-                    ['icon' => 'bi-patch-check', 'title' => 'Authenticity', 'desc' => 'Real local experiences, not generic tours.'],
-                    ['icon' => 'bi-mortarboard', 'title' => 'Expertise', 'desc' => 'Built on years of hands-on field knowledge.'],
-                    ['icon' => 'bi-sliders', 'title' => 'Flexibility', 'desc' => 'Trips designed around the traveler, not templates.'],
-                    ['icon' => 'bi-shield-lock', 'title' => 'Trust & Safety', 'desc' => 'Clear communication and reliable service.'],
-                    ['icon' => 'bi-chat-heart', 'title' => 'Customer-Centric', 'desc' => 'Support before, during, and after every trip.'],
+                    ['icon' => 'bi-patch-check', 'title' => 'Authenticity', 'desc' => 'Real local experiences, not generic tours.', 'gradient' => 'linear-gradient(135deg, #ee212e 0%, #ff7d01 100%)'],
+                    ['icon' => 'bi-mortarboard', 'title' => 'Expertise', 'desc' => 'Built on years of hands-on field knowledge.', 'gradient' => 'linear-gradient(135deg, #6ed5f9 0%, #08aaf4 100%)'],
+                    ['icon' => 'bi-sliders', 'title' => 'Flexibility', 'desc' => 'Trips designed around the traveler, not templates.', 'gradient' => 'linear-gradient(135deg, #08aaf4 0%, #ee212e 100%)'],
+                    ['icon' => 'bi-shield-lock', 'title' => 'Trust & Safety', 'desc' => 'Clear communication and reliable service.', 'gradient' => 'linear-gradient(135deg, #ff7d01 0%, #6ed5f9 100%)'],
+                    ['icon' => 'bi-chat-heart', 'title' => 'Customer-Centric', 'desc' => 'Support before, during, and after every trip.', 'gradient' => 'linear-gradient(135deg, #ee212e 0%, #6ed5f9 100%)'],
                 ];
             @endphp
 
@@ -238,7 +339,7 @@
                 @foreach($values as $val)
                 <div class="col-lg-4 col-md-6">
                     <div class="value-v2-card p-4 rounded-4 bg-white border-0 shadow-sm h-100 text-center transition-all">
-                        <div class="value-icon-v2 mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle gradient-icon-bg">
+                        <div class="value-icon-v2 mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width: 60px; height: 60px; background: {{ $val['gradient'] }};">
                             <i class="bi {{ $val['icon'] }} text-white fs-4"></i>
                         </div>
                         <h4 class="fw-bold mb-3">{{ $val['title'] }}</h4>
@@ -251,7 +352,48 @@
     </div>
 </section>
 
-@endsection
+
+
+{{-- ===========================
+    CALL TO ACTION SECTION
+============================ --}}
+<section id="about-cta" class="py-5 mb-5">
+    <div class="container">
+        <div class="cta-box p-5 rounded-5 text-center shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, #08aaf4 0%, #6ed5f9 100%);">
+            <div class="cta-decoration"></div>
+            <div class="position-relative z-1">
+                <p class="text-white text-uppercase fw-bold mb-2 tracking-wider">Ready for your adventure?</p>
+                <h2 class="display-5 text-white fw-bold mb-4">Contact us directly</h2>
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
+                    <a href="https://wa.me/201092958475" target="_blank" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold text-primary shadow-sm">
+                        <i class="bi bi-whatsapp me-2"></i> 01092958475
+                    </a>
+                    <a href="{{ route('contact-us') }}" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .cta-box {
+        border: none;
+    }
+    .cta-decoration {
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+    .tracking-wider {
+        letter-spacing: 2px;
+    }
+</style>
 
 @push('style')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -262,7 +404,7 @@
     }
 
     .bg-gradient-blue {
-        background: linear-gradient(135deg, {{ $primary_color }} 0%, #2d5089 100%);
+        background: linear-gradient(135deg, {{ $primary_color }} 0%, #08aaf4 100%);
     }
 
     /* Hero Section */
@@ -427,10 +569,103 @@
 
     .gradient-icon-bg {
         width: 60px; height: 60px;
-        background: linear-gradient(135deg, {{ $primary_color }} 0%, #FF7A50 100%);
+        background: linear-gradient(135deg, {{ $primary_color }} 0%, #ff7d01 100%);
     }
 
     .backdrop-blur { backdrop-filter: blur(10px); }
+
+    /* Certificates Section */
+    .certificates-section {
+        background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+    }
+
+    .certificates-section .carousel-inner {
+        padding: 20px 10px 50px 10px; /* Add padding to prevent clipping on hover */
+    }
+
+    .certificate-card {
+        border-radius: 30px !important;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+    }
+
+    .certificate-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 45px rgba(62, 105, 173, 0.15) !important;
+        border-color: {{ $primary_color }} !important;
+    }
+
+    .certificate-image-wrapper {
+        border-radius: 20px;
+        overflow: hidden;
+        background: transparent;
+        height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .certificate-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+
+    .certificate-card:hover .certificate-image {
+        transform: scale(1.05);
+    }
+
+    /* Custom Carousel Controls */
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 50px;
+        height: 50px;
+        background: {{ $primary_color }};
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.8;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-control-prev {
+        left: -25px;
+    }
+
+    .carousel-control-next {
+        right: -25px;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 1;
+        background: #2d5089;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .carousel-indicators {
+        margin-bottom: -40px;
+    }
+
+    .carousel-indicators button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: {{ $primary_color }};
+        opacity: 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-indicators button.active {
+        opacity: 1;
+        transform: scale(1.2);
+    }
 
     /* Responsive */
     @media (max-width: 991px) {

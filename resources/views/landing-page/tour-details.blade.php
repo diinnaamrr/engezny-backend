@@ -228,7 +228,7 @@
 
     .detail-item i {
         font-size: 2rem;
-        color: #3E69AD;
+        color: #ee212e;
     }
 
     .detail-item h6 {
@@ -285,7 +285,7 @@
     }
 
     .price-header {
-        background: linear-gradient(135deg, #3E69AD 0%, #2d5089 100%);
+        background: linear-gradient(135deg, #ee212e 0%, #08aaf4 100%);
         color: white;
         padding: 2rem;
         text-align: center;
@@ -323,7 +323,7 @@
     }
 
     .btn-primary {
-        background: #3E69AD;
+        background: #ee212e;
         border: none;
         padding: 1rem;
         font-weight: 600;
@@ -331,7 +331,7 @@
     }
 
     .btn-primary:hover {
-        background: #2d5089;
+        background: #08aaf4;
         transform: translateY(-2px);
     }
 
@@ -366,7 +366,7 @@
     .category-name {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #3E69AD;
+        color: #ee212e;
         margin-bottom: 0.5rem;
     }
 
