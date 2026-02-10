@@ -90,89 +90,62 @@
         </div>
 
         <div id="certificatesCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            @php
+                $certificatesPath = public_path('landing-page/assets/img/certificates');
+                $certificateFiles = [];
+                if (File::exists($certificatesPath)) {
+                    $certificateFiles = File::files($certificatesPath);
+                    // Sort files by name naturally (cer1, cer2, cer10, etc.)
+                    usort($certificateFiles, function($a, $b) {
+                        return strnatcmp($a->getFilename(), $b->getFilename());
+                    });
+                }
+                $chunks = array_chunk($certificateFiles, 3);
+            @endphp
+
             <div class="carousel-inner">
-                {{-- Slide 1 --}}
-                <div class="carousel-item active">
-                    <div class="row g-4">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
-                                <div class="certificate-image-wrapper">
-                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer1.png') }}" 
-                                         alt="Certificate 1" 
-                                         class="certificate-image">
+                @foreach($chunks as $index => $chunk)
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                        <div class="row g-4">
+                            @foreach($chunk as $file)
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
+                                        <div class="certificate-image-wrapper">
+                                            <img src="{{ asset('public/landing-page/assets/img/certificates/' . $file->getFilename()) }}" 
+                                                 alt="{{ $file->getFilenameWithoutExtension() }}" 
+                                                 class="certificate-image">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
-                                <div class="certificate-image-wrapper">
-                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer2.png') }}" 
-                                         alt="Certificate 2" 
-                                         class="certificate-image">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
-                                <div class="certificate-image-wrapper">
-                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer3.png') }}" 
-                                         alt="Certificate 3" 
-                                         class="certificate-image">
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
-                </div>
-
-                {{-- Slide 2 --}}
-                <div class="carousel-item">
-                    <div class="row g-4">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
-                                <div class="certificate-image-wrapper">
-                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer4.png') }}" 
-                                         alt="Certificate 4" 
-                                         class="certificate-image">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
-                                <div class="certificate-image-wrapper">
-                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer5.png') }}" 
-                                         alt="Certificate 5" 
-                                         class="certificate-image">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="certificate-card rounded-4 bg-white border-0 shadow-sm h-100">
-                                <div class="certificate-image-wrapper">
-                                    <img src="{{ asset('public/landing-page/assets/img/certificates/cer6.png') }}" 
-                                         alt="Certificate 6" 
-                                         class="certificate-image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
-            {{-- Carousel Controls --}}
-            <button class="carousel-control-prev" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            @if(count($chunks) > 1)
+                {{-- Carousel Controls --}}
+                <button class="carousel-control-prev" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#certificatesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
 
-            {{-- Carousel Indicators --}}
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#certificatesCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#certificatesCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            </div>
+                {{-- Carousel Indicators --}}
+                <div class="carousel-indicators">
+                    @foreach($chunks as $index => $chunk)
+                        <button type="button" 
+                                data-bs-target="#certificatesCarousel" 
+                                data-bs-slide-to="{{ $index }}" 
+                                class="{{ $index === 0 ? 'active' : '' }}" 
+                                aria-current="{{ $index === 0 ? 'true' : 'false' }}" 
+                                aria-label="Slide {{ $index + 1 }}"></button>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 </section>
@@ -439,15 +412,15 @@
 
     .hero-title {
         font-family: 'Volkhov', serif;
-        font-size: 56px;
+        font-size: 72px;
         font-weight: 700;
-        margin-bottom: 20px;
-        line-height: 1.2;
+        margin-bottom: 24px;
+        line-height: 1.1;
         color: white;
     }
 
     .hero-subtitle {
-        font-size: 22px;
+        font-size: 26px;
         font-weight: 400;
         opacity: 0.95;
         color: white;
@@ -669,13 +642,20 @@
 
     /* Responsive */
     @media (max-width: 991px) {
-        .hero-title { font-size: 42px; }
+        .hero-title { font-size: 56px; }
+        .hero-subtitle { font-size: 22px; }
         .section-title { font-size: 36px; }
     }
 
     @media (max-width: 768px) {
-        .hero-title { font-size: 32px; }
+        .hero-title { font-size: 42px; }
+        .hero-subtitle { font-size: 20px; }
         .section-title { font-size: 30px; }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title { font-size: 32px; }
+        .hero-subtitle { font-size: 18px; }
     }
 </style>
 @endpush

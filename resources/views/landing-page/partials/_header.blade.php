@@ -16,14 +16,14 @@ resources/views/landing-page/about-us.blade.php
 
             {{-- Hamburger --}}
             <button
-                class="navbar-toggler border-0"
+                class="navbar-toggler border-0 shadow-none"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#landingNavbar"
                 aria-controls="landingNavbar"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon" style="filter: invert(1); border: 1px solid white; border-radius: 3px;"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
 
             {{-- Menu --}}
@@ -52,8 +52,7 @@ resources/views/landing-page/about-us.blade.php
                 {{-- Get in Touch Button (Desktop) --}}
                 <div class="d-none d-lg-block">
                     <a href="{{ route('contact-us') }}"
-                        class="btn btn-outline-primary fw-bold px-4 py-2 gear-btn"
-                        style="border-color: #ff7d01; color: white; background-color: #ff7d01; transition: all 0.3s ease;">
+                        class="btn fw-bold px-4 py-2 gear-btn">
                         Get in Touch
                     </a>
                 </div>
@@ -74,24 +73,8 @@ resources/views/landing-page/about-us.blade.php
     function handleScroll() {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
-            navLinks.forEach(link => link.style.color = 'white');
-            togglerIcon.style.filter = 'none';
-            togglerIcon.style.borderColor = 'white';
-            if (desktopBtn) {
-                desktopBtn.style.backgroundColor = 'white';
-                desktopBtn.style.color = primaryColor;
-                desktopBtn.style.borderColor = 'white';
-            }
         } else {
             navbar.classList.remove('scrolled');
-            navLinks.forEach(link => link.style.color = primaryColor);
-            togglerIcon.style.filter = 'none';
-            togglerIcon.style.borderColor = primaryColor;
-            if (desktopBtn) {
-                desktopBtn.style.backgroundColor = 'transparent';
-                desktopBtn.style.color = primaryColor;
-                desktopBtn.style.borderColor = primaryColor;
-            }
         }
     }
 
@@ -132,30 +115,24 @@ resources/views/landing-page/about-us.blade.php
     /* Base Styles for Header */
     #nemo-navbar {
         background-color: white;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        transition: all 0.3s ease;
         padding-top: 0.75rem !important;
         padding-bottom: 0.75rem !important;
     }
 
     .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='{{ str_replace('#', '%23', $primary_color) }}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-
-    #nemo-navbar.scrolled .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        border: 1px solid {{ $primary_color }};
+        border-radius: 4px;
+        transition: all 0.3s ease;
     }
 
     .nav-link {
-        color: {
-                {
-                $primary_color
-            }
-        }
-
-        !important;
+        color: {{ $primary_color }} !important;
         font-size: 1rem;
         position: relative;
         padding-bottom: 0.5rem !important;
+        transition: color 0.3s ease;
     }
 
     /* Hover Effect - Thick Bottom Border */
@@ -166,14 +143,7 @@ resources/views/landing-page/about-us.blade.php
         left: 0;
         width: 0;
         height: 3px;
-
-        background-color: {
-                {
-                $primary_color
-            }
-        }
-
-        ;
+        background-color: {{ $primary_color }};
         transition: width 0.3s ease;
     }
 
@@ -181,15 +151,22 @@ resources/views/landing-page/about-us.blade.php
         width: 100%;
     }
 
+    /* Get in Touch Button */
+    .gear-btn {
+        background-color: #ff7d01;
+        color: white !important;
+        border: 2px solid #ff7d01;
+        transition: all 0.3s ease;
+    }
+
+    .gear-btn:hover {
+        background-color: transparent;
+        color: #ff7d01 !important;
+    }
+
     /* Scrolled State */
     #nemo-navbar.scrolled {
-        background-color: {
-                {
-                $primary_color
-            }
-        }
-
-        !important;
+        background-color: {{ $primary_color }} !important;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
     }
 
@@ -201,17 +178,33 @@ resources/views/landing-page/about-us.blade.php
         background-color: white;
     }
 
+    #nemo-navbar.scrolled .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        border-color: white;
+    }
+
+    #nemo-navbar.scrolled .gear-btn {
+        background-color: white;
+        color: {{ $primary_color }} !important;
+        border-color: white;
+    }
+
+    #nemo-navbar.scrolled .gear-btn:hover {
+        background-color: transparent;
+        color: white !important;
+    }
+
     /* Mobile Menu */
     .navbar-collapse.show {
-        background-color: {
-                {
-                $primary_color
-            }
-        }
+        background-color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 10px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+    }
 
-        ;
-        padding: 10px;
-        border-radius: 5px;
+    #nemo-navbar.scrolled .navbar-collapse.show {
+        background-color: {{ $primary_color }};
     }
 
     /* Text Base Size */
