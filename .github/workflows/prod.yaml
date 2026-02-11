@@ -28,7 +28,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/fassla-software/nemo-tours-backend:latest
+          tags: |
+            ghcr.io/fassla-software/nemo-tours-backend:latest
+            ghcr.io/fassla-software/nemo-tours-backend:${{ github.ref_name }}
           no-cache: true 
 
   deploy:
