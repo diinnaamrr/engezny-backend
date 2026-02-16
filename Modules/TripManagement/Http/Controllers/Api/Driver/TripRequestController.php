@@ -172,8 +172,8 @@ class TripRequestController extends Controller
             return response()->json(responseFormatter(TRIP_REQUEST_DRIVER_403), 403);
         }
         if ($cache == ACCEPTED && $trip->driver_id == $user->id) {
-
-            return response()->json(responseFormatter(DEFAULT_UPDATE_200));
+            $resource = TripRequestResource::make($trip);
+            return response()->json(responseFormatter(DEFAULT_UPDATE_200, $resource));
         }
 
         if (!$trip) {
@@ -234,7 +234,8 @@ class TripRequestController extends Controller
                 }
             }
 
-            return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200));
+            $resource = TripRequestResource::make($trip);
+            return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
         }
 
 
@@ -409,7 +410,8 @@ class TripRequestController extends Controller
         } catch (Exception $exception) {
 
         }
-        return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200));
+        $resource = TripRequestResource::make($trip);
+        return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
     }
 
 
