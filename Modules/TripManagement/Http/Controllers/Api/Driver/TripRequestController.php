@@ -148,6 +148,7 @@ class TripRequestController extends Controller
      */
      public function requestAction(Request $request): JsonResponse
     {
+        info('Trip action request reached', ['data' => $request->all()]);
         $validator = Validator::make($request->all(), [
             'trip_request_id' => 'required',
             'action' => 'required|in:accepted,rejected',
@@ -410,6 +411,8 @@ class TripRequestController extends Controller
         } catch (Exception $exception) {
 
         }
+
+        //just for testing
         $resource = TripRequestResource::make($trip);
         return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
     }
