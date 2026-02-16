@@ -836,8 +836,8 @@ class TripRequestController extends Controller
         $driver = $this->driver->getBy(column: 'id', value: $request['driver_id'], attributes: ['relations' => ['vehicle', 'driverDetails', 'lastLocations']]);
 
         if (Cache::get($request['trip_request_id']) == ACCEPTED && $trip->driver_id == $driver->id) {
-
-            return response()->json(responseFormatter(DEFAULT_UPDATE_200));
+            $resource = TripRequestResource::make($trip);
+            return response()->json(responseFormatter(DEFAULT_UPDATE_200, $resource));
         }
 
         $user_status = $driver->driverDetails->availability_status;
@@ -973,7 +973,8 @@ class TripRequestController extends Controller
             }
         }
 
-        return response()->json(responseFormatter(constant: BIDDING_ACTION_200));
+        $resource = TripRequestResource::make($trip);
+        return response()->json(responseFormatter(constant: BIDDING_ACTION_200, content: $resource));
     }
 
     public function rideStatusUpdate($trip_request_id, Request $request): JsonResponse
