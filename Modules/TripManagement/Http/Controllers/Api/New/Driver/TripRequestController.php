@@ -190,6 +190,7 @@ class TripRequestController extends Controller
 
     public function requestAction(Request $request): JsonResponse
     {
+        info('DEBUG: Trip requestAction called', ['request' => $request->all()]);
         $user = auth('api')->user();
         $cache = Cache::get($request['trip_request_id']);
         $trip = $this->tripRequestservice->findOne(id: $request['trip_request_id']);
@@ -205,6 +206,7 @@ class TripRequestController extends Controller
         }
         if ($cache == ACCEPTED && $trip->driver_id == $user->id) {
             $resource = TripRequestResource::make($trip);
+            info('DEBUG: Already accepted, returning resource', ['resource' => $resource]);
             return response()->json(responseFormatter(DEFAULT_UPDATE_200, $resource));
         }
 
@@ -217,6 +219,7 @@ class TripRequestController extends Controller
         }
 
         if ($request['action'] != ACCEPTED) {
+            // ... (rejection logic)
             if (get_cache('bid_on_fare') ?? 0) {
                 $allBidding = $this->fareBiddingService->getBy(criteria: ['trip_request_id' => $request['trip_request_id']], limit: 200, offset: 1);
 
@@ -240,6 +243,7 @@ class TripRequestController extends Controller
             ]);
 
             $resource = TripRequestResource::make($trip);
+            info('DEBUG: Request rejected, returning resource', ['resource' => $resource]);
             return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
         }
 
@@ -278,6 +282,9 @@ class TripRequestController extends Controller
             return response()->json(responseFormatter(DRIVER_REQUEST_ACCEPT_TIMEOUT_408), 403);
         }
         $push = $this->tripRequestservice->handleRequestActionPushNotification($trip, $user);
+        
+        info('DEBUG: Handling acceptance logic', ['bid_on_fare' => $bid_on_fare]);
+
         if (!$bid_on_fare) {
 
             sendDeviceNotification(
@@ -292,6 +299,7 @@ class TripRequestController extends Controller
             );
             DB::commit();
             $resource = TripRequestResource::make($trip);
+            info('DEBUG: Request accepted (no bid), returning resource', ['resource' => $resource]);
             return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
         } else {
             $allBidding = $this->fareBiddingService->getBy(limit: 200, offset: 1, criteria: [
@@ -320,6 +328,7 @@ class TripRequestController extends Controller
             }
 
             $resource = TripRequestResource::make($trip);
+            info('DEBUG: Request accepted (with bid), returning resource', ['resource' => $resource]);
             return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
         }
     }
