@@ -173,8 +173,12 @@ class TripRequestController extends Controller
             return response()->json(responseFormatter(TRIP_REQUEST_DRIVER_403), 403);
         }
         if ($cache == ACCEPTED && $trip->driver_id == $user->id) {
+            $trip = $this->trip->getBy(column: 'id', value: $request['trip_request_id'], attributes: [
+                'relations' => ['customer', 'driver', 'vehicleCategory', 'vehicle', 'zone', 'tripStatus', 'time', 'coordinate', 'fee', 'parcel', 'parcelUserInfo', 'parcelRefund'],
+                'fare_biddings' => $user->id,
+            ]);
             $resource = TripRequestResource::make($trip);
-            return response()->json(responseFormatter(DEFAULT_UPDATE_200, $resource));
+            return response()->json(responseFormatter(DEFAULT_UPDATE_200, $resource->resolve()));
         }
 
         if (!$trip) {
@@ -235,8 +239,12 @@ class TripRequestController extends Controller
                 }
             }
 
+            $trip = $this->trip->getBy(column: 'id', value: $request['trip_request_id'], attributes: [
+                'relations' => ['customer', 'driver', 'vehicleCategory', 'vehicle', 'zone', 'tripStatus', 'time', 'coordinate', 'fee', 'parcel', 'parcelUserInfo', 'parcelRefund'],
+                'fare_biddings' => $user->id,
+            ]);
             $resource = TripRequestResource::make($trip);
-            return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
+            return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource->resolve()));
         }
 
 
@@ -412,9 +420,13 @@ class TripRequestController extends Controller
 
         }
 
-        //just for testing
+        // Re-fetch trip with relations so the response includes full ride data
+        $trip = $this->trip->getBy(column: 'id', value: $request['trip_request_id'], attributes: [
+            'relations' => ['customer', 'driver', 'vehicleCategory', 'vehicle', 'zone', 'tripStatus', 'time', 'coordinate', 'fee', 'parcel', 'parcelUserInfo', 'parcelRefund'],
+            'fare_biddings' => $user->id,
+        ]);
         $resource = TripRequestResource::make($trip);
-        return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
+        return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource->resolve()));
     }
 
 
