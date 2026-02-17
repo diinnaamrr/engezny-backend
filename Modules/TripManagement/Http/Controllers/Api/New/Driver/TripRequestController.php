@@ -291,6 +291,8 @@ class TripRequestController extends Controller
                 user_id: $trip->customer->id
             );
             DB::commit();
+            $resource = TripRequestResource::make($trip);
+            return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource));
         } else {
             $allBidding = $this->fareBiddingService->getBy(limit: 200, offset: 1, criteria: [
                 'trip_request_id' => $request['trip_request_id'],
