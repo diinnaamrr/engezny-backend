@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class WhySMSService
 {
-    protected ?array $config;
-
-    public function __construct()
-    {
-        $this->config = $this->getConfig();
-    }
+ 
 
     public function isEnabled(): bool
     {
@@ -22,8 +17,8 @@ class WhySMSService
     public function sendSMS($mobile, $message): string
     {
         try {
-            $apiToken = trim($this->apiToken);
-            $senderId = $this->senderId;
+            $apiToken = '1046|WGTMJFtNKsY2oZheN06qL1cviTrZjGBYX6AX0mSP1823eed6';
+            $senderId = 'EasyTech';
 
             $cleanPhone = ltrim((string)$mobile, '+');
 
@@ -76,18 +71,5 @@ class WhySMSService
         $message = $messages[$type] ?? $messages['register'];
 
         return $this->sendSMS($mobile, $message);
-    }
-
-    protected function getConfig(): ?array
-    {
-        $setting = configSettings('whysms', 'sms_config');
-
-        if (!$setting || is_null($setting->live_values)) {
-            return null;
-        }
-
-        $values = json_decode($setting->live_values, true);
-
-        return is_array($values) ? $values : null;
     }
 }
