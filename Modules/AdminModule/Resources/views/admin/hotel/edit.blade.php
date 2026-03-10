@@ -1,4 +1,4 @@
-@extends('AdminModule::layouts.master')
+@extends('adminmodule::layouts.master')
 
 @section('title', 'Edit Hotel')
 
