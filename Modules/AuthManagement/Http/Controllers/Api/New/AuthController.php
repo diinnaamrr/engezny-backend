@@ -189,7 +189,7 @@ class AuthController extends Controller
         /**
          * phone no verification SMS_Body
          */
-        $this->authService->sendOtpToClient($user);
+        $this->authService->sendOtpToClient($user, 'register');
         return response()->json(responseFormatter(REGISTRATION_200));
     }
 
@@ -597,7 +597,7 @@ class AuthController extends Controller
         /**
          * forget password SMS_Body
          */
-        $this->authService->sendOtpToClient($user);
+        $this->authService->sendOtpToClient($user, 'forget_password');
 
         return response()->json(responseFormatter(DEFAULT_200));
     }
