@@ -131,6 +131,12 @@
                     </a>
                 </li>
                 <!---------- End Tours Management --------------->
+                <li class="{{Request::is('admin/hotels*')?'active open':''}}">
+                    <a href="{{ route('admin.hotels.index') }}">
+                        <i class="bi bi-house-door"></i>
+                        <span class="link-title text-capitalize">Hotels</span>
+                    </a>
+                </li>
               
                 <li class="{{ Request::is('admin/trip/log') || Request::is('admin/trip/list/*') || Request::is('admin/trip/details/*')?'active sub-menu-opened':'' }} text-capitalize">
                     <a href="#">

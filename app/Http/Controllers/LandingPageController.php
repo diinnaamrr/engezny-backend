@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewMessage;
+use App\Models\Hotel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Modules\BusinessManagement\Interfaces\BusinessSettingInterface;
@@ -46,8 +47,10 @@ class LandingPageController extends Controller
             }
         }
 
+        $hotels = Hotel::latest()->take(6)->get();
+
         return view('landing-page.index',
-            compact('introSection', 'introSectionImage', 'ourSolutionSection', 'ourSolutionSectionListCount' , 'ourSolutionSectionList', 'business_name', 'businessStatistics', 'earnMoney', 'earnMoneyImage', 'testimonials', 'testimonialListCount', 'cta', 'ctaImage'));
+            compact('introSection', 'introSectionImage', 'ourSolutionSection', 'ourSolutionSectionListCount' , 'ourSolutionSectionList', 'business_name', 'businessStatistics', 'earnMoney', 'earnMoneyImage', 'testimonials', 'testimonialListCount', 'cta', 'ctaImage', 'hotels'));
     }
 
     public function aboutUs()
