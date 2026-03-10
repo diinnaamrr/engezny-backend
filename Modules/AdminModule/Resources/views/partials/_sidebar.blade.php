@@ -137,6 +137,7 @@
                         <span class="link-title text-capitalize">Hotels</span>
                     </a>
                 </li>
+                <!---------- End Hotels Management --------------->
               
                 <li class="{{ Request::is('admin/trip/log') || Request::is('admin/trip/list/*') || Request::is('admin/trip/details/*')?'active sub-menu-opened':'' }} text-capitalize">
                     <a href="#">
