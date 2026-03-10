@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Log;
 
 class WhySMSService
 {
-    protected string $apiToken = '1111|bOVD5iFeQMd3qcaOusV9pb7DsWWZV8NlFcYCkHL540098ca6';
-    protected string $senderId = 'WhySMS Test';
     protected ?array $config;
 
     public function __construct()
