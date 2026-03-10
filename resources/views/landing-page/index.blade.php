@@ -15,6 +15,11 @@
     @include('landing-page.sections.about')
 
     {{-- ===========================
+        HOTELS SECTION
+    ============================ --}}
+    @include('landing-page.sections.hotels')
+
+    {{-- ===========================
         PLATFORM FEATURES SECTION
     ============================ --}}
     @include('landing-page.sections.features')

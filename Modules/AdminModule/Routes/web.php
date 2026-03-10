@@ -8,6 +8,7 @@ use Modules\AdminModule\Http\Controllers\Web\New\Admin\SettingController;
 use Modules\AdminModule\Http\Controllers\Web\New\Admin\SharedController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TourController;
+use App\Http\Controllers\HotelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,6 +69,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], f
         Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [CategoryController::class, 'update'])->name('update');
         Route::delete('delete/{id}', [CategoryController::class, 'destroy'])->name('delete');
+    });
+
+    Route::group(['prefix' => 'hotels', 'as' => 'hotels.'], function () {
+        Route::get('/', [HotelController::class, 'index'])->name('index');
+        Route::get('create', [HotelController::class, 'create'])->name('create');
+        Route::post('store', [HotelController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [HotelController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [HotelController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [HotelController::class, 'destroy'])->name('delete');
     });
 });
 Route::controller(SharedController::class)->group(function () {
