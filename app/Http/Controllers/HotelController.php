@@ -11,12 +11,12 @@ class HotelController extends Controller
     public function index()
     {
         $hotels = Hotel::latest()->paginate(10);
-        return view('AdminModule::admin.hotel.index', compact('hotels'));
+        return view('adminmodule::admin.hotel.index', compact('hotels'));
     }
 
     public function create()
     {
-        return view('AdminModule::admin.hotel.create');
+        return view('adminmodule::admin.hotel.create');
     }
 
     public function store(Request $request)
@@ -50,7 +50,7 @@ class HotelController extends Controller
     public function edit($id)
     {
         $hotel = Hotel::findOrFail($id);
-        return view('AdminModule::admin.hotel.edit', compact('hotel'));
+        return view('adminmodule::admin.hotel.edit', compact('hotel'));
     }
 
     public function update(Request $request, $id)
