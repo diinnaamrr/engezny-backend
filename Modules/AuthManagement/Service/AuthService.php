@@ -70,13 +70,9 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
                 return $this->generateOtp($user, '0000');
             }
             return $this->generateOtp($user, $otp);
-        }
-        $dataValues = $this->settingRepository->getBy(criteria: ['settings_type' => SMS_CONFIG]);
-        if ($dataValues->where('live_values.status', 1)->isNotEmpty()) {
-            $otp = rand(100000, 999999);
-        } else {
-            $otp = '000000';
-        }
+        } 
+        
+        $otp = rand(100000, 999999); 
 
         if (in_array($type, ['register', 'forget_password'], true) && $this->whySMSService->isEnabled()) {
             if ($this->whySMSService->sendOTP($user->phone, $otp, $type) === 'success') {
