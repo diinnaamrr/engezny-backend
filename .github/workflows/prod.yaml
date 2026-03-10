@@ -28,7 +28,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/fassla-software/nemo-tours-backend:latest
+          tags: |
+            ghcr.io/fassla-software/nemo-tours-backend:latest
+            ghcr.io/fassla-software/nemo-tours-backend:${{ github.ref_name }}
           no-cache: true 
 
   deploy:
@@ -46,18 +48,23 @@ jobs:
           script: |
             cd /var/www/nemo-tours-prod
 
+            # Use the same image tag we just built (master or main)
+            export IMAGE_TAG="${{ github.ref_name }}"
+
             # Pull latest code from GitHub
             git fetch origin || true
             git pull origin master || git pull origin main || true
 
             docker login ghcr.io -u fassla-software -p ${{ secrets.GITHUB_TOKEN }}
 
+            # Force pull the new image (avoid using cached old image)
+            docker pull ghcr.io/fassla-software/nemo-tours-backend:$IMAGE_TAG
             docker compose -f docker-compose.prod.yml pull
             
             # Copy missing resources files from image to host BEFORE starting containers
             # This ensures files are available when volume mount happens
             echo "📁 Copying resources files from image to host..."
-            TEMP_CONTAINER=$(docker create ghcr.io/fassla-software/nemo-tours-backend:latest 2>/dev/null || echo "")
+            TEMP_CONTAINER=$(docker create ghcr.io/fassla-software/nemo-tours-backend:$IMAGE_TAG 2>/dev/null || echo "")
             if [ -n "$TEMP_CONTAINER" ]; then
               # Ensure resources directory exists
               mkdir -p ./resources/views/landing-page/sections

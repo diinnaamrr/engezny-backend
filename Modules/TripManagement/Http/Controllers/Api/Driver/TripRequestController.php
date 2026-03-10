@@ -148,6 +148,7 @@ class TripRequestController extends Controller
      */
      public function requestAction(Request $request): JsonResponse
     {
+        info('Trip action request reached', ['data' => $request->all()]);
         $validator = Validator::make($request->all(), [
             'trip_request_id' => 'required',
             'action' => 'required|in:accepted,rejected',
@@ -172,8 +173,12 @@ class TripRequestController extends Controller
             return response()->json(responseFormatter(TRIP_REQUEST_DRIVER_403), 403);
         }
         if ($cache == ACCEPTED && $trip->driver_id == $user->id) {
-
-            return response()->json(responseFormatter(DEFAULT_UPDATE_200));
+            $trip = $this->trip->getBy(column: 'id', value: $request['trip_request_id'], attributes: [
+                'relations' => ['customer', 'driver', 'vehicleCategory', 'vehicle', 'zone', 'tripStatus', 'time', 'coordinate', 'fee', 'parcel', 'parcelUserInfo', 'parcelRefund'],
+                'fare_biddings' => $user->id,
+            ]);
+            $resource = TripRequestResource::make($trip);
+            return response()->json(responseFormatter(DEFAULT_UPDATE_200, $resource->resolve()));
         }
 
         if (!$trip) {
@@ -234,7 +239,12 @@ class TripRequestController extends Controller
                 }
             }
 
-            return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200));
+            $trip = $this->trip->getBy(column: 'id', value: $request['trip_request_id'], attributes: [
+                'relations' => ['customer', 'driver', 'vehicleCategory', 'vehicle', 'zone', 'tripStatus', 'time', 'coordinate', 'fee', 'parcel', 'parcelUserInfo', 'parcelRefund'],
+                'fare_biddings' => $user->id,
+            ]);
+            $resource = TripRequestResource::make($trip);
+            return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource->resolve()));
         }
 
 
@@ -409,7 +419,14 @@ class TripRequestController extends Controller
         } catch (Exception $exception) {
 
         }
-        return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200));
+
+        // Re-fetch trip with relations so the response includes full ride data
+        $trip = $this->trip->getBy(column: 'id', value: $request['trip_request_id'], attributes: [
+            'relations' => ['customer', 'driver', 'vehicleCategory', 'vehicle', 'zone', 'tripStatus', 'time', 'coordinate', 'fee', 'parcel', 'parcelUserInfo', 'parcelRefund'],
+            'fare_biddings' => $user->id,
+        ]);
+        $resource = TripRequestResource::make($trip);
+        return response()->json(responseFormatter(constant: DEFAULT_UPDATE_200, content: $resource->resolve()));
     }
 
 
