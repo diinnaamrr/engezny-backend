@@ -359,8 +359,8 @@ class TripRequestController extends Controller
         $trip = $this->tripRequestservice->findOne(id: $request['trip_request_id'], relations: ['coordinate']);
         $driver = $this->userService->findOne(id: $request['driver_id'], relations: ['vehicle', 'driverDetails', 'lastLocations']);
         if (Cache::get($request['trip_request_id']) == ACCEPTED && $trip->driver_id == $driver->id) {
-
-            return response()->json(responseFormatter(DEFAULT_UPDATE_200));
+            $resource = TripRequestResource::make($trip);
+            return response()->json(responseFormatter(DEFAULT_UPDATE_200, $resource));
         }
 
         $user_status = $driver->driverDetails->availability_status;
@@ -482,7 +482,8 @@ class TripRequestController extends Controller
             }
         }
 
-        return response()->json(responseFormatter(constant: BIDDING_ACTION_200));
+        $resource = TripRequestResource::make($trip);
+        return response()->json(responseFormatter(constant: BIDDING_ACTION_200, content: $resource));
     }
 
 

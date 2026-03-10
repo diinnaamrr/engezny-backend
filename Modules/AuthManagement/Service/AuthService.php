@@ -3,6 +3,7 @@
 namespace Modules\AuthManagement\Service;
 
 use App\Service\BaseService;
+use App\Services\WhySMSService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Modules\BusinessManagement\Repository\SettingRepositoryInterface;
@@ -17,13 +18,15 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     protected $userRepository;
     protected $otpVerificationRepository;
     protected $settingRepository;
+    protected WhySMSService $whySMSService;
 
-    public function __construct(UserRepositoryInterface $userRepository, OtpVerificationRepositoryInterface $otpVerificationRepository, SettingRepositoryInterface $settingRepository)
+    public function __construct(UserRepositoryInterface $userRepository, OtpVerificationRepositoryInterface $otpVerificationRepository, SettingRepositoryInterface $settingRepository, WhySMSService $whySMSService)
     {
         parent::__construct($userRepository);
         $this->userRepository = $userRepository;
         $this->otpVerificationRepository = $otpVerificationRepository;
         $this->settingRepository = $settingRepository;
+        $this->whySMSService = $whySMSService;
     }
 
     public function checkClientRoute($request)
@@ -73,6 +76,12 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
             $otp = rand(100000, 999999);
         } else {
             $otp = '000000';
+        }
+
+        if (in_array($type, ['register', 'forget_password'], true) && $this->whySMSService->isEnabled()) {
+            if ($this->whySMSService->sendOTP($user->phone, $otp, $type) === 'success') {
+                return $this->generateOtp($user, $otp);
+            }
         }
 
         if (self::send($user->phone, $otp) == "not_found") {
