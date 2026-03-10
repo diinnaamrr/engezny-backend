@@ -7,14 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class WhySMSService
 {
-    protected string $apiToken = '1111|bOVD5iFeQMd3qcaOusV9pb7DsWWZV8NlFcYCkHL540098ca6';
-    protected string $senderId = 'WhySMS Test';
-    protected ?array $config;
-
-    public function __construct()
-    {
-        $this->config = $this->getConfig();
-    }
+ 
 
     public function isEnabled(): bool
     {
@@ -24,8 +17,8 @@ class WhySMSService
     public function sendSMS($mobile, $message): string
     {
         try {
-            $apiToken = trim($this->apiToken);
-            $senderId = $this->senderId;
+            $apiToken = '1046|WGTMJFtNKsY2oZheN06qL1cviTrZjGBYX6AX0mSP1823eed6';
+            $senderId = 'EasyTech';
 
             $cleanPhone = ltrim((string)$mobile, '+');
 
@@ -70,26 +63,13 @@ class WhySMSService
     public function sendOTP($mobile, $otp, $type = 'register'): string
     {
         $messages = [
-            'register' => "Welcome to Sham AlEzz! Your verification code is: {$otp}\nThis code expires in 5 minutes. Please do not share this code.",
-            'forget_password' => "Sham AlEzz: Use code {$otp} to reset your password.\nThis code expires in 5 minutes. If you didn't request this, please ignore.",
-            'login' => "Sham AlEzz: Your login code is: {$otp}\nValid for 5 minutes.",
+            'register' => "Welcome to  NEMO ! Your verification code is: {$otp}\nThis code expires in 5 minutes. Please do not share this code.",
+            'forget_password' => "NEMO : Use code {$otp} to reset your password.\nThis code expires in 5 minutes. If you didn't request this, please ignore.",
+            'login' => "NEMO: Your login code is: {$otp}\nValid for 5 minutes.",
         ];
 
         $message = $messages[$type] ?? $messages['register'];
 
         return $this->sendSMS($mobile, $message);
-    }
-
-    protected function getConfig(): ?array
-    {
-        $setting = configSettings('whysms', 'sms_config');
-
-        if (!$setting || is_null($setting->live_values)) {
-            return null;
-        }
-
-        $values = json_decode($setting->live_values, true);
-
-        return is_array($values) ? $values : null;
     }
 }

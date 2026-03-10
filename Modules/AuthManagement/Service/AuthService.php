@@ -42,18 +42,54 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
 
     private function generateOtp($user, $otp)
     {
-        $expires_at = env('APP_MODE') == 'live' ? 3 : 1000;
-        $attributes = [
-            'phone_or_email' => $user->phone,
-            'otp' => $otp,
-            'expires_at' => Carbon::now()->addMinutes($expires_at),
-        ];
-        $verification = $this->otpVerificationRepository->findOneBy(['phone_or_email' => $user->phone]);
-        if ($verification) {
-            $verification->delete();
+        try {
+            $expires_at = env('APP_MODE') == 'live' ? 3 : 1000;
+            $attributes = [
+                'phone_or_email' => $user->phone,
+                'otp' => (string)$otp,
+                'expires_at' => Carbon::now()->addMinutes($expires_at),
+            ];
+            
+            \Log::info('=== Starting OTP Generation ===', [
+                'phone' => $user->phone,
+                'otp' => (string)$otp,
+                'expires_at' => $attributes['expires_at'],
+            ]);
+            
+            // Delete old OTP
+            $verification = $this->otpVerificationRepository->findOneBy(['phone_or_email' => $user->phone]);
+            if ($verification) {
+                \Log::info('Deleting old OTP', ['id' => $verification->id, 'old_otp' => $verification->otp]);
+                $this->otpVerificationRepository->delete($verification->id);
+                \Log::info('Old OTP deleted successfully');
+            }
+            
+            // Create new OTP
+            \Log::info('Creating new OTP with attributes', $attributes);
+            $created = $this->otpVerificationRepository->create(data: $attributes);
+            
+            if (!$created) {
+                \Log::error('OTP Creation Failed - returned null');
+                return $otp;
+            }
+            
+            \Log::info('=== OTP Created Successfully ===', [
+                'id' => $created->id,
+                'phone_or_email' => $created->phone_or_email,
+                'otp_stored' => $created->otp,
+                'expires_at' => $created->expires_at,
+            ]);
+            
+            return $otp;
+        } catch (\Exception $e) {
+            \Log::error('=== OTP Generation Exception ===', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            throw $e;
         }
-        $this->otpVerificationRepository->create(data: $attributes);
-        return $otp;
     }
 
     public function updateLoginUser(string|int $id, array $data): ?Model
@@ -70,13 +106,9 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
                 return $this->generateOtp($user, '0000');
             }
             return $this->generateOtp($user, $otp);
-        }
-        $dataValues = $this->settingRepository->getBy(criteria: ['settings_type' => SMS_CONFIG]);
-        if ($dataValues->where('live_values.status', 1)->isNotEmpty()) {
-            $otp = rand(100000, 999999);
-        } else {
-            $otp = '000000';
-        }
+        } 
+        
+        $otp = rand(100000, 999999); 
 
         if (in_array($type, ['register', 'forget_password'], true) && $this->whySMSService->isEnabled()) {
             if ($this->whySMSService->sendOTP($user->phone, $otp, $type) === 'success') {
@@ -84,9 +116,7 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
             }
         }
 
-        if (self::send($user->phone, $otp) == "not_found") {
-            return $this->generateOtp($user, '000000');
-        }
+        self::send($user->phone, $otp);
         return $this->generateOtp($user, $otp);
 
     }
