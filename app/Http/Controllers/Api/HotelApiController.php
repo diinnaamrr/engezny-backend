@@ -21,6 +21,9 @@ class HotelApiController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
+            'image' => 'nullable|image',
+            'gallery' => 'nullable|array',
+            'gallery.*' => 'image',
         ]);
 
         if ($validator->fails()) {
@@ -28,8 +31,18 @@ class HotelApiController extends Controller
         }
 
         $data = $request->all();
+        $data['is_featured'] = $request->boolean('is_featured');
+
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('hotel', 'public');
+        }
+
+        if ($request->hasFile('gallery')) {
+            $gallery = [];
+            foreach ($request->file('gallery') as $file) {
+                $gallery[] = $file->store('hotel/gallery', 'public');
+            }
+            $data['gallery'] = $gallery;
         }
 
         $hotel = Hotel::create($data);
@@ -48,7 +61,39 @@ class HotelApiController extends Controller
         $hotel = Hotel::find($id);
         if (!$hotel) return response()->json(['status' => 'error', 'message' => 'Not found'], 404);
 
-        $hotel->update($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:255',
+            'price' => 'sometimes|numeric',
+            'image' => 'nullable|image',
+            'gallery' => 'nullable|array',
+            'gallery.*' => 'image',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+        }
+
+        $data = $request->all();
+        if ($request->has('is_featured')) {
+            $data['is_featured'] = $request->boolean('is_featured');
+        }
+
+        if ($request->hasFile('image')) {
+            if ($hotel->image) {
+                Storage::disk('public')->delete($hotel->image);
+            }
+            $data['image'] = $request->file('image')->store('hotel', 'public');
+        }
+
+        if ($request->hasFile('gallery')) {
+            $gallery = $hotel->gallery ?? [];
+            foreach ($request->file('gallery') as $file) {
+                $gallery[] = $file->store('hotel/gallery', 'public');
+            }
+            $data['gallery'] = $gallery;
+        }
+
+        $hotel->update($data);
         return response()->json(['status' => 'success', 'data' => $hotel], 200);
     }
 

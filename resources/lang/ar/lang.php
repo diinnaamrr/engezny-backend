@@ -2376,4 +2376,8 @@
   'The profile image may not be greater than 10000 kilobytes.' => 'The profile image may not be greater than 10000 kilobytes.',
   'Can not go to offline during running trip' => 'Can not go to offline during running trip',
   '💗😉 افتحي التطبيق دلوقتي و دوسي علي صورة درايفو بينك داخل التطبيق و افتحي اللينك و سجلي رغبتك و احنا علينا الباقي' => '💗😉 افتحي التطبيق دلوقتي و دوسي علي صورة درايفو بينك داخل التطبيق و افتحي اللينك و سجلي رغبتك و احنا علينا الباقي',
+  'tours_management' => 'Tours management',
+  'categories' => 'Categories',
+  'tours' => 'Tours',
+  'Price' => 'Price',
 );

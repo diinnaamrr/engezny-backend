@@ -9,6 +9,16 @@
             <div class="card">
                 <div class="card-header"><h4>Add New Hotel</h4></div>
                 <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form action="{{ route('admin.hotels.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">

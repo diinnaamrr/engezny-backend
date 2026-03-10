@@ -26,6 +26,11 @@
 @include('landing-page.sections.safari-specials')
         
 {{-- ===========================
+    HOTELS SECTION
+============================ --}}
+@include('landing-page.sections.hotels')
+
+{{-- ===========================
     CATEGORIES SECTION
 ============================ --}}
 @include('landing-page.sections.categories')

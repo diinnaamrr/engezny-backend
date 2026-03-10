@@ -1,15 +1,34 @@
-<section id="hotels" class="hotels-section py-5">
-    <div class="container mt-5">
-        <div class="text-center mb-5">
-            <p class="section-subtitle-small">Hotels</p>
-            <h2 class="section-title-large mt-4">Discover Best Hotels</h2>
-        </div>
+@extends('landing-page.layouts.master')
 
-        @if(isset($hotels) && $hotels->count() > 0)
-            <div class="row g-4 px-1">
+@section('title', 'NEMO Tours – Discover Best Hotels')
+
+@section('content')
+
+{{-- ===========================
+    BREADCRUMB SECTION
+============================ --}}
+<section class="breadcrumb-section py-5" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ asset('public/landing-page/assets/img/hero-bg.jpg') }}'); background-size: cover; background-position: center; margin-top: 80px;">
+    <div class="container py-4 text-center">
+        <h1 class="text-white fw-bold display-4">All Hotels</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-white text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">Hotels</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+{{-- ===========================
+    HOTELS LIST SECTION
+============================ --}}
+<section class="hotels-list-section py-5">
+    <div class="container my-5">
+        @if($hotels->count() > 0)
+            <div class="row g-4">
                 @foreach($hotels as $hotel)
                     <div class="col-lg-3 col-md-6">
-                        <div class="hotel-card-new">
+                        <div class="hotel-card-new h-100">
                             <div class="hotel-image-wrapper">
                                 <img 
                                     src="{{ $hotel->image ? asset('storage/'.$hotel->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
@@ -38,46 +57,26 @@
                     </div>
                 @endforeach
             </div>
-
-            <div class="text-center mt-5">
-                <a href="{{ route('hotels.list') }}" class="btn-see-all">
-                    See All
-                </a>
-            </div>
         @else
             <div class="text-center py-5">
-                <p class="text-muted">{{ translate('No hotels available at the moment.') }}</p>
+                <div class="mb-4">
+                    <i class="bi bi-building-exclamation display-1 text-muted"></i>
+                </div>
+                <h3>No hotels found</h3>
+                <p class="text-muted">We couldn't find any hotels at the moment. Please check back later.</p>
+                <a href="{{ route('home') }}" class="btn-see-all mt-3">Back to Home</a>
             </div>
         @endif
     </div>
 </section>
 
 <style>
-    .hotels-section {
-        background-color: #fff;
-    }
-
-    .section-subtitle-small {
-        font-size: 18px;
-        color: #ee212e;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-
-    .section-title-large {
-        font-family: 'Volkhov', serif;
-        font-size: 50px;
-        color: #181E4B;
-        font-weight: 700;
-    }
-
     .hotel-card-new {
         background: #fff;
         border-radius: 20px;
         padding: 15px;
-        box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.02), 0px 64.8148px 46.8519px rgba(0, 0, 0, 0.0151852), 0px 38.5185px 25.4815px rgba(0, 0, 0, 0.0121481), 0px 20px 13px rgba(0, 0, 0, 0.01), 0px 8.14815px 6.51852px rgba(0, 0, 0, 0.00785185), 0px 1.85185px 3.14815px rgba(0, 0, 0, 0.00481481);
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.05);
         transition: transform 0.3s ease;
-        height: 100%;
         display: flex;
         flex-direction: column;
     }
@@ -152,10 +151,6 @@
         color: #fff;
     }
 
-    .whatsapp-icon-wrapper i {
-        font-size: 18px;
-    }
-
     .btn-see-all {
         display: inline-block;
         background-color: #ee212e;
@@ -165,23 +160,13 @@
         font-weight: 600;
         text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0px 20px 35px rgba(62, 105, 173, 0.15);
     }
 
     .btn-see-all:hover {
         background-color: #08aaf4;
         color: #fff;
         transform: translateY(-3px);
-        box-shadow: 0px 25px 45px rgba(62, 105, 173, 0.25);
-    }
-
-    @media (max-width: 768px) {
-        .section-title-large {
-            font-size: 35px;
-        }
-        
-        .hotel-card-new {
-            margin-bottom: 20px;
-        }
     }
 </style>
+
+@endsection
