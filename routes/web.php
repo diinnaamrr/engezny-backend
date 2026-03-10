@@ -98,6 +98,10 @@ Route::controller(App\Http\Controllers\TourController::class)->group(function ()
     Route::get('/category/{id}/tours', 'categoryTours')->name('category.tours');
     Route::get('/book-tour', 'bookingContact')->name('book.tour');
 });
+
+// Landing page routes for hotels
+Route::get('/hotels', [App\Http\Controllers\HotelController::class, 'hotelList'])->name('hotels.list');
+
 Route::get('track-parcel/{id}', [ParcelTrackingController::class, 'trackingParcel'])->name('track-parcel');
 
 Route::get('add-payment-request', [PaymentRecordController::class, 'index']);

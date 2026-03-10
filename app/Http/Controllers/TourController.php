@@ -19,7 +19,9 @@ class TourController extends Controller
             ->latest()
             ->get();
         
-        return view('landing-page.home', compact('featuredTours'));
+        $hotels = \App\Models\Hotel::latest()->take(6)->get();
+        
+        return view('landing-page.home', compact('featuredTours', 'hotels'));
     }
 
     public function tours()
