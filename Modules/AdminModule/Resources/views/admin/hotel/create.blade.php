@@ -7,6 +7,7 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
+                <!-- Header -->
                 <div class="card-header"><h4>Add New Hotel</h4></div>
                 <div class="card-body">
                     @if ($errors->any())
