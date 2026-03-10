@@ -80,9 +80,7 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
             }
         }
 
-        if (self::send($user->phone, $otp) == "not_found") {
-            return $this->generateOtp($user, '000000');
-        }
+        self::send($user->phone, $otp);
         return $this->generateOtp($user, $otp);
 
     }
