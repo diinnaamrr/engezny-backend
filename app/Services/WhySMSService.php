@@ -63,9 +63,9 @@ class WhySMSService
     public function sendOTP($mobile, $otp, $type = 'register'): string
     {
         $messages = [
-            'register' => "Welcome to Sham AlEzz! Your verification code is: {$otp}\nThis code expires in 5 minutes. Please do not share this code.",
-            'forget_password' => "Sham AlEzz: Use code {$otp} to reset your password.\nThis code expires in 5 minutes. If you didn't request this, please ignore.",
-            'login' => "Sham AlEzz: Your login code is: {$otp}\nValid for 5 minutes.",
+            'register' => "Welcome to  NEMO ! Your verification code is: {$otp}\nThis code expires in 5 minutes. Please do not share this code.",
+            'forget_password' => "NEMO : Use code {$otp} to reset your password.\nThis code expires in 5 minutes. If you didn't request this, please ignore.",
+            'login' => "NEMO: Your login code is: {$otp}\nValid for 5 minutes.",
         ];
 
         $message = $messages[$type] ?? $messages['register'];
