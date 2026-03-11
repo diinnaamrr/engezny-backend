@@ -14,7 +14,7 @@
                         class="zigzag-decoration mb-3">
 
                     <h1 class="hero-title">
-                        With <span class="nemo-brand">NEMO</span> <span class="nemo-brand">دينا</span> enjoy every moment in your trip!
+                        With <span class="nemo-brand">NEMO</span> enjoy every moment in your trip!
                     </h1>
 
                     <!-- {{-- Search Bar --}}
