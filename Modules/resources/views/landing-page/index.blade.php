@@ -19,13 +19,13 @@
                                 <ul>
                                     <li>
                                         <a href="{{ $cta?->value && $cta?->value['play_store']['user_download_link'] ? $cta?->value['play_store']['user_download_link'] : "" }}">
-                                            <img src="{{ asset('public/landing-page') }}/assets/img/play-fav.png" alt="">
+                                            <img src="{{ asset('landing-page') }}/assets/img/play-fav.png" alt="">
                                             <span>{{translate('Play Store')}}</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ $cta?->value && $cta?->value['app_store']['user_download_link'] ? $cta?->value['app_store']['user_download_link'] : "" }}">
-                                            <img src="{{ asset('public/landing-page') }}/assets/img/apple-fav.png" alt="">
+                                            <img src="{{ asset('landing-page') }}/assets/img/apple-fav.png" alt="">
                                             <span>{{translate('App Store')}}</span>
                                         </a>
                                     </li>
@@ -300,12 +300,12 @@
                                 <div class="d-flex gap-3 flex-column">
                                     <a target="_blank" class="no-gutter" type="button"
                                        href="{{ $cta?->value && $cta?->value['app_store']['user_download_link'] ? $cta?->value['app_store']['user_download_link'] : "" }}">
-                                        <img src="{{ asset('public/landing-page') }}/assets/img/app-store.png"
+                                        <img src="{{ asset('landing-page') }}/assets/img/app-store.png"
                                              class="w-125px" alt="">
                                     </a>
                                     <a target="_blank" class="no-gutter" type="button"
                                        href="{{ $cta?->value && $cta?->value['play_store']['user_download_link'] ? $cta?->value['play_store']['user_download_link'] : "" }}">
-                                        <img src="{{ asset('public/landing-page') }}/assets/img/play-store.png"
+                                        <img src="{{ asset('landing-page') }}/assets/img/play-store.png"
                                              class="w-125px" alt="">
                                     </a>
                                 </div>
@@ -315,12 +315,12 @@
                                 <div class="d-flex gap-3 flex-column">
                                     <a target="_blank" class="no-gutter" type="button"
                                        href="{{ $cta?->value && $cta?->value['app_store']['driver_download_link'] ? $cta?->value['app_store']['driver_download_link'] : "" }}">
-                                        <img src="{{ asset('public/landing-page') }}/assets/img/app-store.png"
+                                        <img src="{{ asset('landing-page') }}/assets/img/app-store.png"
                                              class="w-125px" alt="">
                                     </a>
                                     <a target="_blank" class="no-gutter" type="button"
                                        href="{{ $cta?->value && $cta?->value['play_store']['driver_download_link'] ? $cta?->value['play_store']['driver_download_link'] : "" }}">
-                                        <img src="{{ asset('public/landing-page') }}/assets/img/play-store.png"
+                                        <img src="{{ asset('landing-page') }}/assets/img/play-store.png"
                                              class="w-125px" alt="">
                                     </a>
                                 </div>

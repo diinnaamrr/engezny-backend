@@ -31,7 +31,7 @@
                         <div class="hotel-card-new h-100">
                             <div class="hotel-image-wrapper">
                                 <img 
-                                    src="{{ $hotel->image ? asset('storage/'.$hotel->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
+                                    src="{{ $hotel->image ? asset('storage/app/public/'.$hotel->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
                                     alt="{{ $hotel->name }}"
                                     class="hotel-image"
                                 >
@@ -45,7 +45,7 @@
                                     <div class="hotel-price-info">
                                         <span class="price-value">{{ getCurrencyFormat($hotel->price) }}</span>
                                     </div>
-                                    <a href="https://wa.me/{{ $business_phone ?? '123456789' }}?text={{ urlencode('I am interested in booking: ' . $hotel->name) }}" 
+                                    <a href="https://wa.me/{{ $hotel->whatsapp_number ?: ($business_phone ?? '123456789') }}?text={{ urlencode('I am interested in booking: ' . $hotel->name) }}" 
                                        target="_blank" class="whatsapp-details-link">
                                         <span class="whatsapp-icon-wrapper">
                                             <i class="bi bi-whatsapp"></i>

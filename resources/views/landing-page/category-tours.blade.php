@@ -8,7 +8,7 @@
 <section class="category-header">
     @if($category->image)
         <div class="category-header-image">
-            <img src="{{ asset('storage/'.$category->image) }}" alt="{{ $category->name }}" class="img-fluid w-100">
+            <img src="{{ asset('storage/app/public/'.$category->image) }}" alt="{{ $category->name }}" class="img-fluid w-100">
         </div>
     @endif
     <div class="category-header-overlay">
@@ -52,7 +52,7 @@
                         <div class="tour-card">
                             <div class="tour-image">
                                 <img 
-                                    src="{{ $tour->image ? asset('storage/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
+                                    src="{{ $tour->image ? asset('storage/app/public/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
                                     alt="{{ $tour->name }}"
                                     class="img-fluid"
                                 >

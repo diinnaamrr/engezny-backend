@@ -28,15 +28,15 @@
           href="{{ onErrorImage(
             $favicon,
             asset('storage/app/public/business') . '/' . $favicon,
-            asset('assets/admin-module/img/favicon.png'),
+            asset('public/assets/admin-module/img/favicon.png'),
             'business/',
         ) }}"/>
-    {{-- <link rel="shortcut icon" href="{{ $favicon ? asset("storage/app/business/{$favicon}") : '' }}"
+    {{-- <link rel="shortcut icon" href="{{ $favicon ? asset("storage/app/public/app/business/{$favicon}") : '' }}"
         onerror="this.src='{{ asset('public/assets/admin-module/img/favicon.png') }}'" /> --}}
     <link rel="shortcut icon"
           href="{{ onErrorImage(
             $favicon,
-            asset('storage/app/business') . '/' . $favicon,
+            asset('storage/app/public/app/business') . '/' . $favicon,
             asset('public/assets/admin-module/img/favicon.png'),
             'business/',
         ) }}"/>

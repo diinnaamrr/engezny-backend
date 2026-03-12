@@ -29,6 +29,10 @@
                             <label>Description</label>
                             <textarea name="description" class="form-control" rows="4">{{ $hotel->description }}</textarea>
                         </div>
+                        <div class="mb-3">
+                            <label>WhatsApp Number</label>
+                            <input type="text" name="whatsapp_number" class="form-control" value="{{ $hotel->whatsapp_number }}" placeholder="e.g. 201234567890">
+                        </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Price</label>
@@ -45,7 +49,7 @@
                             <label>Main Image</label>
                             <input type="file" name="image" class="form-control">
                             @if($hotel->image)
-                                <img src="{{ asset('storage/'.$hotel->image) }}" class="mt-2" width="100">
+                                <img src="{{ asset('storage/app/public/'.$hotel->image) }}" class="mt-2" width="100">
                             @endif
                         </div>
                         <div class="mb-3">

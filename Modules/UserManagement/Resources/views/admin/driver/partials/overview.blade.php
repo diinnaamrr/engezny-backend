@@ -117,7 +117,7 @@
 @forelse($docs as $doc)
     @php
         $ext = strtolower(pathinfo($doc, PATHINFO_EXTENSION));
-        $url = "https://drivoeg.com/storage/app/public/driver/identity/" . $doc;
+        $url = "https://drivoeg.com/storage/driver/identity/" . $doc;
     @endphp
 
     @if(in_array($ext, ['png','jpg','jpeg','gif']))

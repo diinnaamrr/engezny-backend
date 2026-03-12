@@ -30,6 +30,10 @@
                             <label>Description</label>
                             <textarea name="description" class="form-control" rows="4"></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label>WhatsApp Number</label>
+                            <input type="text" name="whatsapp_number" class="form-control" placeholder="e.g. 201234567890">
+                        </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Price</label>

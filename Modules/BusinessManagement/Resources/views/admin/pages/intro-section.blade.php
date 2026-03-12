@@ -93,7 +93,7 @@
                                                     <i class="bi bi-pencil-square text-primary"></i>
                                                 </span>
                                             <div class="upload-file__img upload-file__img_banner aspect-ratio-3-1 overflow-hidden d-flex justify-content-center">
-                                                @if($data1?->value['background_image'] && file_exists('storage/app/public/business/landing-pages/intro-section/'.$data1?->value['background_image']))
+                                                @if($data1?->value['background_image'] && file_exists('storage/business/landing-pages/intro-section/'.$data1?->value['background_image']))
                                                     <img class="aspect-ratio-auto h-100"
                                                         src="{{ $data1?->value['background_image'] ? asset('storage/app/public/business/landing-pages/intro-section/'.$data1?->value['background_image']):asset('public/assets/admin-module/img/media/upload-file.png') }}"
                                                         alt="">

@@ -2380,4 +2380,7 @@
   'categories' => 'Categories',
   'tours' => 'Tours',
   'Price' => 'Price',
+  'Hotel List' => 'Hotel List',
+  'Add Hotel' => 'Add Hotel',
+  'Featured' => 'Featured',
 );

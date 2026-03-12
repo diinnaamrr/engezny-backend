@@ -35,7 +35,7 @@
                                         <tr>
                                             <td>{{ $tours->firstItem() + $key }}</td>
                                             <td>
-                                                <img width="50" class="rounded" src="{{ asset('storage/'.$tour->image) }}" 
+                                                <img width="50" class="rounded" src="{{ asset('storage/app/public/'.$tour->image) }}" 
                                                      onerror="this.src='{{ asset('public/assets/admin-module/img/media/upload-file.png') }}'">
                                             </td>
                                             <td>{{ $tour->name }}</td>

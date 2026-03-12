@@ -2578,4 +2578,8 @@
   'Control app maintenance mode for user and driver' => 'Control app maintenance mode for user and driver',
   'Control app maintenance mode for users' => 'Control app maintenance mode for users',
   'Control app maintenance mode for drivers' => 'Control app maintenance mode for drivers',
+  'Hotel List' => 'Hotel List',
+  'Add Hotel' => 'Add Hotel',
+  'Price' => 'Price',
+  'Featured' => 'Featured',
 );

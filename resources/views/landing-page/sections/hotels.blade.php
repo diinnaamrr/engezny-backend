@@ -12,7 +12,7 @@
                         <div class="hotel-card-new">
                             <div class="hotel-image-wrapper">
                                 <img 
-                                    src="{{ $hotel->image ? asset('storage/'.$hotel->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
+                                    src="{{ $hotel->image ? asset('storage/app/public/'.$hotel->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
                                     alt="{{ $hotel->name }}"
                                     class="hotel-image"
                                 >
