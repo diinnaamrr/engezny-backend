@@ -34,10 +34,16 @@ resources/views/landing-page/about-us.blade.php
                         <a class="nav-link fw-normal text-base" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link fw-normal text-base" href="{{ route('tours') }}">Tours</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link fw-normal text-base" href="{{ route('about-us') }}">About us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-normal text-base" href="{{ route('portfolio') }}">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-normal text-base" href="{{ route('hotels.list') }}">Hotels</a>
                     </li>
 
                     {{-- Get in Touch Button (Mobile) --}}

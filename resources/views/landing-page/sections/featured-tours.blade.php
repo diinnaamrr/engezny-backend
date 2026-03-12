@@ -15,7 +15,7 @@
                         <div class="tour-card-new">
                             <div class="tour-image-wrapper">
                                 <img 
-                                    src="{{ $tour->image ? asset('storage/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
+                                    src="{{ $tour->image ? asset('storage/app/public/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
                                     alt="{{ $tour->name }}"
                                     class="tour-image"
                                 >

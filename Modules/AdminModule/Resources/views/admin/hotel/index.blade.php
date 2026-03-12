@@ -31,7 +31,7 @@
                             @foreach($hotels as $hotel)
                             <tr>
                                 <td>
-                                    <img src="{{ $hotel->image ? asset('storage/'.$hotel->image) : asset('public/assets/admin-module/img/media/upload-file.png') }}" 
+                                    <img src="{{ $hotel->image ? asset('storage/app/public/'.$hotel->image) : asset('public/assets/admin-module/img/media/upload-file.png') }}" 
                                          onerror="this.src='{{ asset('public/assets/admin-module/img/media/upload-file.png') }}'" 
                                          width="50" class="rounded">
                                 </td>

@@ -5,7 +5,7 @@
 
 @section('content')
 
-    <!-- Main Content -->
+    <!-- Main Contentt -->
     <div class="main-content">
         <div class="container-fluid">
             <div class="row g-4">

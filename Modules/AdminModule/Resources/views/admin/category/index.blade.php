@@ -70,7 +70,7 @@
                                         <tr>
                                             <td>{{ $categories->firstItem() + $key }}</td>
                                             <td>
-                                                <img width="50" class="rounded" src="{{ asset('storage/'.$category->image) }}" 
+                                                <img width="50" class="rounded" src="{{ asset('storage/app/public/'.$category->image) }}" 
                                                      onerror="this.src='{{ asset('public/assets/admin-module/img/media/upload-file.png') }}'">
                                             </td>
                                             <td>{{ $category->name }}</td>

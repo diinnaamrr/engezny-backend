@@ -18,13 +18,13 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-4">
-                                        <img class="img-fluid rounded w-100" src="{{ asset('storage/'.$tour->image) }}" 
+                                        <img class="img-fluid rounded w-100" src="{{ asset('storage/app/public/'.$tour->image) }}" 
                                              onerror="this.src='{{ asset('public/assets/admin-module/img/media/upload-file.png') }}'">
                                     </div>
                                     <div class="d-flex flex-wrap gap-2">
                                         @if($tour->gallery)
                                             @foreach($tour->gallery as $img)
-                                                <img width="80" class="rounded" src="{{ asset('storage/'.$img) }}">
+                                                <img width="80" class="rounded" src="{{ asset('storage/app/public/'.$img) }}">
                                             @endforeach
                                         @endif
                                     </div>

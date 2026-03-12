@@ -24,6 +24,7 @@ class HotelController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required|numeric',
+            'whatsapp_number' => 'nullable|string',
             'image' => 'nullable|image',
         ]);
 
@@ -59,6 +60,7 @@ class HotelController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required|numeric',
+            'whatsapp_number' => 'nullable|string',
         ]);
 
         $data = $request->all();

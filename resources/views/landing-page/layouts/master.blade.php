@@ -43,7 +43,7 @@
 <!-- Footer Section Start -->
 @include('landing-page.partials._footer')
 <!-- Footer Section End -->
-{{--<script src="{{ asset('public/js/app.js') }}"></script>--}}
+{{--<script src="{{ asset('js/app.js') }}"></script>--}}
 
 <script src="{{ asset('public/landing-page') }}/assets/js/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('public/landing-page') }}/assets/js/bootstrap.min.js"></script>
