@@ -66,7 +66,7 @@
     </div>
 </section>
 
-<link rel="stylesheet" href="{{ asset('public/landing-page') }}/assets/css/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="{{ asset('landing-page') }}/assets/css/bootstrap-icons.min.css" />
 <style>
 /* Custom Styles for the Contact Section */
 .contact-card {

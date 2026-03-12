@@ -8,7 +8,7 @@
 <section class="tour-hero">
     <div class="tour-hero-image">
         <img 
-            src="{{ $tour->image ? asset('storage/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
+            src="{{ $tour->image ? asset('storage/app/public/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
             alt="{{ $tour->name }}"
             class="img-fluid w-100"
         >
@@ -87,7 +87,7 @@
                                 <div class="col-md-4">
                                     <div class="gallery-item">
                                         <img 
-                                            src="{{ asset('storage/'.$image) }}" 
+                                            src="{{ asset('storage/app/public/'.$image) }}" 
                                             alt="Gallery Image"
                                             class="img-fluid"
                                         >

@@ -18,7 +18,7 @@
                     <div class="category-card">
                         <div class="category-image-wrapper">
                             @if($category->image)
-                                <img src="{{ asset('storage/'.$category->image) }}" alt="{{ $category->name }}" class="category-image">
+                                <img src="{{ asset('storage/app/public/'.$category->image) }}" alt="{{ $category->name }}" class="category-image">
                             @else
                                 <div class="category-icon-fallback">
                                     <i class="bi bi-compass"></i>

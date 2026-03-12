@@ -70,13 +70,13 @@
         @csrf
         <div class="login-wrap">
             <div class="login-left py-4 d-flex justify-content-center align-items-center bg-center bg-img"
-                 data-bg-img="{{asset('public/public/assets/admin-module/img/media/login-bg.png')}}">
+                 data-bg-img="{{asset('public/assets/admin-module/img/media/login-bg.png')}}">
                 <div
                     class="tf-box d-flex flex-column gap-3 align-items-center justify-content-center p-4 py-sm-5 p-md-5 mx-md-5 mx-4">
                     <img class="login-logo mb-2" src="{{ onErrorImage(
                                         $logo,
                                         asset('storage/app/public/business') . '/' . $logo,
-                                        asset('public/public/assets/admin-module/img/logo.png'),
+                                        asset('public/assets/admin-module/img/logo.png'),
                                         'business/',
                                     ) }}" alt="Logo">
                     <h2 class="text-center absolute-white">{{translate("Share the")}}

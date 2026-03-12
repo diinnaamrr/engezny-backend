@@ -12,6 +12,8 @@
     </div>
 </section>
 
+@include('landing-page.sections.categories')
+
 {{-- Tours Listing --}}
 <section class="tours-listing py-5">
     <div class="container">
@@ -22,7 +24,7 @@
                         <div class="tour-card">
                             <div class="tour-image">
                                 <img 
-                                    src="{{ $tour->image ? asset('storage/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
+                                    src="{{ $tour->image ? asset('storage/app/public/'.$tour->image) : asset('public/landing-page/assets/img/placeholder.jpg') }}" 
                                     alt="{{ $tour->name }}"
                                     class="img-fluid"
                                 >

@@ -15,6 +15,7 @@ class Hotel extends Model
         'image',
         'gallery',
         'price',
+        'whatsapp_number',
         'is_featured',
     ];
 
