@@ -3,14 +3,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nemotours_app_local
+    container_name: engezny_app_local
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
       - ./:/var/www/html
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - nemotours-local-network
+      - engezny-local-network
     depends_on:
       - db
       - redis
@@ -26,52 +26,52 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: nemotours_nginx_local
+    container_name: engezny_nginx_local
     restart: unless-stopped
     ports:
-      - "8017:80"   # Port مختلف للـ local
+      - "8017:80"
     volumes:
       - ./:/var/www/html
       - ./docker/nginx/default-local.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - nemotours-local-network
+      - engezny-local-network
     depends_on:
       - app
 
   db:
     image: mysql:8.0
-    container_name: nemotours_db_local
+    container_name: engezny_db_local
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-nemotours_db_local}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-${DB_PASSWORD:-nemotoursroot}}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-nemotours123}
-      MYSQL_USER: ${DB_USERNAME:-nemotours}
+      MYSQL_DATABASE: ${DB_DATABASE:-engezny_db_local}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-${DB_PASSWORD:-engeznyroot}}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-engezny123}
+      MYSQL_USER: ${DB_USERNAME:-engezny}
     volumes:
-      - nemotours_dbdata_local:/var/lib/mysql
+      - engezny_dbdata_local:/var/lib/mysql
     ports:
-      - "3308:3306"   # Port مختلف للـ local
+      - "3308:3306"
     networks:
-      - nemotours-local-network
+      - engezny-local-network
     command: --default-authentication-plugin=mysql_native_password
 
   redis:
     image: redis:7-alpine
-    container_name: nemotours_redis_local
+    container_name: engezny_redis_local
     restart: unless-stopped
     ports:
-      - "6381:6379"  # Port مختلف للـ local
+      - "6381:6379"
     volumes:
-      - nemotours_redisdata_local:/data
+      - engezny_redisdata_local:/data
     networks:
-      - nemotours-local-network
+      - engezny-local-network
 
 networks:
-  nemotours-local-network:
+  engezny-local-network:
     driver: bridge
 
 volumes:
-  nemotours_dbdata_local:
+  engezny_dbdata_local:
     driver: local
-  nemotours_redisdata_local:
+  engezny_redisdata_local:
     driver: local
