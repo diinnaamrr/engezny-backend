@@ -1,7 +1,6 @@
 services:
   app:
-    build: .
-    image: engezny-backend:${IMAGE_TAG:-dev}
+    image: ghcr.io/diinnaamrr/engezny-backend:${IMAGE_TAG:-dev}
     container_name: engezny_app_dev
     restart: unless-stopped
     working_dir: /var/www/html

@@ -1,4 +1,4 @@
-name: Prod Deploy - Nemo Tours
+name: Prod Deploy - Engezny
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: fassla-software
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Push Docker image
@@ -29,8 +29,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/fassla-software/nemo-tours-backend:latest
-            ghcr.io/fassla-software/nemo-tours-backend:${{ github.ref_name }}
+            ghcr.io/diinnaamrr/engezny-backend:latest
+            ghcr.io/diinnaamrr/engezny-backend:${{ github.ref_name }}
           no-cache: true 
 
   deploy:
@@ -46,7 +46,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd /var/www/nemo-tours-prod
+            cd /var/www/engezny-prod
 
             # Use the same image tag we just built (master or main)
             export IMAGE_TAG="${{ github.ref_name }}"
@@ -55,16 +55,16 @@ jobs:
             git fetch origin || true
             git pull origin master || git pull origin main || true
 
-            docker login ghcr.io -u fassla-software -p ${{ secrets.GITHUB_TOKEN }}
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
             # Force pull the new image (avoid using cached old image)
-            docker pull ghcr.io/fassla-software/nemo-tours-backend:$IMAGE_TAG
+            docker pull ghcr.io/diinnaamrr/engezny-backend:$IMAGE_TAG
             docker compose -f docker-compose.prod.yml pull
             
             # Copy missing resources files from image to host BEFORE starting containers
             # This ensures files are available when volume mount happens
             echo "📁 Copying resources files from image to host..."
-            TEMP_CONTAINER=$(docker create ghcr.io/fassla-software/nemo-tours-backend:$IMAGE_TAG 2>/dev/null || echo "")
+            TEMP_CONTAINER=$(docker create ghcr.io/diinnaamrr/engezny-backend:$IMAGE_TAG 2>/dev/null || echo "")
             if [ -n "$TEMP_CONTAINER" ]; then
               # Ensure resources directory exists
               mkdir -p ./resources/views/landing-page/sections

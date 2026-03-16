@@ -2,8 +2,8 @@ version: "3.9"
 
 services:
   app:
-    image: ghcr.io/fassla-software/nemo-tours-backend:${IMAGE_TAG:-latest}
-    container_name: nemotours_app_prod
+    image: ghcr.io/diinnaamrr/engezny-backend:${IMAGE_TAG:-latest}
+    container_name: engezny_app_prod
     restart: unless-stopped
     working_dir: /var/www/html
 
@@ -28,11 +28,11 @@ services:
       - redis
 
     networks:
-      - nemotours-prod-network
+      - engezny-prod-network
 
   nginx:
     image: nginx:alpine
-    container_name: nemotours_nginx_prod
+    container_name: engezny_nginx_prod
     restart: unless-stopped
     ports:
       - "8015:80"
@@ -46,11 +46,11 @@ services:
       - app
 
     networks:
-      - nemotours-prod-network
+      - engezny-prod-network
 
   db:
     image: mysql:8.0
-    container_name: nemotours_db_prod
+    container_name: engezny_db_prod
     restart: unless-stopped
 
     environment:
@@ -65,11 +65,11 @@ services:
     command: --default-authentication-plugin=mysql_native_password
 
     networks:
-      - nemotours-prod-network
+      - engezny-prod-network
 
   redis:
     image: redis:7-alpine
-    container_name: nemotours_redis_prod
+    container_name: engezny_redis_prod
     restart: unless-stopped
 
     volumes:
@@ -78,14 +78,14 @@ services:
     command: redis-server --appendonly yes
 
     networks:
-      - nemotours-prod-network
+      - engezny-prod-network
 
 networks:
-  nemotours-prod-network:
+  engezny-prod-network:
     driver: bridge
 
 volumes:
-  nemotours_dbdata_prod:
-  nemotours_redisdata_prod:
+  engezny_dbdata_prod:
+  engezny_redisdata_prod:
   storage_data:
   cache_data:

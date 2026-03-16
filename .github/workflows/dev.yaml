@@ -1,4 +1,4 @@
-name: Dev Deploy - Nemo Tours
+name: Dev Deploy - Engezny
 
 permissions:
   contents: read
@@ -32,7 +32,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/fassla-software/nemo-tours-backend:dev
+          tags: ghcr.io/diinnaamrr/engezny-backend:dev
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -51,11 +51,11 @@ jobs:
           script: |
             cd /var/www
 
-            if [ ! -d "nemo-tours-dev/.git" ]; then
-              git clone -b dev https://github.com/fassla-software/nemo-tours-backend.git nemo-tours-dev
+            if [ ! -d "engezny-dev/.git" ]; then
+              git clone -b dev https://github.com/diinnaamrr/engezny-backend.git engezny-dev
             fi
 
-            cd nemo-tours-dev
+            cd engezny-dev
             git pull origin dev
 
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
@@ -69,11 +69,11 @@ jobs:
 
             # Sync public files (images, CSS, JS) from Docker image to host
             echo "🔄 Syncing public files from image to host..."
-            mkdir -p /var/www/nemo-tours-dev/public/landing-page/assets
-            docker cp nemotours_app_dev:/var/www/html/public/landing-page/assets/. /var/www/nemo-tours-dev/public/landing-page/assets/ 2>/dev/null || echo "⚠️  Some files may not have been copied"
+            mkdir -p /var/www/engezny-dev/public/landing-page/assets
+            docker cp engezny_app_dev:/var/www/html/public/landing-page/assets/. /var/www/engezny-dev/public/landing-page/assets/ 2>/dev/null || echo "⚠️  Some files may not have been copied"
             
             # Set proper permissions
-            chown -R www-data:www-data /var/www/nemo-tours-dev/public 2>/dev/null || chmod -R 755 /var/www/nemo-tours-dev/public
+            chown -R www-data:www-data /var/www/engezny-dev/public 2>/dev/null || chmod -R 755 /var/www/engezny-dev/public
             
             echo "✅ Deployment complete! Public files synced."
 
