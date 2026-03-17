@@ -25,7 +25,7 @@ jobs:
         with:
           registry: ghcr.io
           username: diinnaamrr
-          password: ${{ secrets.GHCR_PAT }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build & Push Docker image
         uses: docker/build-push-action@v5
@@ -58,7 +58,7 @@ jobs:
             cd engezny-dev
             git pull origin dev
 
-            docker login ghcr.io -u diinnaamrr -p ${{ secrets.GHCR_PAT }}
+            docker login ghcr.io -u diinnaamrr -p ${{ secrets.GHCR_TOKEN }}
 
             docker-compose -f docker-compose.dev.yml pull
             docker-compose -f docker-compose.dev.yml down
