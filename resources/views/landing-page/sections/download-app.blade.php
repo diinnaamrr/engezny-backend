@@ -60,7 +60,7 @@
 
 <style>
 .download-section {
-    background: linear-gradient(135deg, #00579E 0%, #003A6F 50%, #FF7D2E 100%);
+    background: linear-gradient(135deg, #071A3D 0%, #0B3D91 52%, #5B42D6 100%);
     border-radius: 0;
     position: relative;
     overflow: hidden;

@@ -4,7 +4,7 @@
         <!-- Logo -->
         <a href="{{route('admin.dashboard')}}" class="logo d-flex gap-2">
             <img width="115"
-                 src="{{$logo ? asset("storage/app/public/business/".$logo) : asset('public/assets/admin-module/img/logo.png')}}"
+                 src="{{$logo ? asset("storage/app/public/business/".$logo) : asset('public/assets/admin-module/img/logo.jpeg')}}"
                  alt="" class="main-logo">
         </a>
         <!-- End Logo -->

@@ -1,7 +1,7 @@
 @php
-    $primary_color = '#00579E'; // Wayak Blue
-    $secondary_color = '#FF7D2E'; // Wayak Orange
-    $light_blue = '#E9F6FF'; // Very light blue for background contrast
+    $primary_color = '#0B3D91'; // Engzni Deep Blue
+    $secondary_color = '#5B42D6'; // Engzni Violet Accent
+    $light_blue = '#EEF4FF'; // Light blue background contrast
     $mockup_image_path = asset("public/landing-page/assets/img/about-wayak.png");
 @endphp
 
@@ -114,7 +114,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0.2;
-    box-shadow: 0 0 50px 30px var(--wayak-blue, #00579E);
+    box-shadow: 0 0 50px 30px var(--wayak-blue, #0B3D91);
 }
 
 
@@ -127,7 +127,7 @@
 .shadow-hover-wayak:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     transform: translateY(-5px);
-    border-color: var(--wayak-blue, #00579E) !important;
+    border-color: var(--wayak-blue, #0B3D91) !important;
 }
 
 /* Hide Image on Mobile/Tablet */

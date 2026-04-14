@@ -105,6 +105,6 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 .feature-title:hover {
-    color: #FF7D2E !important;
+    color: #5B42D6 !important;
 }
 </style>
