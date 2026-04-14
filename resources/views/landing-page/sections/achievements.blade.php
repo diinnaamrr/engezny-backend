@@ -1,6 +1,6 @@
 <section id="how" class="basic-info-section py-5">
     <div class="container">
-        <h2 class="text-center fw-bold mb-5" style="color:#00579E;">
+        <h2 class="text-center fw-bold mb-5" style="color:#0B3D91;">
     		Our Achievements in Numbers
 		</h2>
 
@@ -12,7 +12,7 @@
                     <div class="icon-wrapper mb-3">
                         <img src="{{ asset('public/landing-page/assets/img/icons/1.png') }}" alt="Download App" class="img-fluid">
                     </div>
-                    <h3 class="h5 fw-bold mb-2" style="color:#FF7D2E;">1M+</h3>
+                    <h3 class="h5 fw-bold mb-2" style="color:#5B42D6;">1M+</h3>
                     <p class="text-muted">Download</p>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     <div class="icon-wrapper mb-3">
                         <img src="{{ asset('public/landing-page/assets/img/icons/2.png') }}" alt="Complete Ride" class="img-fluid">
                     </div>
-                    <h3 class="h5 fw-bold mb-2" style="color:#FF7D2E;">1M+</h3>
+                    <h3 class="h5 fw-bold mb-2" style="color:#5B42D6;">1M+</h3>
                     <p class="text-muted">Complete Ride</p>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <div class="icon-wrapper mb-3">
                         <img src="{{ asset('public/landing-page/assets/img/icons/3.png') }}" alt="Happy Customer" class="img-fluid">
                     </div>
-                    <h3 class="h5 fw-bold mb-2" style="color:#FF7D2E;">1M+</h3>
+                    <h3 class="h5 fw-bold mb-2" style="color:#5B42D6;">1M+</h3>
                     <p class="text-muted">Happy Customer</p>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <div class="icon-wrapper mb-3">
                         <img src="{{ asset('public/landing-page/assets/img/icons/4.png') }}" alt="24/7 Support" class="img-fluid">
                     </div>
-                    <h3 class="h5 fw-bold mb-2" style="color:#FF7D2E;">24/7</h3>
+                    <h3 class="h5 fw-bold mb-2" style="color:#5B42D6;">24/7</h3>
                     <p class="text-muted">Support</p>
                 </div>
             </div>
@@ -71,13 +71,13 @@
     background: #fff;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
-    border-top: 4px solid #FF7D2E;
+    border-top: 4px solid #5B42D6;
 }
 
 .basic-info-card:hover {
     transform: translateY(-10px) rotate(-1deg);
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    border-top-color: #00579E;
+    border-top-color: #0B3D91;
 }
 
 .basic-info-card .icon-wrapper {
@@ -88,12 +88,12 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: linear-gradient(135deg, #00579E 50%, #FF7D2E 100%);
+    background: linear-gradient(135deg, #0B3D91 50%, #5B42D6 100%);
     transition: background 0.4s ease;
 }
 
 .basic-info-card:hover .icon-wrapper {
-    background: linear-gradient(135deg, #FF7D2E 0%, #00579E 100%);
+    background: linear-gradient(135deg, #5B42D6 0%, #0B3D91 100%);
 }
 
 .basic-info-card img {

@@ -59,7 +59,7 @@
 
     .section-subtitle-small {
         font-size: 18px;
-        color: #ee212e;
+        color: #5B42D6;
         font-weight: 600;
         margin-bottom: 0.5rem;
     }
@@ -67,7 +67,7 @@
     .section-title-large {
         font-family: 'Volkhov', serif;
         font-size: 50px;
-        color: #181E4B;
+        color: #0B3D91;
         font-weight: 700;
     }
 
@@ -158,7 +158,7 @@
 
     .btn-see-all {
         display: inline-block;
-        background-color: #ee212e;
+        background-color: #0B3D91;
         color: #fff;
         padding: 12px 35px;
         border-radius: 10px;
@@ -169,7 +169,7 @@
     }
 
     .btn-see-all:hover {
-        background-color: #08aaf4;
+        background-color: #5B42D6;
         color: #fff;
         transform: translateY(-3px);
         box-shadow: 0px 25px 45px rgba(62, 105, 173, 0.25);

@@ -85,13 +85,13 @@
 
 /* List Icons Glow Effect */
 .feature-icon {
-    color: #FF7D2E;
+    color: #5B42D6;
     font-size: 1.5rem;
     transition: 0.3s ease;
 }
 .icon-hover:hover .feature-icon {
-    color: #00579E;
-    text-shadow: 0 0 12px rgba(0, 87, 158, 0.6);
+    color: #0B3D91;
+    text-shadow: 0 0 12px rgba(11, 61, 145, 0.6);
     transform: scale(1.2);
 }
 
@@ -103,8 +103,8 @@
     font-size: 1.2rem;
     color: white;
     border-radius: 50px;
-    background: linear-gradient(90deg, #FF7D2E, #FF9F60);
-    box-shadow: 0px 8px 18px rgba(255, 125, 46, 0.4);
+    background: linear-gradient(90deg, #0B3D91, #5B42D6);
+    box-shadow: 0px 8px 18px rgba(11, 61, 145, 0.4);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -126,7 +126,7 @@
 /* Hover Animation */
 .btn-animated:hover {
     transform: scale(1.07);
-    box-shadow: 0px 12px 25px rgba(255, 125, 46, 0.55);
+    box-shadow: 0px 12px 25px rgba(91, 66, 214, 0.55);
 }
 .btn-animated:hover::before {
     left: 130%;

@@ -9,7 +9,7 @@
             </div>
             <div class="col-4 text-center">
                 <img 
-                    src="{{ asset('public/landing-page/assets/img/nemo_logo.png') }}" 
+                    src="{{ asset('public/assets/admin-module/img/logo.jpeg') }}" 
                     alt="NEMO Logo" 
                     class="nemo-logo"
                 >
@@ -33,7 +33,7 @@
         font-family: 'Volkhov', serif;
         font-size: 2.5rem;
         font-weight: 700;
-        color: #333;
+        color: #0B3D91;
         margin: 0;
     }
 

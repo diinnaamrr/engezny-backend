@@ -36,7 +36,7 @@
 
 <style>
 /*  color Wayak */
-.wayak-span { color:#FF7D2E; }
+.wayak-span { color:#5B42D6; }
 
 /* bk img */
 .hero-section {
@@ -77,28 +77,28 @@
 
 /*  orange button  */
 .wayak-btn-orange {
-    color: #FF7D2E;
-    background: rgba(255, 125, 46, 0.15);
-    border-color: #FF7D2E;
+    color: #5B42D6;
+    background: rgba(91, 66, 214, 0.15);
+    border-color: #5B42D6;
 }
 .wayak-btn-orange:hover {
-    background: #FF7D2E;
+    background: #5B42D6;
     color: #fff;
     transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(255,125,46,0.5);
+    box-shadow: 0 6px 18px rgba(91, 66, 214, 0.5);
 }
 
 /*  blue button */
 .wayak-btn-blue {
-    color: #00579E;
-    background: rgba(0, 87, 158, 0.15);
-    border-color: #00579E;
+    color: #0B3D91;
+    background: rgba(11, 61, 145, 0.15);
+    border-color: #0B3D91;
 }
 .wayak-btn-blue:hover {
-    background: #00579E;
+    background: #0B3D91;
     color: #fff;
     transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0,87,158,0.5);
+    box-shadow: 0 6px 18px rgba(11, 61, 145, 0.5);
 }
 
 /* in mob and sm screen t7t b3d */
