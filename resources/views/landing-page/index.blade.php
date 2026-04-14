@@ -1,6 +1,6 @@
 @extends('landing-page.layouts.master')
 
-@section('title', 'Wayak – Smart Delivery Platform')
+@section('title', 'engezny – Smart Delivery Platform')
 
 @section('content')
 

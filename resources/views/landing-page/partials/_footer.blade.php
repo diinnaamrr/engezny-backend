@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row align-items-baseline">
             <div class="col-md-3 text-start mb-4">
-                <img src="{{ asset('public/landing-page/assets/img/footer_logo.png') }}"
+                <img src="{{ asset('public/assets/admin-module/img/logo.jpeg') }}"
                     alt="Nemo Logo"
                     class="footer-logo">
             </div>
@@ -18,7 +18,7 @@
             <div class="col-md-3 text-start mb-4">
                 <h5 class="footer-title">Our Office</h5>
                 <p class="contact-address text-muted small">
-                    <i class="bi bi-geo-alt-fill me-1" style="color: #ff7d01;"></i>
+                    <i class="bi bi-geo-alt-fill me-1" style="color: #5B42D6;"></i>
                     19th Street, Marsa Alam, next to Al-Nahisi Supermarket, and opposite Al-Burhan School.
                 </p>
             </div>
@@ -47,7 +47,7 @@
     .footer-title {
         font-size: 18px;
         font-weight: 600;
-        color: #181E4B;
+        color: #0B3D91;
         margin-bottom: 1rem;
     }
 
@@ -67,7 +67,7 @@
         justify-content: center;
         width: 40px;
         height: 40px;
-        background-color: #08aaf4;
+        background-color: #0B3D91;
         color: white;
         border-radius: 50%;
         text-decoration: none;
@@ -75,7 +75,7 @@
     }
 
     .social-link:hover {
-        background-color: #2d5089;
+        background-color: #5B42D6;
         color: white;
         transform: translateY(-2px);
     }
@@ -91,7 +91,7 @@
     }
 
     .contact-email a {
-        color: #6ed5f9;
+        color: #5B42D6;
         text-decoration: none;
     }
 

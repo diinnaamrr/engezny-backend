@@ -1,6 +1,6 @@
 @php
-    $primary_color = '#00579E'; // Wayak Blue
-    $secondary_color = '#FF7D2E'; // Wayak Orange
+    $primary_color = '#0B3D91'; // Engzni Deep Blue
+    $secondary_color = '#5B42D6'; // Engzni Violet Accent
     
     // Fallback Data (as previously defined)
     $email = 'wayak@gmail.com';
@@ -79,7 +79,7 @@
 .contact-card:hover {
     border-color: {{ $primary_color }};
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 87, 158, 0.1) !important;
+    box-shadow: 0 10px 25px rgba(11, 61, 145, 0.15) !important;
 }
 
 .icon-circle {
@@ -89,13 +89,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 87, 158, 0.3);
+    box-shadow: 0 4px 10px rgba(11, 61, 145, 0.3);
     transition: all 0.3s ease;
 }
 
 .contact-card:hover .icon-circle {
     background-color: {{ $secondary_color }} !important;
-    box-shadow: 0 4px 10px rgba(255, 125, 46, 0.5);
+    box-shadow: 0 4px 10px rgba(91, 66, 214, 0.5);
 }
 
 /* Responsive adjustments for Font size */

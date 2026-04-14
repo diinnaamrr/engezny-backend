@@ -76,7 +76,7 @@
                     <img class="login-logo mb-2" src="{{ onErrorImage(
                                         $logo,
                                         asset('storage/app/public/business') . '/' . $logo,
-                                        asset('public/assets/admin-module/img/logo.png'),
+                                        asset('public/assets/admin-module/img/logo.jpeg'),
                                         'business/',
                                     ) }}" alt="Logo">
                     <h2 class="text-center absolute-white">{{translate("Share the")}}

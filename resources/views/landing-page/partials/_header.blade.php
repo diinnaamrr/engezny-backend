@@ -1,5 +1,6 @@
 resources/views/landing-page/about-us.blade.php
-@php($primary_color = '#08aaf4')
+@php($primary_color = '#0B3D91')
+@php($accent_color = '#5B42D6')
 
 <header id="main-header" class="sticky-top shadow-none">
     <nav class="navbar navbar-expand-lg px-3 py-3 fixed-top" id="nemo-navbar">
@@ -8,7 +9,7 @@ resources/views/landing-page/about-us.blade.php
             {{-- Logo --}}
             <a class="navbar-brand d-flex align-items-center py-0" href="{{ route('home') }}">
                 <img
-                    src="{{asset('public/landing-page/assets/img/footer_logo.png')}}"
+                    src="{{asset('public/assets/admin-module/img/logo.jpeg')}}"
                     alt="NEMO Logo"
                     class="img-fluid rounded-3"
                     style="height: 60px; transition: height 0.3s ease; ">
@@ -49,7 +50,7 @@ resources/views/landing-page/about-us.blade.php
                     {{-- Get in Touch Button (Mobile) --}}
                     <li class="nav-item d-lg-none">
                         <a class="btn w-100 mt-2 text-white fw-bold gear-btn-mobile" href="{{ route('contact-us') }}"
-                            style="background-color: #6ed5f9;">
+                            style="background-color: {{ $accent_color }};">
                             Get in Touch
                         </a>
                     </li>
@@ -159,15 +160,15 @@ resources/views/landing-page/about-us.blade.php
 
     /* Get in Touch Button */
     .gear-btn {
-        background-color: #ff7d01;
+        background-color: {{ $accent_color }};
         color: white !important;
-        border: 2px solid #ff7d01;
+        border: 2px solid {{ $accent_color }};
         transition: all 0.3s ease;
     }
 
     .gear-btn:hover {
         background-color: transparent;
-        color: #ff7d01 !important;
+        color: {{ $accent_color }} !important;
     }
 
     /* Scrolled State */
