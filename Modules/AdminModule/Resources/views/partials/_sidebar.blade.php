@@ -92,19 +92,7 @@
               
                 <li class="nav-category"
                     title="{{ translate('trip_management')}}">{{ translate('trip_management')}}</li>
-                         <li class="{{ Request::is('dashboard/carpool*') ? 'active open' : '' }}">
-    <a href="{{ url('dashboard/carpool') }}">
-        <i class="bi bi-car-front-fill"></i>
-        <span class="link-title">Carpool</span>
-    </a>
-</li>
-              
-              <li class="{{ Request::is('dashboard/carpool/create') ? 'active' : '' }}">
-    <a href="{{ url('dashboard/carpool/create') }}">
-        <i class="bi bi-plus-circle-fill"></i>
-        <span class="link-title">Create Carpool</span>
-    </a>
-</li>
+
               
               
               <li class="{{ Request::is('admin/send-notification*') ? 'active open' : '' }}">
@@ -114,30 +102,7 @@
     </a>
 </li>
 
-                <!---------- Start Tours Management --------------->
-                <li class="nav-category" title="{{ translate('tours_management') }}">
-                    {{ translate('tours_management') }}
-                </li>
-                <li class="{{Request::is('admin/categories*')?'active open':''}}">
-                    <a href="{{ route('admin.categories.index') }}">
-                        <i class="bi bi-tags-fill"></i>
-                        <span class="link-title text-capitalize">{{ translate('categories') }}</span>
-                    </a>
-                </li>
-                <li class="{{Request::is('admin/tours*')?'active open':''}}">
-                    <a href="{{ route('admin.tours.index') }}">
-                        <i class="bi bi-globe-americas"></i>
-                        <span class="link-title text-capitalize">{{ translate('tours') }}</span>
-                    </a>
-                </li>
-                <!---------- End Tours Management --------------->
-                <li class="{{Request::is('admin/hotels*')?'active open':''}}">
-                    <a href="{{ route('admin.hotels.index') }}">
-                        <i class="bi bi-house-door"></i>
-                        <span class="link-title text-capitalize">Hotels</span>
-                    </a>
-                </li>
-                <!---------- End Hotels Management --------------->
+
               
                 <li class="{{ Request::is('admin/trip/log') || Request::is('admin/trip/list/*') || Request::is('admin/trip/details/*')?'active sub-menu-opened':'' }} text-capitalize">
                     <a href="#">
