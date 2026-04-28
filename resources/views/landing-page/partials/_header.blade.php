@@ -28,11 +28,11 @@ resources/views/landing-page/about-us.blade.php
             </button>
 
             {{-- Menu --}}
-            <div class="collapse navbar-collapse" id="landingNavbar">
+            <div class="collapse navbar-collapse" id="landingNavbar"> 
                 <ul class="navbar-nav mx-auto gap-lg-4 mt-3 mt-lg-0">
                     {{-- Nav Links --}}
                     <li class="nav-item">
-                        <a class="nav-link fw-normal text-base" href="{{ route('home') }}">Home</a>
+                        <a class="nav-link fw-normal text-base" href="{{ route('home') }}">H</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-normal text-base" href="{{ route('tours') }}">Tours</a>
