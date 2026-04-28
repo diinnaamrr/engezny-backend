@@ -16,13 +16,12 @@
         <!-- End Aside Toggle Menu Button -->
     </div>
     <!-- End Aside Header -->
-     by ahmed rwash
 
-    <!-- Aside Body -->
+    <!-- Aside Body --> 
     <div class="position-relative flex-grow-1">
         <div class="aside-body" data-trigger="scrollbar">
             <!-- User Profile -->
-            <div class="user-profile media gap-3 align-items-center my-3">
+             <div class="user-profile media gap-3 align-items-center my-3">
                 <div class="avatar rounded-circle">
                     <img class="fit-object dark-support rounded-circle"
                          src="{{ onErrorImage(
@@ -654,7 +653,6 @@
     </div>
     <!-- End Aside Body -->
 </aside>
-<!--ahmed--> 
 @push('script')
     <script src="{{asset('public/assets/admin-module/js/admin-module/sidebar.js')}}"></script>
 @endpush
