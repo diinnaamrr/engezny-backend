@@ -2335,6 +2335,8 @@
   'Playstore_Button' => 'Playstore Button',
   'Complete Ride Content' => 'Complete Ride Content',
   'Please registered your vehicle first  you do not found trip in this system.' => 'Please registered your vehicle first  you do not found trip in this system.',
+  'vehicle_not_registered_404_msg' => 'Please register your vehicle first. You cannot receive trips until it is registered.',
+  'vehicle_not_approved_or_active_404_msg' => 'Your vehicle is not approved or is still pending approval. Please contact the administrator.',
   'Zone not found' => 'Zone not found',
   'Your vehicle is approved by admin.' => 'Your vehicle is approved by admin.',
   'When it’s on the Driver will be able to see any predefined Q & A.' => 'When it’s on the Driver will be able to see any predefined Q & A.',

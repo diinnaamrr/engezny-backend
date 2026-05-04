@@ -2325,5 +2325,7 @@
   'the smart  sustainable  and efficient ride sharing & delivery solution.' => 'The smart  sustainable  and efficient ride sharing & delivery solution.',
   'Embrace the future today and explore the amazing features that make ' => 'Embrace the future today and explore the amazing features that make ',
   'It’s Time to Change The Riding Experience' => 'It’s Time to Change The Riding Experience',
-  'Please registered your vehicle first  you do not found trip in this system.' => 'Please registered your vehicle first  you do not found trip in this system.',
+  'Please registered your vehicle first  you do not found trip in this system.' => 'يرجى تسجيل مركبتك أولاً. لا يمكنك استقبال رحلات قبل إتمام التسجيل.',
+  'vehicle_not_registered_404_msg' => 'يرجى تسجيل مركبتك أولاً. لا يمكنك استقبال رحلات قبل إتمام التسجيل.',
+  'vehicle_not_approved_or_active_404_msg' => 'مركبتك غير معتمدة أو قيد انتظار الموافقة. تواصلي مع إدارة النظام.',
 );

@@ -1048,11 +1048,11 @@ const VEHICLE_CATEGORY_404 = [
 
 const VEHICLE_NOT_APPROVED_OR_ACTIVE_404 = [
     'response_code' => 'vehicle_not_approved_or_active_404',
-    'message' => 'Your registered vehicle is not approved or active. Please contact system admin, otherwise you do not found trip in this system.'
+    'message' => 'vehicle_not_approved_or_active_404_msg',
 ];
 const VEHICLE_NOT_REGISTERED_404 = [
     'response_code' => 'vehicle_not_registered_404',
-    'message' => 'Please registered your vehicle first, you do not found trip in this system.'
+    'message' => 'vehicle_not_registered_404_msg',
 ];
 
 
