@@ -28,7 +28,7 @@ resources/views/landing-page/about-us.blade.php
             </button>
 
             {{-- Menu --}}
-            <div class="collapse navbar-collapse" id="landingNavbar">
+            <div class="collapse navbar-collapse" id="landingNavbar"> 
                 <ul class="navbar-nav mx-auto gap-lg-4 mt-3 mt-lg-0">
                     {{-- Nav Links --}}
                     <li class="nav-item">
