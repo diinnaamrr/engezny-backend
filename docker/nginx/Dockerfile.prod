@@ -1,0 +1,6 @@
+# نسخ كود Laravel من صورة التطبيق لـ nginx (نفس إصدار الكود الذي يشغّله php-fpm).
+# يُبنى على السيرفر: docker compose -f docker-compose.prod.yml build nginx
+ARG APP_IMAGE=ghcr.io/diinnaamrr/engezny-backend:latest
+FROM ${APP_IMAGE} AS app
+FROM nginx:alpine
+COPY --from=app /var/www/html /var/www/html
