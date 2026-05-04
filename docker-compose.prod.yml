@@ -86,19 +86,17 @@ services:
     networks:
       - engezny-prod-network
 
-  # واجهة لقاعدة البيانات (اختياري — قفلي المنفذ 8045 في الجدار الناري للإنتاج)
+  # phpMyAdmin: بدون دخول تلقائي — ادخلي DB_USERNAME و DB_PASSWORD من .env في شاشة تسجيل الدخول
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: engezny_phpmyadmin_prod
     restart: unless-stopped
+    ports:
+      - "8045:80"
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      PMA_USER: ${DB_USERNAME}
-      PMA_PASSWORD: ${DB_PASSWORD}
       UPLOAD_LIMIT: 100M
-    ports:
-      - "8045:80"
     depends_on:
       - db
     networks:
