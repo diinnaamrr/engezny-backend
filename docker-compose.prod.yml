@@ -37,9 +37,12 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: docker/nginx/Dockerfile.prod
-      args:
-        APP_IMAGE: ghcr.io/diinnaamrr/engezny-backend:${IMAGE_TAG:-latest}
+      # لا تستخدم ${APP_IMAGE} هنا — Compose يستبدله قبل البناء فيصبح FROM فاضي.
+      # IMAGE_TAG يُعوَّض من البيئة أو يبقى latest.
+      dockerfile_inline: |
+        FROM ghcr.io/diinnaamrr/engezny-backend:${IMAGE_TAG:-latest} AS app
+        FROM nginx:alpine
+        COPY --from=app /var/www/html /var/www/html
     image: engezny-nginx-prod:${IMAGE_TAG:-latest}
     container_name: engezny_nginx_prod
     restart: unless-stopped
@@ -73,6 +76,31 @@ services:
 
     command: --default-authentication-plugin=mysql_native_password
 
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+    networks:
+      - engezny-prod-network
+
+  # واجهة لقاعدة البيانات (اختياري — قفلي المنفذ 8045 في الجدار الناري للإنتاج)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: engezny_phpmyadmin_prod
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${DB_USERNAME}
+      PMA_PASSWORD: ${DB_PASSWORD}
+      UPLOAD_LIMIT: 100M
+    ports:
+      - "8045:80"
+    depends_on:
+      - db
     networks:
       - engezny-prod-network
 
