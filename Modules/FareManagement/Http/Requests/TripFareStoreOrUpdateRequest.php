@@ -18,6 +18,7 @@ class TripFareStoreOrUpdateRequest extends FormRequest
             'waiting_fee' => 'nullable|gte:0',
             'cancellation_fee' => 'nullable|gte:0',
             'min_cancellation_fee' => 'nullable|gte:0',
+            'min_fare' => 'nullable|numeric|min:0',
             'idle_fee' => 'nullable|gte:0',
             'trip_delay_fee' => 'nullable|gte:0',
             'penalty_fee_for_cancel' => 'nullable|gte:0',

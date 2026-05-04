@@ -96,6 +96,7 @@ trait CommonTrait
                 $extraFare = ($actual_fare * $trip->extra_fare_fee) / 100;
                 $actual_fare += $extraFare;
             }
+            $actual_fare = max($actual_fare, (float)($fare->min_fare ?? 0));
 
             if ($trip->fee->cancelled_by === 'customer') {
                 $cancellation_percent = $fare->cancellation_fee_percent;
@@ -123,6 +124,7 @@ trait CommonTrait
                 $extraFare = ($actual_fare * $trip->extra_fare_fee) / 100;
                 $actual_fare += $extraFare;
             }
+            $actual_fare = max($actual_fare, (float)($fare->min_fare ?? 0));
             $vat_percent = (double)get_cache('vat_percent') ?? 1;
             $distanceFare = $trip->rise_request_count > 0 ? $trip->actual_fare / (1 + ($vat_percent / 100)) : $actual_fare;
             $actual_fare = $bid_on_fare ? $bid_on_fare->bid_fare / (1 + ($vat_percent / 100)) : $distanceFare;
@@ -264,6 +266,7 @@ trait CommonTrait
                 $extraFare = $this->checkZoneExtraFare($zone);
                 $points = (int)getSession('currency_decimal_point') ?? 0;
                 $est_fare = $trip->vehicleCategory->type === 'car' ? round(($trip->base_fare + $drive_fare), $points) : round(($trip->base_fare + $bike_fare), $points);
+                $est_fare = max($est_fare, round((float)($trip->min_fare ?? 0), $points));
                 if (!empty($extraFare)) {
                     $extraEstFareAmount = ($est_fare * $extraFare['extraFareFee']) / 100;
                     $extraEstFare = $extraEstFareAmount + $est_fare;
@@ -296,6 +299,7 @@ trait CommonTrait
                     "vehicle_category_id" => $trip->vehicle_category_id,
                     'base_fare' => $trip->base_fare,
                     'base_fare_per_km' => $trip->base_fare_per_km,
+                    'min_fare' => round((float)($trip->min_fare ?? 0), $points),
                     'fare' => $trip->VehicleCategory->type === 'car' ? round($drive_fare, 2) : round($bike_fare, 2),
                     'estimated_distance' => $trip->VehicleCategory->type === 'car' ? $drive_est_distance : $bike_est_distance,
                     'estimated_duration' => $trip->VehicleCategory->type === 'car' ? $drive_est_duration : $bike_est_duration,

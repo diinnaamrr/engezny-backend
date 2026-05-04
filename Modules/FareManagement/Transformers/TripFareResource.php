@@ -22,6 +22,7 @@ class TripFareResource extends JsonResource
             'base_fare_per_km' => $this->base_fare_per_km,
             'waiting_fee_per_min' => $this->waiting_fee_per_min,
             'min_cancellation_fee' => $this->min_cancellation_fee,
+            'min_fare' => $this->min_fare,
             'idle_fee_per_min' => $this->idle_fee_per_min,
             'trip_delay_fee_per_min' => $this->trip_delay_fee_per_min,
             'penalty_fee_for_cancel' => $this->penalty_fee_for_cancel,

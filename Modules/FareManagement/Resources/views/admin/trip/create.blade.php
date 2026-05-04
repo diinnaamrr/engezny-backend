@@ -104,6 +104,17 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 col-lg-4">
+                                <label for="min_fare" class="form-label">{{ translate('Minimum_Fare') }}</label>
+                                <div class="input-group_tooltip">
+                                    <input type="number" name="min_fare" step=".01" min="0"
+                                        max="99999999" class="form-control part-1-input copy-value"
+                                        placeholder="{{ translate('Minimum_Fare') }}"
+                                        id="min_fare" value="{{ $defaultTripFare->min_fare ?? 0 }}">
+                                    <i class="bi bi-info-circle-fill text-primary tooltip-icon" data-bs-toggle="tooltip"
+                                        data-bs-title="{{ translate('set_the_minimum_trip_fare_for_the_ride') }}"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
                                 <label for="idle_fee" class="form-label">
                                     {{ translate('Idle_Fee_(Per_min)') }}
                                 </label>
@@ -293,7 +304,37 @@
                                                         class="form-control min_cancellation_fee_default part-2-input {{ $vehicleCategory->id }}"
                                                         {{ $vehicleCategory->id == $trip?->vehicle_category_id ? '' : 'readonly' }}>
                                                 </td>
-                                            @empty
+                                                @empty
+                                                @endforelse
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2 text-primary fw-semibold">
+                                                        <div class="text-capitalize">
+                                                            {{ translate('minimum_trip_fare') }}
+                                                            ({{ session()->get('currency_symbol') ?? '$' }})
+                                                        </div>
+                                                        <i class="bi bi-info-circle-fill fs-14" data-bs-toggle="tooltip"
+                                                            data-bs-title="{{ translate('set_the_minimum_trip_fare_for_the_ride') }}">
+                                                        </i>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input readonly type="number"
+                                                        class="form-control min_fare_default"
+                                                        value="{{ $defaultTripFare->min_fare ?? 0 }}">
+                                                </td>
+                                                @forelse($vehicleCategories as $vehicleCategory)
+                                                    @php($trip = $tripFares?->firstWhere('vehicle_category_id', $vehicleCategory->id))
+                                                    <td
+                                                        class="{{ $vehicleCategory->id }} {{ $vehicleCategory->id == $trip?->vehicle_category_id ? '' : 'd-none' }}">
+                                                        <input type="number" step=".01" min="0"
+                                                            max="99999999" name="min_fare_{{ $vehicleCategory->id }}"
+                                                            class="form-control min_fare_default part-2-input {{ $vehicleCategory->id }}"
+                                                            value="{{ isset($trip->min_fare) ? round($trip->min_fare, 2) : 0 }}"
+                                                            {{ $vehicleCategory->id == $trip?->vehicle_category_id ? '' : 'readonly' }}>
+                                                    </td>
+                                                @empty
                                                 @endforelse
                                             </tr>
                                             <tr>

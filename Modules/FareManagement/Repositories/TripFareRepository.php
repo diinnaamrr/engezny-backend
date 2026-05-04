@@ -56,6 +56,7 @@ class TripFareRepository implements TripFareInterface
         $defaultTripFare->waiting_fee_per_min = $attributes['waiting_fee'] ?? 0;
         $defaultTripFare->cancellation_fee_percent = $attributes['cancellation_fee'] ?? 0;
         $defaultTripFare->min_cancellation_fee = $attributes['min_cancellation_fee'] ?? 0;
+        $defaultTripFare->min_fare = $attributes['min_fare'] ?? 0;
         $defaultTripFare->idle_fee_per_min = $attributes['idle_fee'] ?? 0;
         $defaultTripFare->trip_delay_fee_per_min = $attributes['trip_delay_fee'] ?? 0;
         $defaultTripFare->penalty_fee_for_cancel = 0;
@@ -89,6 +90,7 @@ class TripFareRepository implements TripFareInterface
                     $tripFare->waiting_fee_per_min = $attributes['waiting_fee'] ?? 0;
                     $tripFare->cancellation_fee_percent = $attributes['cancellation_fee'] ?? 0;
                     $tripFare->min_cancellation_fee = $attributes['min_cancellation_fee'] ?? 0;
+                    $tripFare->min_fare = $attributes['min_fare'] ?? 0;
                     $tripFare->idle_fee_per_min = $attributes['idle_fee'] ?? 0;
                     $tripFare->trip_delay_fee_per_min = $attributes['trip_delay_fee'] ?? 0;
                     $tripFare->penalty_fee_for_cancel = $attributes['trip_delay_fee'] ?? 0;
@@ -99,6 +101,7 @@ class TripFareRepository implements TripFareInterface
                     $tripFare->waiting_fee_per_min = $attributes['waiting_fee_' . $vehicleCategories->id] ?? 0;
                     $tripFare->cancellation_fee_percent = $attributes['cancellation_fee_' . $vehicleCategories->id] ?? 0;
                     $tripFare->min_cancellation_fee = $attributes['min_cancellation_fee_' . $vehicleCategories->id] ?? 0;
+                    $tripFare->min_fare = $attributes['min_fare_' . $vehicleCategories->id] ?? 0;
                     $tripFare->idle_fee_per_min = $attributes['idle_fee_' . $vehicleCategories->id] ?? 0;
                     $tripFare->trip_delay_fee_per_min = $attributes['trip_delay_fee_' . $vehicleCategories->id] ?? 0;
                     $tripFare->penalty_fee_for_cancel = $attributes['penalty_fee_for_cancel_' . $vehicleCategories->id] ?? 0;
