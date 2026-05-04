@@ -18,6 +18,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Modules\BusinessManagement\Entities\BusinessSetting;
 use Modules\AdminModule\Repositories\ActivityLogRepository;
 use Modules\BusinessManagement\Entities\FirebasePushNotification;
@@ -101,7 +102,27 @@ if (!function_exists('fileUploader')) {
         if (!Storage::disk('public')->exists($dir)) {
             Storage::disk('public')->makeDirectory($dir);
         }
-        Storage::disk('public')->put($dir . $imageName, file_get_contents($image));
+
+        if ($image instanceof UploadedFile) {
+            if (!$image->isValid()) {
+                return $oldImage ?? 'def.png';
+            }
+            $path = $image->getRealPath();
+            if ($path === false || $path === '') {
+                return $oldImage ?? 'def.png';
+            }
+            $binary = file_get_contents($path);
+        } elseif (is_string($image) && $image !== '') {
+            $binary = file_get_contents($image);
+        } else {
+            return $oldImage ?? 'def.png';
+        }
+
+        if ($binary === false) {
+            return $oldImage ?? 'def.png';
+        }
+
+        Storage::disk('public')->put($dir . $imageName, $binary);
 
         return $imageName;
     }
