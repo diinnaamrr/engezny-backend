@@ -31,12 +31,35 @@ if (!function_exists('translate')) {
             $processedKey = ucfirst(str_replace('_', ' ', removeSpecialCharacters($key)));
             $key = removeSpecialCharacters($key);
             if (!array_key_exists($key, $langArray)) {
+                if ($local === 'ar') {
+                    try {
+                        $translated = autoTranslator($processedKey, 'en', 'ar');
+                        if (!empty($translated)) {
+                            $processedKey = $translated;
+                        }
+                    } catch (\Exception $e) {
+                        // ignore
+                    }
+                }
                 $langArray[$key] = $processedKey;
                 $str = "<?php return " . var_export($langArray, true) . ";";
                 file_put_contents(base_path('resources/lang/' . $local . '/lang.php'), $str);
                 $result = $processedKey;
             } else {
                 $result = trans('lang.' . $key);
+                if ($local === 'ar' && !preg_match('/[\x{0600}-\x{06FF}]/u', $result)) {
+                    try {
+                        $translated = autoTranslator($result, 'en', 'ar');
+                        if (!empty($translated)) {
+                            $langArray[$key] = $translated;
+                            $str = "<?php return " . var_export($langArray, true) . ";";
+                            file_put_contents(base_path('resources/lang/' . $local . '/lang.php'), $str);
+                            $result = $translated;
+                        }
+                    } catch (\Exception $e) {
+                        // ignore
+                    }
+                }
             }
         } catch (\Exception $exception) {
             $result = trans('lang.' . $key);
@@ -53,8 +76,8 @@ if (!function_exists('defaultLang')) {
             $lang = session('locale');
         } elseif (businessConfig('system_language', 'language_settings')) {
             $data = businessConfig('system_language', 'language_settings')->value;
-            $code = 'en';
-            $direction = 'ltr';
+            $code = 'ar';
+            $direction = 'rtl';
             foreach ($data as $ln) {
                 if (array_key_exists('default', $ln) && $ln['default']) {
                     $code = $ln['code'];
