@@ -518,6 +518,7 @@
 @endsection
 
 @push('script')
+    <script src="{{asset('public/assets/admin-module/js/maps/zone-polygon-drawer.js') }}"></script>
     <script src="{{asset('public/assets/admin-module/js/zone-management/zone/index.js') }}"></script>
     <script>
         "use strict";
@@ -534,7 +535,7 @@
         @endcan
 
         let map; // Global declaration of the map
-        let drawingManager;
+        let zoneDrawer;
         let lastPolygon = null;
         let polygons = [];
 
@@ -563,7 +564,10 @@
             controlUI.appendChild(controlText);
             // Setup the click event listeners: simply set the map to Chicago.
             controlUI.addEventListener("click", () => {
-                lastPolygon.setMap(null);
+                if (zoneDrawer) {
+                    zoneDrawer.clearPolygon();
+                }
+                lastPolygon = null;
                 $('#coordinates').val('');
             });
         }
@@ -580,18 +584,16 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
             }
             map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
-            drawingManager = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.POLYGON,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: [google.maps.drawing.OverlayType.POLYGON]
-                },
-                polygonOptions: {
-                    editable: true
+            zoneDrawer = initZonePolygonDrawer(map, {
+                onComplete: function (path, polygon) {
+                    if (lastPolygon) {
+                        lastPolygon.setMap(null);
+                    }
+                    $('#coordinates').val(path);
+                    lastPolygon = polygon;
+                    auto_grow();
                 }
             });
-            drawingManager.setMap(map);
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -603,16 +605,6 @@
                         map.setCenter(pos);
                     });
             }
-
-            google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-
-                if (lastPolygon) {
-                    lastPolygon.setMap(null);
-                }
-                $('#coordinates').val(event.overlay.getPath().getArray());
-                lastPolygon = event.overlay;
-                auto_grow();
-            });
 
             const resetDiv = document.createElement("div");
             resetMap(resetDiv, lastPolygon);

@@ -97,6 +97,7 @@
 @endsection
 
 @push('script')
+    <script src="{{asset('public/assets/admin-module/js/maps/zone-polygon-drawer.js') }}"></script>
     <script>
         "use strict";
         auto_grow();
@@ -109,7 +110,7 @@
 
         let map; // Global declaration of the map
         let lat_longs = new Array();
-        let drawingManager;
+        let zoneDrawer;
         let lastpolygon = null;
         let bounds = new google.maps.LatLngBounds();
         let polygons = [];
@@ -140,9 +141,11 @@
             controlUI.appendChild(controlText);
             // Setup the click event listeners: simply set the map to Chicago.
             controlUI.addEventListener("click", () => {
-                lastpolygon.setMap(null);
+                if (zoneDrawer) {
+                    zoneDrawer.clearPolygon();
+                }
+                lastpolygon = null;
                 $('#coordinates').val('');
-
             });
         }
 
@@ -183,31 +186,15 @@
             });
 
 
-            drawingManager = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.POLYGON,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: [google.maps.drawing.OverlayType.POLYGON]
-                },
-                polygonOptions: {
-                    editable: true
+            zoneDrawer = initZonePolygonDrawer(map, {
+                onComplete: function (path, polygon) {
+                    if (lastpolygon) {
+                        lastpolygon.setMap(null);
+                    }
+                    $('#coordinates').val(path);
+                    lastpolygon = polygon;
+                    auto_grow();
                 }
-            });
-            drawingManager.setMap(map);
-
-            google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                let newShape = event.overlay;
-                newShape.type = event.type;
-            });
-
-            google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                if (lastpolygon) {
-                    lastpolygon.setMap(null);
-                }
-                $('#coordinates').val(event.overlay.getPath().getArray());
-                lastpolygon = event.overlay;
-                auto_grow();
             });
             const resetDiv = document.createElement("div");
             resetMap(resetDiv, lastpolygon);
@@ -306,7 +293,10 @@
 
         $('#reset_btn').click(function () {
             $('#name').val(null);
-            lastpolygon.setMap(null);
+            if (zoneDrawer) {
+                zoneDrawer.clearPolygon();
+            }
+            lastpolygon = null;
             $('#coordinates').val(null);
         })
 
