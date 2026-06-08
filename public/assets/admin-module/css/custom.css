@@ -606,19 +606,32 @@ label.file_upload {
     box-shadow: 0px 3px 8px 0px rgba(0, 0, 0, 0.12),
         0px 3px 1px 0px rgba(0, 0, 0, 0.04);
 }
+.zone-draw-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin: 5px;
+}
+
 .zone-draw-control {
     background-color: #fff;
     border: 2px solid #fff;
     border-radius: 3px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
     cursor: pointer;
-    margin: 5px;
     padding: 5px 8px;
     text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .zone-draw-control.zone-draw-active {
     background-color: #e8f0fe;
+    border-color: #1a73e8;
+}
+
+.zone-draw-control.zone-draw-finish {
     border-color: #1a73e8;
 }
 

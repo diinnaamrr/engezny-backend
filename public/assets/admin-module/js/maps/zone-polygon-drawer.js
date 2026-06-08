@@ -20,58 +20,119 @@ function initZonePolygonDrawer(map, options) {
     let drawing = false;
     let vertices = [];
     let previewLine = null;
+    let previewFill = null;
     let vertexMarkers = [];
     let activePolygon = null;
     let clickListener = null;
     let dblClickListener = null;
+    let rightClickListener = null;
 
-    function clearPreview() {
+    function getCloseThreshold() {
+        const zoom = map.getZoom() || 10;
+        return Math.max(25, 800 / Math.pow(2, zoom - 10));
+    }
+
+    function clearVertexMarkers() {
         vertexMarkers.forEach(function (marker) {
             marker.setMap(null);
         });
         vertexMarkers = [];
+    }
+
+    function clearPreview() {
+        clearVertexMarkers();
         if (previewLine) {
             previewLine.setMap(null);
             previewLine = null;
         }
+        if (previewFill) {
+            previewFill.setMap(null);
+            previewFill = null;
+        }
         vertices = [];
+    }
+
+    function getPreviewPath() {
+        if (vertices.length < 2) {
+            return vertices;
+        }
+        if (vertices.length >= 3) {
+            return vertices.concat([vertices[0]]);
+        }
+        return vertices;
     }
 
     function updatePreview() {
         if (previewLine) {
             previewLine.setMap(null);
         }
-        if (vertices.length < 2) {
-            return;
+        if (previewFill) {
+            previewFill.setMap(null);
+            previewFill = null;
         }
-        previewLine = new google.maps.Polyline({
-            path: vertices,
-            strokeColor: "#000000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            map: map,
-        });
+
+        clearVertexMarkers();
+
+        if (vertices.length >= 3) {
+            previewFill = new google.maps.Polygon({
+                paths: vertices,
+                strokeOpacity: 0,
+                fillColor: "#1a73e8",
+                fillOpacity: 0.12,
+                clickable: false,
+                map: map,
+            });
+        }
+
+        if (vertices.length >= 2) {
+            previewLine = new google.maps.Polyline({
+                path: getPreviewPath(),
+                strokeColor: "#000000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                map: map,
+            });
+        }
+
         vertices.forEach(function (latLng, index) {
-            vertexMarkers.push(new google.maps.Marker({
+            const isClosePoint = index === 0 && vertices.length >= 3;
+            const marker = new google.maps.Marker({
                 position: latLng,
                 map: map,
                 icon: {
                     path: google.maps.SymbolPath.CIRCLE,
-                    scale: 5,
-                    fillColor: index === 0 && vertices.length >= 3 ? "#1a73e8" : "#000000",
+                    scale: isClosePoint ? 7 : 5,
+                    fillColor: isClosePoint ? "#1a73e8" : "#000000",
                     fillOpacity: 1,
-                    strokeWeight: 1,
+                    strokeWeight: 2,
                     strokeColor: "#fff",
                 },
-                zIndex: 1000,
-            }));
+                zIndex: isClosePoint ? 1001 : 1000,
+                title: isClosePoint ? "Click to close zone" : "",
+            });
+
+            if (isClosePoint) {
+                google.maps.event.addListener(marker, "click", function (event) {
+                    event.stop();
+                    completePolygon();
+                });
+            }
+
+            vertexMarkers.push(marker);
         });
+
+        finishUI.style.display = vertices.length >= 3 ? "inline-flex" : "none";
     }
 
     function stopDrawing() {
         drawing = false;
         controlUI.classList.remove("zone-draw-active");
-        map.setOptions({draggableCursor: null, draggingCursor: null});
+        finishUI.style.display = "none";
+        map.setOptions({
+            draggableCursor: null,
+            draggingCursor: null,
+            disableDoubleClickZoom: false,
+        });
         if (clickListener) {
             google.maps.event.removeListener(clickListener);
             clickListener = null;
@@ -79,6 +140,10 @@ function initZonePolygonDrawer(map, options) {
         if (dblClickListener) {
             google.maps.event.removeListener(dblClickListener);
             dblClickListener = null;
+        }
+        if (rightClickListener) {
+            google.maps.event.removeListener(rightClickListener);
+            rightClickListener = null;
         }
         clearPreview();
     }
@@ -100,12 +165,13 @@ function initZonePolygonDrawer(map, options) {
         if (vertices.length < 3) {
             return;
         }
+        const savedVertices = vertices.slice();
         stopDrawing();
         if (activePolygon) {
             activePolygon.setMap(null);
         }
         activePolygon = new google.maps.Polygon(Object.assign({}, polygonOptions, {
-            paths: vertices,
+            paths: savedVertices,
             map: map,
         }));
         bindPolygonEdit(activePolygon);
@@ -116,7 +182,7 @@ function initZonePolygonDrawer(map, options) {
         if (vertices.length >= 3) {
             const first = vertices[0];
             const distance = google.maps.geometry.spherical.computeDistanceBetween(first, latLng);
-            if (distance < 30) {
+            if (distance < getCloseThreshold()) {
                 completePolygon();
                 return;
             }
@@ -133,12 +199,25 @@ function initZonePolygonDrawer(map, options) {
         clearPreview();
         drawing = true;
         controlUI.classList.add("zone-draw-active");
-        map.setOptions({draggableCursor: "crosshair"});
+        map.setOptions({
+            draggableCursor: "crosshair",
+            disableDoubleClickZoom: true,
+        });
         clickListener = map.addListener("click", function (event) {
             addVertex(event.latLng);
         });
         dblClickListener = map.addListener("dblclick", function (event) {
-            event.stop();
+            if (typeof event.stop === "function") {
+                event.stop();
+            }
+            if (vertices.length >= 3) {
+                completePolygon();
+            }
+        });
+        rightClickListener = map.addListener("rightclick", function (event) {
+            if (typeof event.stop === "function") {
+                event.stop();
+            }
             if (vertices.length >= 3) {
                 completePolygon();
             }
@@ -154,18 +233,32 @@ function initZonePolygonDrawer(map, options) {
     }
 
     const controlDiv = document.createElement("div");
+    controlDiv.className = "zone-draw-controls";
+
     const controlUI = document.createElement("div");
     controlUI.className = "zone-draw-control";
-    controlUI.title = options.title || "Draw a shape";
+    controlUI.title = options.title || "Draw zone";
     controlUI.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/></svg>';
     controlUI.addEventListener("click", toggleDrawing);
+
+    const finishUI = document.createElement("div");
+    finishUI.className = "zone-draw-control zone-draw-finish";
+    finishUI.title = "Finish zone (min 3 points)";
+    finishUI.style.display = "none";
+    finishUI.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+    finishUI.addEventListener("click", function () {
+        completePolygon();
+    });
+
     controlDiv.appendChild(controlUI);
+    controlDiv.appendChild(finishUI);
     map.controls[options.position || google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
 
     return {
         startDrawing: startDrawing,
         stopDrawing: stopDrawing,
         toggleDrawing: toggleDrawing,
+        completePolygon: completePolygon,
         clearPolygon: function () {
             stopDrawing();
             if (activePolygon) {
