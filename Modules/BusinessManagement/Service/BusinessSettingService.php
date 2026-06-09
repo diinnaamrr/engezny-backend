@@ -4,7 +4,6 @@ namespace Modules\BusinessManagement\Service;
 
 use App\Jobs\SendPushNotificationForAllUserJob;
 use App\Service\BaseService;
-use App\Traits\UnloadedHelpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -110,14 +109,7 @@ class BusinessSettingService extends BaseService implements BusinessSettingServi
     public function updateSetting(array $data)
     {
         if (array_key_exists('websocket_url', $data)) {
-            UnloadedHelpers::setEnvironmentValue('PUSHER_HOST', getMainDomain(url('/')));
-            UnloadedHelpers::setEnvironmentValue('REVERB_HOST', getMainDomain(url('/')));
             $data['websocket_url'] = getMainDomain(url('/'));
-
-        }
-        if (array_key_exists('websocket_port', $data)) {
-            UnloadedHelpers::setEnvironmentValue('PUSHER_PORT', (int)$data['websocket_port']);
-            UnloadedHelpers::setEnvironmentValue('REVERB_PORT', (int)$data['websocket_port']);
         }
         if (array_key_exists('bid_on_fare', $data)) {
             $data['bid_on_fare'] = 1;
