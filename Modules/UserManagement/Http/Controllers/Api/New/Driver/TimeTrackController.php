@@ -76,10 +76,14 @@ class TimeTrackController extends Controller
     public function onlineStatus(): JsonResponse
     {
         $id = auth('api')->id();
+        $driver = auth('api')->user();
         $details = $this->details->getBy('user_id', $id);
         if ($details['availability_status'] == 'on_trip') {
 
             return response()->json(responseFormatter(OFFLINE_403), 403);
+        }
+        if (!$details['is_online'] && isDriverCommissionDueBlocked($driver->load('userAccount'))) {
+            return response()->json(responseFormatter(DRIVER_COMMISSION_DUE_403), 403);
         }
 
         $track = $this->track->query()
