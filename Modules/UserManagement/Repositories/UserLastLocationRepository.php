@@ -65,6 +65,12 @@ class UserLastLocationRepository implements UserLastLocationInterface
                 ->whereNotIn('availability_status', ['unavailable', 'on_trip'])
             )
             ->whereHas('user.vehicle', fn($query) => $query->where('is_active', true))
+            ->when(getDriverMaxCommissionLimit() > 0, function ($query) {
+                $maxLimit = getDriverMaxCommissionLimit();
+                $query->whereHas('user.userAccount', fn($accountQuery) => $accountQuery
+                    ->whereRaw('payable_balance <= receivable_balance OR (payable_balance - receivable_balance) < ?', [$maxLimit])
+                );
+            })
             ->when(array_key_exists('vehicle_category_id', $attributes), function ($query) use ($attributes) {
                 $query->whereHas('user.vehicle', fn($query) => $query->ofStatus(1)->where('category_id', $attributes['vehicle_category_id']));
             })

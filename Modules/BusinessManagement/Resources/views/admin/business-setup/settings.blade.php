@@ -47,6 +47,22 @@
                                     </div>
                                     <div class="col-sm-6 col-lg-6">
                                         <div class="">
+                                            <label for="driver_max_commission_limit"
+                                                   class="mb-2">{{translate('driver_max_commission_limit')}}
+                                            </label>
+                                            <div class="input-group_tooltip">
+                                                <input type="number" name="driver_max_commission_limit"
+                                                       class="form-control" id="driver_max_commission_limit"
+                                                       placeholder="{{translate('Ex: 200')}}" step="0.01" min="0"
+                                                       value="{{$settings->firstWhere('key_name', 'driver_max_commission_limit')->value ?? ''}}">
+                                                <i class="bi bi-info-circle-fill text-primary tooltip-icon"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-title="{{translate('Set the maximum commission amount a driver can owe before being blocked from receiving trips')}}"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6">
+                                        <div class="">
                                             <label for="business_contact_num"
                                                    class="mb-2">{{translate('vat')}} <span
                                                     class="text-danger fs-12">(%)</span></label>

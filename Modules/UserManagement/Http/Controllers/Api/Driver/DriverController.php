@@ -79,6 +79,9 @@ class DriverController extends Controller
     {
         $driver = auth('api')->user();
         $details = $this->details->getBy('user_id', $driver->id);
+        if ($details['is_online'] != 1 && isDriverCommissionDueBlocked($driver->load('userAccount'))) {
+            return response()->json(responseFormatter(DRIVER_COMMISSION_DUE_403), 403);
+        }
         $attributes = [
             'column' => 'user_id',
             'is_online' => $details['is_online'] == 1 ? 0 : 1,

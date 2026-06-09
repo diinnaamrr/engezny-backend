@@ -102,6 +102,9 @@ class TripRequestController extends Controller
     public function bid(Request $request): JsonResponse
     {
         $user = auth('api')->user();
+        if (isDriverCommissionDueBlocked($user)) {
+            return response()->json(responseFormatter(constant: DRIVER_COMMISSION_DUE_403), 403);
+        }
         if ($user->driverDetails->availability_status != 'available' || $user->driverDetails->is_online != 1) {
 
             return response()->json(responseFormatter(constant: DRIVER_UNAVAILABLE_403), 403);
@@ -192,6 +195,9 @@ class TripRequestController extends Controller
     {
         info('DEBUG: Trip requestAction called', ['request' => $request->all()]);
         $user = auth('api')->user();
+        if ($request['action'] == ACCEPTED && isDriverCommissionDueBlocked($user)) {
+            return response()->json(responseFormatter(constant: DRIVER_COMMISSION_DUE_403), 403);
+        }
         $cache = Cache::get($request['trip_request_id']);
         $trip = $this->tripRequestservice->findOne(id: $request['trip_request_id']);
         $user_status = $user->driverDetails->availability_status;

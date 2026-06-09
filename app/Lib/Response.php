@@ -953,6 +953,11 @@ const DRIVER_UNAVAILABLE_403 = [
     'message' => 'Please change your offline status'
 ];
 
+const DRIVER_COMMISSION_DUE_403 = [
+    'response_code' => 'driver_commission_due_403',
+    'message' => 'Please pay your due commission to the admin before accepting trips'
+];
+
 const CHAT_UNAVAILABLE_403 = [
     'response_code' => 'chat_unavailable_403',
     'message' => 'Chat available only during active ride'

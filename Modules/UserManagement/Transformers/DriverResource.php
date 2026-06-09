@@ -26,6 +26,10 @@ class DriverResource extends JsonResource
         $paidAmount = $this->transactions?->where('attribute', 'admin_cash_collect')
             ->where('account' , 'payable_balance')->sum('debit') ?? 0;
         $levelUpRewardAmount = $this->transactions?->where('attribute', 'level_reward')->sum('credit') ?? 0;
+        $collectableCommission = getDriverCollectableAmount(
+            $this->relationLoaded('userAccount') ? $this->userAccount : null
+        );
+        $maxCommissionLimit = getDriverMaxCommissionLimit();
         return [
             'id' => $this->id,
             'first_name' => $this?->first_name,
@@ -61,7 +65,10 @@ class DriverResource extends JsonResource
             'total_earning' => $totalEarning,
             'total_tips' => $tips,
             'paid_amount' => $paidAmount,
-            'level_up_reward_amount' => $levelUpRewardAmount
+            'level_up_reward_amount' => $levelUpRewardAmount,
+            'collectable_commission' => $collectableCommission,
+            'max_commission_limit' => $maxCommissionLimit,
+            'is_commission_due' => $maxCommissionLimit > 0 && $collectableCommission >= $maxCommissionLimit,
         ];
     }
 }

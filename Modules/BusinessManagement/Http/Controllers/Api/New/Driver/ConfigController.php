@@ -124,7 +124,8 @@ class ConfigController extends Controller
             'firebase_otp_verification' => (bool)$info->firstWhere('key_name', 'firebase_otp_verification_status')?->value == 1 ? true : false,
             'sms_gateway' => (bool)$smsConfiguration,
             'chatting_setup_status' =>(bool)$info->firstWhere('key_name', 'chatting_setup_status')?->value == 1 ? true : false,
-            'driver_question_answer_status' =>(bool)$info->firstWhere('key_name', 'chatting_setup_status')?->value == 1 ? $info->firstWhere('key_name', 'driver_question_answer_status')?->value == 1 :false
+            'driver_question_answer_status' =>(bool)$info->firstWhere('key_name', 'chatting_setup_status')?->value == 1 ? $info->firstWhere('key_name', 'driver_question_answer_status')?->value == 1 :false,
+            'driver_max_commission_limit' => (double)($info->firstWhere('key_name', 'driver_max_commission_limit')?->value ?? 0),
         ];
 
         return response()->json($configs);

@@ -194,6 +194,44 @@ if (!function_exists('businessConfig')) {
     }
 }
 
+if (!function_exists('getDriverCollectableAmount')) {
+    function getDriverCollectableAmount($userAccount): float
+    {
+        if (!$userAccount) {
+            return 0;
+        }
+
+        return $userAccount->payable_balance > $userAccount->receivable_balance
+            ? ($userAccount->payable_balance - $userAccount->receivable_balance)
+            : 0;
+    }
+}
+
+if (!function_exists('getDriverMaxCommissionLimit')) {
+    function getDriverMaxCommissionLimit(): float
+    {
+        return (float)(get_cache('driver_max_commission_limit')
+            ?? businessConfig('driver_max_commission_limit', BUSINESS_SETTINGS)?->value
+            ?? 0);
+    }
+}
+
+if (!function_exists('isDriverCommissionDueBlocked')) {
+    function isDriverCommissionDueBlocked($user): bool
+    {
+        $maxLimit = getDriverMaxCommissionLimit();
+        if ($maxLimit <= 0) {
+            return false;
+        }
+
+        $userAccount = $user->relationLoaded('userAccount')
+            ? $user->userAccount
+            : $user->userAccount()->first();
+
+        return getDriverCollectableAmount($userAccount) >= $maxLimit;
+    }
+}
+
 if (!function_exists('newBusinessConfig')) {
     function newBusinessConfig($key, $settingsType = null)
     {

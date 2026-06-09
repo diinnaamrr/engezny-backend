@@ -16,6 +16,7 @@ class BusinessSettingStoreOrUpdateRequest extends FormRequest
     {
         return [
             "trip_commission" => "nullable|numeric|gt:0",
+            "driver_max_commission_limit" => "nullable|numeric|gte:0",
             "vat_percent" => "nullable|numeric|gte:0",
             "search_radius" => "nullable|numeric|gt:0",
             "driver_completion_radius" => "nullable|numeric|gt:0",

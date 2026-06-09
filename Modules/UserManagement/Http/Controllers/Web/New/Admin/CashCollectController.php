@@ -34,10 +34,13 @@ class CashCollectController extends BaseController
 
     public function show(string|int $id)
     {
-        $driver = $this->driverService->findOne(id: $id);
+        $driver = $this->driverService->findOne(id: $id, relations: ['userAccount']);
         if ($driver) {
             $transactions = $this->transactionService->getBy(criteria: ['user_id' => $id, 'attribute' => 'admin_cash_collect'],orderBy: ['created_at'=>'desc'], limit: paginationLimit(), offset: 1);
-            return view('usermanagement::admin.driver.withdraw.collect-cash', compact('driver', 'transactions'));
+            $collectableAmount = getDriverCollectableAmount($driver->userAccount);
+            $maxCommissionLimit = getDriverMaxCommissionLimit();
+            $isCommissionBlocked = isDriverCommissionDueBlocked($driver);
+            return view('usermanagement::admin.driver.withdraw.collect-cash', compact('driver', 'transactions', 'collectableAmount', 'maxCommissionLimit', 'isCommissionBlocked'));
         }
         return redirect()->route('admin.drivers.index');
 

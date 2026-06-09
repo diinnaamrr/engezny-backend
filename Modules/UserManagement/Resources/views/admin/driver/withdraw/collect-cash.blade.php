@@ -10,15 +10,58 @@
             {{ translate('driver') }}  {{$driver?->first_name . ' ' . $driver?->last_name}}
         </h2>
 
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <p class="text-muted mb-1">{{ translate('collectable_cash') }}</p>
+                        <h3 class="fw-bold mb-0">{{ getCurrencyFormat($collectableAmount ?? 0) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <p class="text-muted mb-1">{{ translate('driver_max_commission_limit') }}</p>
+                        <h3 class="fw-bold mb-0">{{ getCurrencyFormat($maxCommissionLimit ?? 0) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <p class="text-muted mb-1">{{ translate('commission_due_status') }}</p>
+                        <h3 class="fw-bold mb-0">
+                            @if($isCommissionBlocked ?? false)
+                                <span class="badge bg-danger">{{ translate('blocked') }}</span>
+                            @else
+                                <span class="badge bg-success">{{ translate('active') }}</span>
+                            @endif
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="card mb-30">
             <form action="{{route('admin.driver.cash.collect', ['id' => $driver?->id])}}" method="post">
                 @csrf
                 <div class="card-body">
                     <div class="mb-4">
                         <label for="amount" class="mb-2">{{translate('amount')}}</label>
-                        <input id="amount" type="number" step="0.01" class="form-control" name="amount">
+                        <input id="amount" type="number" step="0.01" class="form-control" name="amount"
+                               max="{{ $collectableAmount ?? 0 }}" value="{{ old('amount') }}">
+                        @if(($collectableAmount ?? 0) > 0)
+                            <small class="text-muted">{{ translate('maximum_collectable_amount') }}: {{ getCurrencyFormat($collectableAmount) }}</small>
+                        @endif
                     </div>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end gap-2">
+                        @if(($collectableAmount ?? 0) > 0)
+                            <button type="button" class="btn btn-outline-primary"
+                                    onclick="document.getElementById('amount').value='{{ $collectableAmount }}'; this.closest('form').submit();">
+                                {{ translate('collect_all_commission') }}
+                            </button>
+                        @endif
                         <button type="submit" class="btn btn-primary">{{translate('submit')}}</button>
                     </div>
                 </div>
@@ -71,4 +114,3 @@
 </div>
 <!-- End Main Content -->
 @endsection
-

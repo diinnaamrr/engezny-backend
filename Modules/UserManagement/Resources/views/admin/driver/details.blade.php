@@ -197,9 +197,12 @@
                                         alt="">
                                     <h3 class="fw-bold mb-0 fs-3">
                                         {{ getCurrencyFormat($commonData['collectable_amount']) }}</h3>
-                                    <div class="fw-bold text-capitalize mb-30">
+                                    <div class="fw-bold text-capitalize mb-2">
                                         {{ translate('collectable_cash') }}
                                     </div>
+                                    @if(isDriverCommissionDueBlocked($driver))
+                                        <span class="badge bg-danger mb-3">{{ translate('commission_due_blocked') }}</span>
+                                    @endif
                                 </div>
                                 @if($commonData['collectable_amount']>0)
                                     <a href="{{ route('admin.driver.cash.index', [$commonData['driver']->id]) }}"
