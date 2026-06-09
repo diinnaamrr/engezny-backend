@@ -232,6 +232,35 @@ if (!function_exists('isDriverCommissionDueBlocked')) {
     }
 }
 
+if (!function_exists('getAdminUser')) {
+    function getAdminUser(): ?User
+    {
+        return User::where('user_type', 'super-admin')->first()
+            ?? User::where('user_type', 'admin-employee')->first();
+    }
+}
+
+if (!function_exists('getAdminUserId')) {
+    function getAdminUserId(): string
+    {
+        $admin = getAdminUser();
+        if (!$admin) {
+            throw new \RuntimeException('No admin user found. A super-admin or admin-employee account is required.');
+        }
+
+        return $admin->id;
+    }
+}
+
+if (!function_exists('getAdminUserAccount')) {
+    function getAdminUserAccount(): \Modules\UserManagement\Entities\UserAccount
+    {
+        return \Modules\UserManagement\Entities\UserAccount::firstOrCreate([
+            'user_id' => getAdminUserId(),
+        ]);
+    }
+}
+
 if (!function_exists('newBusinessConfig')) {
     function newBusinessConfig($key, $settingsType = null)
     {

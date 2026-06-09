@@ -19,7 +19,7 @@ trait TransactionTrait
 
     public function digitalPaymentTransaction($trip): void
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
 
         DB::beginTransaction();
         $adminReceived = $trip->fee->admin_commission;//30
@@ -27,7 +27,7 @@ trait TransactionTrait
         $riderEarning = $tripBalanceAfterRemoveCommission;
 
         //Admin account update (payable and wallet balance +)
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->payable_balance += $tripBalanceAfterRemoveCommission;
         $adminAccount->received_balance += $adminReceived;
         $adminAccount->save();
@@ -94,7 +94,7 @@ trait TransactionTrait
 
     public function cashTransaction($trip, $returnFee = false): void
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
         DB::beginTransaction();
         $adminReceived = $trip->fee->admin_commission;//30
         if ($returnFee) {
@@ -142,7 +142,7 @@ trait TransactionTrait
         }
 
         //Admin account update
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->receivable_balance += $adminReceived; //30
         $adminAccount->save();
 
@@ -199,7 +199,7 @@ trait TransactionTrait
     public function driverParcelCancellationTransaction($trip): void
     {
 
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
         DB::beginTransaction();
         $amount = $trip->cancellation_fee;
 
@@ -219,7 +219,7 @@ trait TransactionTrait
         $riderTransaction1->save();
 
         //Admin account update for reverse
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->receivable_balance += $amount;
         $adminAccount->save();
 
@@ -239,7 +239,7 @@ trait TransactionTrait
 
     public function senderCashPaymentDriverParcelCancelReverseTransaction($trip): void
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
         DB::beginTransaction();
         $tripBalanceAfterRemoveCommission = $trip->paid_fare - $trip->fee->admin_commission; //70
 
@@ -281,7 +281,7 @@ trait TransactionTrait
         }
 
         //Admin account update for reverse
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->receivable_balance += $tripBalanceAfterRemoveCommission; //30
         $adminAccount->save();
 
@@ -326,7 +326,7 @@ trait TransactionTrait
 
     public function senderDigitalPaymentDriverParcelCancelReverseTransaction($trip): void
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
         DB::beginTransaction();
         $tripBalanceAfterRemoveCommission = $trip->paid_fare - $trip->fee->admin_commission; //70
 
@@ -346,7 +346,7 @@ trait TransactionTrait
         $customerTransaction->save();
 
         //Admin account update (payable and wallet balance +)
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->payable_balance -= $tripBalanceAfterRemoveCommission;
         $adminAccount->save();
 
@@ -399,7 +399,7 @@ trait TransactionTrait
 
     public function senderWalletPaymentDriverParcelCancelReverseTransaction($trip): void
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
 
         DB::beginTransaction();
         $tripBalanceAfterRemoveCommission = $trip->paid_fare - $trip->fee->admin_commission; //70
@@ -420,7 +420,7 @@ trait TransactionTrait
         $customerTransaction->save();
 
         //Admin account update (payable and wallet balance +)
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->payable_balance -= $tripBalanceAfterRemoveCommission;
         $adminAccount->save();
 
@@ -474,7 +474,7 @@ trait TransactionTrait
 
     public function walletTransaction($trip): void
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
 
         DB::beginTransaction();
         $adminReceived = $trip->fee->admin_commission;//30
@@ -497,7 +497,7 @@ trait TransactionTrait
         $customerTransaction->save();
 
         //Admin account update (payable and wallet balance +)
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->payable_balance += $tripBalanceAfterRemoveCommission;
         $adminAccount->received_balance += $adminReceived;
         $adminAccount->save();
@@ -567,7 +567,7 @@ trait TransactionTrait
 
     private function adminAccountUpdateWithTransactionForCoupon($trip, $adminUserId)
     {
-        $adminAccountForCoupon = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccountForCoupon = getAdminUserAccount();
         $adminAccountForCoupon->payable_balance += $trip->coupon_amount; //30
         $adminAccountForCoupon->save();
 
@@ -585,7 +585,7 @@ trait TransactionTrait
 
     private function adminAccountUpdateWithTransactionForDiscount($trip, $adminUserId)
     {
-        $adminAccountForDiscount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccountForDiscount = getAdminUserAccount();
         $adminAccountForDiscount->payable_balance += $trip->discount_amount; //30
         $adminAccountForDiscount->save();
 
@@ -639,7 +639,7 @@ trait TransactionTrait
 
     private function adminAccountUpdateWithTransactionForCouponReverse($trip, $adminUserId)
     {
-        $adminAccountForCoupon = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccountForCoupon = getAdminUserAccount();
         $adminAccountForCoupon->payable_balance -= $trip->coupon_amount; //30
         $adminAccountForCoupon->save();
 
@@ -657,7 +657,7 @@ trait TransactionTrait
 
     private function adminAccountUpdateWithTransactionForDiscountReverse($trip, $adminUserId)
     {
-        $adminAccountForDiscount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccountForDiscount = getAdminUserAccount();
         $adminAccountForDiscount->payable_balance -= $trip->discount_amount; //30
         $adminAccountForDiscount->save();
 
@@ -769,8 +769,8 @@ trait TransactionTrait
         $driver->save();
 
         //Admin account update
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
-        $account = UserAccount::query()->firstWhere('user_id', $adminUserId);
+        $adminUserId = getAdminUserId();
+        $account = getAdminUserAccount();
         $account->received_balance += $payableBalance;
         $account->receivable_balance -= $payableBalance;
         $account->save();
@@ -879,8 +879,8 @@ trait TransactionTrait
 
 
             //Admin account update
-            $admin = User::query()->where('user_type', 'super-admin')->first();
-            $admin_user = UserAccount::query()->where('user_id', $admin->id)->first();
+            $admin = getAdminUser();
+            $admin_user = getAdminUserAccount();
             $admin_user->payable_balance += $amount;
             $admin_user->save();
 
@@ -943,8 +943,8 @@ trait TransactionTrait
 
 
         //Admin account update
-        $admin = User::query()->where('user_type', 'super-admin')->first();
-        $admin_user = UserAccount::query()->where('user_id', $admin->id)->first();
+        $admin = getAdminUser();
+        $admin_user = getAdminUserAccount();
         $admin_user->payable_balance -= $amount;
         $admin_user->save();
 
@@ -1066,8 +1066,8 @@ trait TransactionTrait
         $driverAccount_transaction->save();
 
         //Admin account update
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
-        $account = UserAccount::query()->firstWhere('user_id', $adminUserId);
+        $adminUserId = getAdminUserId();
+        $account = getAdminUserAccount();
         $account->received_balance += $amount;
         $account->save();
 
@@ -1106,8 +1106,8 @@ trait TransactionTrait
         $driverAccount->save();
 
         //Admin account update
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
-        $account = UserAccount::query()->firstWhere('user_id', $adminUserId);
+        $adminUserId = getAdminUserId();
+        $account = getAdminUserAccount();
         $account->received_balance += ($receivableAmount + $amount);
         $account->receivable_balance -= $receivableAmount;
         $account->payable_balance -= $receivableAmount;
@@ -1195,7 +1195,7 @@ trait TransactionTrait
             }
             $returnTimeExceedFee = (double)businessConfig('return_fee_for_driver_time_exceed', PARCEL_SETTINGS)?->value ?? 0;
             if ($cancelledTime->lessThan(Carbon::now()) && $returnTimeExceedFee > 0) {
-                $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+                $adminUserId = getAdminUserId();
                 DB::beginTransaction();
 
                 //Rider account update
@@ -1214,7 +1214,7 @@ trait TransactionTrait
                 $riderTransaction1->save();
 
                 //Admin account update
-                $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+                $adminAccount = getAdminUserAccount();
                 $adminAccount->receivable_balance += $returnTimeExceedFee; //30
                 $adminAccount->save();
 
@@ -1236,7 +1236,7 @@ trait TransactionTrait
 
     public function parcelRefundDriverTransaction($trip,$amount)
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
         //Rider account update (+ payable)
         $riderAccount = UserAccount::where('user_id', $trip->driver->id)->first();
         $riderAccount->payable_balance += $amount;
@@ -1252,7 +1252,7 @@ trait TransactionTrait
         $riderTransaction->save();
 
         //Admin account update (receivable_balance +)
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
 //        $adminAccount->payable_balance += $amount;
         $adminAccount->receivable_balance += $amount;
         $adminAccount->save();
@@ -1283,7 +1283,7 @@ trait TransactionTrait
 
     public function parcelRefundWalletTransaction($trip,$amount)
     {
-        $adminUserId = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
+        $adminUserId = getAdminUserId();
 
         DB::beginTransaction();
         //customer account credit
@@ -1302,7 +1302,7 @@ trait TransactionTrait
         $customerTransaction->save();
 
         //Admin account update (payable and wallet balance +)
-        $adminAccount = UserAccount::where('user_id', $adminUserId)->first();
+        $adminAccount = getAdminUserAccount();
         $adminAccount->payable_balance -= $amount;
         $adminAccount->save();
 
