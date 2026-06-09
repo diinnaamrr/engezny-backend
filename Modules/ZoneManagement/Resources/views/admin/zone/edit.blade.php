@@ -73,6 +73,11 @@
                                                    placeholder="{{ translate('search_here') }}"/>
                                             <div id="map-canvas" class="map-height"></div>
                                         </div>
+                                        <button type="button" id="close-zone-btn"
+                                                class="btn btn-outline-primary btn-sm mt-2"
+                                                style="display: none;">
+                                            {{ translate('close_zone') }}
+                                        </button>
                                         <!-- End Map -->
                                     </div>
 
@@ -186,16 +191,30 @@
             });
 
 
+            const closeZoneBtn = document.getElementById('close-zone-btn');
             zoneDrawer = initZonePolygonDrawer(map, {
-                onComplete: function (path, polygon) {
+                onComplete: function (coordinates, polygon) {
                     if (lastpolygon) {
                         lastpolygon.setMap(null);
                     }
-                    $('#coordinates').val(path);
+                    $('#coordinates').val(coordinates);
                     lastpolygon = polygon;
                     auto_grow();
+                    if (closeZoneBtn) {
+                        closeZoneBtn.style.display = 'none';
+                    }
+                },
+                onDrawingChange: function (state) {
+                    if (closeZoneBtn) {
+                        closeZoneBtn.style.display = state.canClose ? 'inline-block' : 'none';
+                    }
                 }
             });
+            if (closeZoneBtn) {
+                closeZoneBtn.addEventListener('click', function () {
+                    zoneDrawer.completePolygon();
+                });
+            }
             const resetDiv = document.createElement("div");
             resetMap(resetDiv, lastpolygon);
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(resetDiv);

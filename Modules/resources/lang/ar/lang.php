@@ -709,6 +709,7 @@
   'commission_due_status' => 'حالة العمولة المستحقة',
   'commission_due_blocked' => 'موقوف - عليه عمولة مستحقة',
   'collect_all_commission' => 'تحصيل كل العمولة',
+  'close_zone' => 'إغلاق الزون',
   'maximum_collectable_amount' => 'أقصى مبلغ قابل للتحصيل',
   'Please pay your due commission to the admin before accepting trips' => 'يرجى دفع العمولة المستحقة للإدارة قبل استقبال الرحلات',
   'trip_cost' => 'Trip cost',

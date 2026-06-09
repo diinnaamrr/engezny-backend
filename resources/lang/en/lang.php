@@ -709,6 +709,7 @@
   'commission_due_status' => 'Commission due status',
   'commission_due_blocked' => 'Blocked - commission due',
   'collect_all_commission' => 'Collect all commission',
+  'close_zone' => 'Close zone',
   'maximum_collectable_amount' => 'Maximum collectable amount',
   'Please pay your due commission to the admin before accepting trips' => 'Please pay your due commission to the admin before accepting trips',
   'trip_cost' => 'Trip cost',

@@ -7,6 +7,7 @@
 function initZonePolygonDrawer(map, options) {
     options = options || {};
     const onComplete = options.onComplete || function () {};
+    const onDrawingChange = options.onDrawingChange || function () {};
     const polygonOptions = Object.assign({
         editable: true,
         draggable: false,
@@ -27,9 +28,43 @@ function initZonePolygonDrawer(map, options) {
     let dblClickListener = null;
     let rightClickListener = null;
 
-    function getCloseThreshold() {
+    function formatZoneCoordinates(latLngs) {
+        return latLngs.map(function (latLng) {
+            return "(" + latLng.lng() + "," + latLng.lat() + ")";
+        }).join(",");
+    }
+
+    function notifyDrawingChange() {
+        onDrawingChange({
+            drawing: drawing,
+            vertexCount: vertices.length,
+            canClose: drawing && vertices.length >= 3,
+        });
+    }
+
+    function isNearFirstPoint(latLng) {
+        if (vertices.length < 3) {
+            return false;
+        }
+
+        const projection = map.getProjection();
+        if (projection) {
+            const scale = Math.pow(2, map.getZoom() || 10);
+            const firstPoint = projection.fromLatLngToPoint(vertices[0]);
+            const clickPoint = projection.fromLatLngToPoint(latLng);
+            const pixelDistance = Math.sqrt(
+                Math.pow((firstPoint.x - clickPoint.x) * scale, 2) +
+                Math.pow((firstPoint.y - clickPoint.y) * scale, 2)
+            );
+
+            if (pixelDistance <= 24) {
+                return true;
+            }
+        }
+
         const zoom = map.getZoom() || 10;
-        return Math.max(40, 1200 / Math.pow(2, zoom - 10));
+        const meterThreshold = Math.max(80, 2500 / Math.pow(2, zoom - 10));
+        return computeDistanceMeters(vertices[0], latLng) < meterThreshold;
     }
 
     function computeDistanceMeters(a, b) {
@@ -83,6 +118,7 @@ function initZonePolygonDrawer(map, options) {
             previewFill = null;
         }
         vertices = [];
+        notifyDrawingChange();
     }
 
     function getPreviewPath() {
@@ -132,6 +168,8 @@ function initZonePolygonDrawer(map, options) {
             const marker = new google.maps.Marker({
                 position: latLng,
                 map: map,
+                clickable: true,
+                optimized: false,
                 icon: {
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: isClosePoint ? 7 : 5,
@@ -145,16 +183,19 @@ function initZonePolygonDrawer(map, options) {
             });
 
             if (isClosePoint) {
-                google.maps.event.addListener(marker, "click", function (event) {
+                const closeZone = function (event) {
                     stopMapEvent(event);
                     completePolygon();
-                });
+                };
+                google.maps.event.addListener(marker, "click", closeZone);
+                google.maps.event.addListener(marker, "mousedown", closeZone);
             }
 
             vertexMarkers.push(marker);
         });
 
         finishUI.style.display = vertices.length >= 3 ? "inline-flex" : "none";
+        notifyDrawingChange();
     }
 
     function stopDrawing() {
@@ -182,7 +223,8 @@ function initZonePolygonDrawer(map, options) {
     }
 
     function emitComplete(polygon) {
-        onComplete(polygon.getPath().getArray(), polygon);
+        const path = polygon.getPath().getArray();
+        onComplete(formatZoneCoordinates(path), polygon, path);
     }
 
     function bindPolygonEdit(polygon) {
@@ -209,16 +251,13 @@ function initZonePolygonDrawer(map, options) {
         }));
         bindPolygonEdit(activePolygon);
         emitComplete(activePolygon);
+        notifyDrawingChange();
     }
 
     function addVertex(latLng) {
-        if (vertices.length >= 3) {
-            const first = vertices[0];
-            const distance = computeDistanceMeters(first, latLng);
-            if (distance < getCloseThreshold()) {
-                completePolygon();
-                return;
-            }
+        if (isNearFirstPoint(latLng)) {
+            completePolygon();
+            return;
         }
         vertices.push(latLng);
         updatePreview();
@@ -251,10 +290,15 @@ function initZonePolygonDrawer(map, options) {
                 completePolygon();
             }
         });
+        notifyDrawingChange();
     }
 
     function toggleDrawing() {
         if (drawing) {
+            if (vertices.length >= 3) {
+                completePolygon();
+                return;
+            }
             stopDrawing();
         } else {
             startDrawing();
@@ -281,7 +325,7 @@ function initZonePolygonDrawer(map, options) {
 
     controlDiv.appendChild(controlUI);
     controlDiv.appendChild(finishUI);
-    map.controls[options.position || google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+    map.controls[options.position || google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
 
     return {
         startDrawing: startDrawing,
