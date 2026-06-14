@@ -23,7 +23,7 @@ class VehicleModelStoreUpdateRequest extends FormRequest
                 'string',
                 'min:3',
                 'max:255',
-                Rule::unique('vehicle_models', 'name')->where(fn($query) => $query->where('brand_id', $brand_id)->where('id','!=',$id))
+                Rule::unique('vehicle_models', 'name')->where(fn($query) => $query->where('brand_id', $brand_id)->whereNull('deleted_at'))->ignore($id)
             ],
             'brand_id' => ['required',Rule::exists(VehicleBrand::class,'id')],
             'short_desc' => 'required|max:900',

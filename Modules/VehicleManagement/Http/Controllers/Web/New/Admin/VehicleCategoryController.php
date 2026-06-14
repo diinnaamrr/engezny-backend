@@ -66,7 +66,7 @@ class VehicleCategoryController extends BaseController
     public function destroy(string $id): RedirectResponse
     {
         $this->authorize('vehicle_delete');
-        $this->vehicleCategoryService->delete(id: $id);
+        $this->vehicleCategoryService->permanentDelete(id: $id);
         Toastr::success(DEFAULT_DELETE_200['message']);
         return redirect()->route('admin.vehicle.attribute-setup.category.index');
     }

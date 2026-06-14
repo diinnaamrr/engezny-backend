@@ -91,10 +91,10 @@
                                                     <i class="bi bi-arrow-repeat"></i>
                                                 </a>
 
-{{--                                                <a href="{{ route('admin.vehicle.trashed') }}"--}}
-{{--                                                   class="btn btn-outline-primary px-3" data-bs-toggle="tooltip" data-bs-title="{{ translate('manage_Trashed_Data') }}">--}}
-{{--                                                    <i class="bi bi-recycle"></i>--}}
-{{--                                                </a>--}}
+                                                <a href="{{ route('admin.vehicle.trashed') }}"
+                                                   class="btn btn-outline-primary px-3" data-bs-toggle="tooltip" data-bs-title="{{ translate('manage_Trashed_Data') }}">
+                                                    <i class="bi bi-recycle"></i>
+                                                </a>
                                             @endcan
 
                                             @can('vehicle_log')
@@ -220,21 +220,21 @@
                                                                         <i class="bi bi-pencil-fill"></i>
                                                                     </a>
                                                                 @endcan
-{{--                                                                @can('vehicle_delete')--}}
-{{--                                                                    <button data-id="delete-{{ $vehicle->id }}"--}}
-{{--                                                                        data-message="{{ translate('want_to_delete_this_vehicle?') }}"--}}
-{{--                                                                        type="button"--}}
-{{--                                                                        class="btn btn-outline-danger btn-action form-alert">--}}
-{{--                                                                        <i class="bi bi-trash-fill"></i>--}}
-{{--                                                                    </button>--}}
+                                                                @can('vehicle_delete')
+                                                                    <button data-id="delete-{{ $vehicle->id }}"
+                                                                        data-message="{{ translate('want_to_delete_this_vehicle?') }}"
+                                                                        type="button"
+                                                                        class="btn btn-outline-danger btn-action form-alert">
+                                                                        <i class="bi bi-trash-fill"></i>
+                                                                    </button>
 
-{{--                                                                    <form--}}
-{{--                                                                        action="{{ route('admin.vehicle.delete', ['id' => $vehicle->id]) }}"--}}
-{{--                                                                        id="delete-{{ $vehicle->id }}" method="post">--}}
-{{--                                                                        @csrf--}}
-{{--                                                                        @method('delete')--}}
-{{--                                                                    </form>--}}
-{{--                                                                @endcan--}}
+                                                                    <form
+                                                                        action="{{ route('admin.vehicle.delete', ['id' => $vehicle->id]) }}"
+                                                                        id="delete-{{ $vehicle->id }}" method="post">
+                                                                        @csrf
+                                                                        @method('delete')
+                                                                    </form>
+                                                                @endcan
                                                             </div>
                                                         </td>
                                                     </tr>

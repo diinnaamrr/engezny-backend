@@ -119,12 +119,15 @@ class DriverController extends BaseController
     public function destroy($id): RedirectResponse
     {
         $this->authorize('user_delete');
-        $driver = $this->driverService->findOne($id);
+        $driver = $this->driverService->findOne(id: $id, relations: ['vehicle']);
         if(count($driver->getDriverLastTrip())!=0|| $driver?->userAccount->payable_balance>0 || $driver?->userAccount->pending_balance>0 || $driver?->userAccount->receivable_balance>0){
             Toastr::success(translate("Sorry you can't delete this driver, because there are ongoing rides or payment due this driver."));
             return back();
         }
-        $this->driverService->delete(id: $id);
+        if ($driver?->vehicle) {
+            $driver->vehicle->forceDelete();
+        }
+        $this->driverService->permanentDelete(id: $id);
         Toastr::success(DRIVER_DELETE_200['message']);
         return back();
     }

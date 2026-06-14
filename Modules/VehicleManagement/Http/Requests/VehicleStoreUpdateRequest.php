@@ -27,7 +27,7 @@ class VehicleStoreUpdateRequest extends FormRequest
             'parcel_weight_capacity' => 'nullable',
             'fuel_type' => 'required',
             'ownership' => 'required|in:admin,driver',
-            'driver_id' => 'required|unique:vehicles,driver_id,' . $id,
+            'driver_id' => ['required', Rule::unique('vehicles', 'driver_id')->whereNull('deleted_at')->ignore($id)],
             'existing_documents' => 'nullable|array',
             'deleted_documents' => 'nullable|array',
             'other_documents' => 'array',

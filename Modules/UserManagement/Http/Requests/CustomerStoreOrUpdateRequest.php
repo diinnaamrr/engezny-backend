@@ -19,8 +19,8 @@ class CustomerStoreOrUpdateRequest extends FormRequest
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:8|max:17|unique:users,phone,' . $id,
+            'email' => ['required', 'email', Rule::unique('users', 'email')->whereNull('deleted_at')->ignore($id)],
+            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:8', 'max:17', Rule::unique('users', 'phone')->whereNull('deleted_at')->ignore($id)],
             'password' => !is_null($this->password) ? 'required|min:8' : 'nullable',
             'confirm_password' => [
                 Rule::requiredIf(function (){

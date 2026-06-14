@@ -129,6 +129,19 @@
                                                                     class="btn btn-outline-primary btn-action restore-data">
                                                                     <i class="bi bi-arrow-repeat"></i>
                                                                 </button>
+                                                                <button data-id="delete-{{ $customer->id }}"
+                                                                    data-message="{{ translate('want_to_permanent_delete_this_customer?') }} {{ translate('you_cannot_revert_this_action') }}"
+                                                                    type="button"
+                                                                    class="btn btn-outline-danger btn-action form-alert">
+                                                                    <i class="bi bi-trash-fill"></i>
+                                                                </button>
+
+                                                                <form
+                                                                    action="{{ route('admin.customer.permanent-delete', ['id' => $customer->id]) }}"
+                                                                    id="delete-{{ $customer->id }}" method="post">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                </form>
 
                                                             </div>
                                                         </td>

@@ -16,7 +16,7 @@ class VehicleCategoryStoreUpdateRequest extends FormRequest
     {
         $id = $this->id;
         return [
-            'category_name' => 'required|string|min:3|max:255|unique:vehicle_categories,name,' . $id,
+            'category_name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('vehicle_categories', 'name')->whereNull('deleted_at')->ignore($id)],
             'short_desc' => 'required|max:900',
             'type' => 'required|in:car,motor_bike',
             'category_image' => [

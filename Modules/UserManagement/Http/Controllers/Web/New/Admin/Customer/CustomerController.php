@@ -121,7 +121,7 @@ class CustomerController extends BaseController
             Toastr::error(translate("Sorry you can't delete this customer, because there are ongoing rides or payment due this customer."));
             return back();
         }
-        $this->customerService->delete(id: $id);
+        $this->customerService->permanentDelete(id: $id);
         Toastr::success(DRIVER_DELETE_200['message']);
         return back();
     }

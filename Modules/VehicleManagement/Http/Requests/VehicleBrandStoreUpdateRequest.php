@@ -17,7 +17,7 @@ class VehicleBrandStoreUpdateRequest extends FormRequest
     {
         $id = $this->id;
         return [
-            'brand_name' => 'required|string|min:3|max:255|unique:vehicle_brands,name,' . $id,
+            'brand_name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('vehicle_brands', 'name')->whereNull('deleted_at')->ignore($id)],
             'short_desc' => 'required|max:900',
             'brand_logo' => [
                 Rule::requiredIf(empty($id)),
