@@ -16,6 +16,41 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         parent::__construct($model);
     }
 
+    public function create(array $data): ?Model
+    {
+        $this->purgeSoftDeletedUsersByPhoneOrEmail(
+            phone: $data['phone'] ?? null,
+            email: $data['email'] ?? null,
+        );
+
+        return parent::create($data);
+    }
+
+    private function purgeSoftDeletedUsersByPhoneOrEmail(?string $phone, ?string $email): void
+    {
+        if (empty($phone) && empty($email)) {
+            return;
+        }
+
+        $this->model->onlyTrashed()
+            ->where(function ($query) use ($phone, $email) {
+                if ($phone) {
+                    $query->where('phone', $phone);
+                }
+                if ($email) {
+                    $query->orWhere('email', $email);
+                }
+            })
+            ->get()
+            ->each(function (User $user) {
+                $vehicle = $user->vehicle()->withTrashed()->first();
+                if ($vehicle) {
+                    $vehicle->forceDelete();
+                }
+                $user->forceDelete();
+            });
+    }
+
     public function loyalCustomer($loyalLevelId): Collection
     {
         return $this->model->where(['user_type' => 'customer'])

@@ -78,8 +78,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'email|unique:users',
-            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:8|max:17|unique:users',
+            'email' => ['nullable', 'email', Rule::unique('users', 'email')->whereNull('deleted_at')],
+            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:8', 'max:17', Rule::unique('users', 'phone')->whereNull('deleted_at')],
             'password' => 'required|min:8',
             'profile_image' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
             'identification_type' => 'in:nid,passport,driving_license',
@@ -294,7 +294,7 @@ class AuthController extends Controller
 
     public function delete(): JsonResponse
     {
-        $user = $this->driverService->findOne(auth('api')->id());
+        $user = $this->driverService->findOne(id: auth('api')->id(), relations: ['vehicle', 'userAccount', 'tokens']);
 
         if ($user->user_type == DRIVER) {
             if (count($user->getDriverLastTrip()) != 0 || $user?->userAccount->payable_balance > 0 || $user?->userAccount->pending_balance > 0 || $user?->userAccount->receivable_balance > 0) {
@@ -312,13 +312,20 @@ class AuthController extends Controller
 
         }
 
-
-        if (auth('api')->user() !== null) {
-            auth('api')->user()->token()->revoke();
-            auth()->user()->fcm_token = null;
-            auth()->user()->deleted_at = now();
-            auth()->user()->save();
+        foreach ($user->tokens as $token) {
+            $token->revoke();
         }
+
+        if ($user?->vehicle) {
+            $user->vehicle->forceDelete();
+        }
+
+        if ($user->user_type == CUSTOMER) {
+            $this->customerService->permanentDelete(id: $user->id);
+        } else {
+            $this->driverService->permanentDelete(id: $user->id);
+        }
+
         return response()->json(responseFormatter(ACCOUNT_DELETED_200), 200);
     }
 
@@ -678,8 +685,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'email|unique:users',
-            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:8|max:17|unique:users',
+            'email' => ['nullable', 'email', Rule::unique('users', 'email')->whereNull('deleted_at')],
+            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:8', 'max:17', Rule::unique('users', 'phone')->whereNull('deleted_at')],
             'password' => 'required|min:8',
         ]);
         if ($validator->fails()) {
