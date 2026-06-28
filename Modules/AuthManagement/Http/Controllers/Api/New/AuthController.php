@@ -338,7 +338,7 @@ class AuthController extends Controller
             $this->otpVerificationService->delete(id: $data->id);
         }
 
-        $this->authService->sendOtpToClient($user, null, $request->phone_or_email);
+        $this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email);
 
         return response()->json(responseFormatter(DEFAULT_200));
     }

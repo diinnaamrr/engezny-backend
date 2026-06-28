@@ -6,6 +6,7 @@ use App\Service\BaseService;
 use App\Services\WhySMSService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 use Modules\BusinessManagement\Repository\SettingRepositoryInterface;
 use Modules\Gateways\Traits\SmsGateway;
 use Modules\UserManagement\Repository\OtpVerificationRepositoryInterface;
@@ -124,13 +125,60 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
 
         $otp = rand(100000, 999999);
 
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            $this->sendOtpViaEmail($identifier, $otp, $type ?? 'forget_password');
+            return $this->generateOtp($user, $otp, $identifier);
+        }
+
+        $phone = $identifier;
+
         if (in_array($type, ['register', 'forget_password'], true) && $this->whySMSService->isEnabled()) {
-            if ($this->whySMSService->sendOTP($user->phone, $otp, $type) === 'success') {
+            if ($this->whySMSService->sendOTP($phone, $otp, $type) === 'success') {
                 return $this->generateOtp($user, $otp, $identifier);
             }
         }
 
-        self::send($user->phone, $otp);
+        self::send($phone, $otp);
         return $this->generateOtp($user, $otp, $identifier);
+    }
+
+    private function sendOtpViaEmail(string $email, string $otp, ?string $type = null): bool
+    {
+        try {
+            $businessName = businessConfig('business_name', 'business_information')?->value ?? 'NEMO';
+            $message = $this->getOtpMessage($otp, $type);
+            $subjects = [
+                'register' => "{$businessName} - Verification Code",
+                'forget_password' => "{$businessName} - Password Reset Code",
+                'login' => "{$businessName} - Login Code",
+            ];
+            $subject = $subjects[$type] ?? "{$businessName} - Verification Code";
+
+            Mail::raw($message, function ($mail) use ($email, $subject) {
+                $mail->to($email)->subject($subject);
+            });
+
+            \Log::info('OTP email sent', ['email' => $email, 'type' => $type]);
+
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('OTP email failed', [
+                'email' => $email,
+                'error' => $e->getMessage(),
+            ]);
+
+            return false;
+        }
+    }
+
+    private function getOtpMessage(string $otp, ?string $type): string
+    {
+        $messages = [
+            'register' => "Welcome to NEMO! Your verification code is: {$otp}\nThis code expires in 5 minutes. Please do not share this code.",
+            'forget_password' => "NEMO: Use code {$otp} to reset your password.\nThis code expires in 5 minutes. If you didn't request this, please ignore.",
+            'login' => "NEMO: Your login code is: {$otp}\nValid for 5 minutes.",
+        ];
+
+        return $messages[$type] ?? "NEMO: Your verification code is: {$otp}\nThis code expires in 5 minutes.";
     }
 }
