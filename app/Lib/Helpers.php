@@ -200,8 +200,13 @@ if (!function_exists('applyBusinessMailConfig')) {
         $config = businessConfig('email_config', 'email_config')?->value;
 
         if ($config && !empty($config['host'])) {
-            $driver = strtolower((string)($config['driver'] ?? 'smtp'));
+            $driver = strtolower(trim((string)($config['driver'] ?? 'smtp')));
             $mailer = in_array($driver, ['smtp', 'sendmail', 'log'], true) ? $driver : 'smtp';
+            $port = (int)trim((string)($config['port'] ?? 587));
+            $encryption = strtolower(trim((string)($config['encryption'] ?? '')));
+            if ($encryption === '' || $encryption === 'null') {
+                $encryption = $port === 465 ? 'ssl' : ($port === 587 ? 'tls' : null);
+            }
 
             config([
                 'mail.default' => $mailer,
@@ -209,16 +214,16 @@ if (!function_exists('applyBusinessMailConfig')) {
                     config("mail.mailers.{$mailer}", []),
                     [
                         'transport' => $mailer,
-                        'host' => $config['host'],
-                        'port' => (int)($config['port'] ?? 587),
-                        'encryption' => !empty($config['encryption']) ? $config['encryption'] : null,
-                        'username' => $config['username'] ?? null,
-                        'password' => $config['password'] ?? null,
+                        'host' => trim((string)$config['host']),
+                        'port' => $port,
+                        'encryption' => $encryption,
+                        'username' => trim((string)($config['username'] ?? '')),
+                        'password' => (string)($config['password'] ?? ''),
                     ]
                 ),
                 'mail.from' => [
-                    'address' => $config['email_id'] ?? config('mail.from.address'),
-                    'name' => $config['mailer_name'] ?? config('mail.from.name'),
+                    'address' => trim((string)($config['email_id'] ?? config('mail.from.address'))),
+                    'name' => trim((string)($config['mailer_name'] ?? config('mail.from.name'))),
                 ],
             ]);
 

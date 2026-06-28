@@ -3,10 +3,10 @@
 namespace Modules\AuthManagement\Service;
 
 use App\Service\BaseService;
+use App\Services\OtpEmailService;
 use App\Services\WhySMSService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
 use Modules\BusinessManagement\Repository\SettingRepositoryInterface;
 use Modules\Gateways\Traits\SmsGateway;
 use Modules\UserManagement\Repository\OtpVerificationRepositoryInterface;
@@ -20,14 +20,16 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     protected $otpVerificationRepository;
     protected $settingRepository;
     protected WhySMSService $whySMSService;
+    protected OtpEmailService $otpEmailService;
 
-    public function __construct(UserRepositoryInterface $userRepository, OtpVerificationRepositoryInterface $otpVerificationRepository, SettingRepositoryInterface $settingRepository, WhySMSService $whySMSService)
+    public function __construct(UserRepositoryInterface $userRepository, OtpVerificationRepositoryInterface $otpVerificationRepository, SettingRepositoryInterface $settingRepository, WhySMSService $whySMSService, OtpEmailService $otpEmailService)
     {
         parent::__construct($userRepository);
         $this->userRepository = $userRepository;
         $this->otpVerificationRepository = $otpVerificationRepository;
         $this->settingRepository = $settingRepository;
         $this->whySMSService = $whySMSService;
+        $this->otpEmailService = $otpEmailService;
     }
 
     public function checkClientRoute($request)
@@ -111,7 +113,7 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     }
 
 
-    public function sendOtpToClient($user, $type = null, ?string $identifier = null)
+    public function sendOtpToClient($user, $type = null, ?string $identifier = null): mixed
     {
         $identifier = $identifier ?? $user->phone;
 
@@ -126,7 +128,10 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
         $otp = rand(100000, 999999);
 
         if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
-            $this->sendOtpViaEmail($identifier, $otp, $type ?? 'forget_password');
+            if (!$this->sendOtpViaEmail($identifier, $otp, $type ?? 'forget_password')) {
+                return false;
+            }
+
             return $this->generateOtp($user, $otp, $identifier);
         }
 
@@ -145,8 +150,6 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     private function sendOtpViaEmail(string $email, string $otp, ?string $type = null): bool
     {
         try {
-            applyBusinessMailConfig();
-
             $businessName = businessConfig('business_name', 'business_information')?->value ?? 'NEMO';
             $message = $this->getOtpMessage($otp, $type);
             $subjects = [
@@ -155,19 +158,8 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
                 'login' => "{$businessName} - Login Code",
             ];
             $subject = $subjects[$type] ?? "{$businessName} - Verification Code";
-            $mailer = config('mail.default', 'smtp');
 
-            \Log::info('Sending OTP email', [
-                'email' => $email,
-                'type' => $type,
-                'mailer' => $mailer,
-                'host' => config("mail.mailers.{$mailer}.host"),
-                'from' => config('mail.from.address'),
-            ]);
-
-            Mail::mailer($mailer)->raw($message, function ($mail) use ($email, $subject) {
-                $mail->to($email)->subject($subject);
-            });
+            $this->otpEmailService->send($email, $subject, $message);
 
             \Log::info('OTP email sent successfully', ['email' => $email, 'type' => $type]);
 

@@ -11,6 +11,11 @@ const DEFAULT_SENT_OTP_200 = [
     'message' => 'Successfully sent OTP'
 ];
 
+const OTP_EMAIL_SEND_FAILED_503 = [
+    'response_code' => 'otp_email_send_failed_503',
+    'message' => 'Failed to send verification code to email. Please check mail settings or use your phone number.',
+];
+
 const DEFAULT_VERIFIED_200 = [
     'response_code' => 'default_verified_200',
     'message' => 'Successfully verified'

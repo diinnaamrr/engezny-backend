@@ -338,7 +338,9 @@ class AuthController extends Controller
             $this->otpVerificationService->delete(id: $data->id);
         }
 
-        $this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email);
+        if ($this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email) === false) {
+            return response()->json(responseFormatter(OTP_EMAIL_SEND_FAILED_503), 503);
+        }
 
         return response()->json(responseFormatter(DEFAULT_200));
     }
@@ -580,7 +582,10 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(responseFormatter(USER_NOT_FOUND_404), 403);
         }
-        $this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email);
+
+        if ($this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email) === false) {
+            return response()->json(responseFormatter(OTP_EMAIL_SEND_FAILED_503), 503);
+        }
 
         return response()->json(responseFormatter(DEFAULT_200));
     }
