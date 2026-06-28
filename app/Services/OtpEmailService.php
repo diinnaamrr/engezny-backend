@@ -13,18 +13,19 @@ class OtpEmailService
     {
         applyBusinessMailConfig();
 
+        $configSource = businessConfig('email_config', 'email_config')?->value ? 'admin_panel' : 'env';
         $mailerName = config('mail.default', 'smtp');
         $smtp = config("mail.mailers.{$mailerName}", []);
-        $fromAddress = trim((string)config('mail.from.address', ''));
+        $fromAddress = $this->normalizeCredential(config('mail.from.address', ''));
         $fromName = trim((string)(config('mail.from.name') ?? config('app.name', 'NEMO')));
 
-        $host = trim((string)($smtp['host'] ?? ''));
+        $host = $this->normalizeCredential($smtp['host'] ?? '');
         $port = (int)($smtp['port'] ?? 587);
-        $username = trim((string)($smtp['username'] ?? ''));
-        $password = (string)($smtp['password'] ?? '');
-        $encryption = strtolower(trim((string)($smtp['encryption'] ?? '')));
+        $username = $this->normalizeCredential($smtp['username'] ?? '');
+        $password = $this->normalizeCredential($smtp['password'] ?? '');
+        $encryption = strtolower($this->normalizeCredential($smtp['encryption'] ?? ''));
 
-        if ($encryption === '' || $encryption === 'null') {
+        if ($encryption === '') {
             $encryption = $port === 465 ? 'ssl' : ($port === 587 ? 'tls' : '');
         }
 
@@ -32,13 +33,14 @@ class OtpEmailService
             throw new \RuntimeException('Mail is not configured. Set Email Config in admin or MAIL_* in .env.');
         }
 
-        if (in_array(strtolower($host), ['mailhog', 'localhost', '127.0.0.1'], true) && app()->environment('production')) {
-            throw new \RuntimeException("Mail host [{$host}] is a development server. Update Email Config or .env on production.");
+        if (in_array(strtolower($host), ['mailhog', 'localhost', '127.0.0.1'], true)) {
+            throw new \RuntimeException("Mail host [{$host}] is for local development only. Use a real SMTP server on production.");
         }
 
         $dsn = $this->buildSmtpDsn($host, $port, $username, $password, $encryption);
 
         Log::info('OTP email transport', [
+            'source' => $configSource,
             'to' => $to,
             'host' => $host,
             'port' => $port,
@@ -66,13 +68,22 @@ class OtpEmailService
             $auth = rawurlencode($username) . ':' . rawurlencode($password) . '@';
         }
 
+        $scheme = ($port === 465 || $encryption === 'ssl') ? 'smtps' : 'smtp';
         $query = [];
-        if ($encryption !== '') {
-            $query[] = 'encryption=' . rawurlencode($encryption);
+
+        if ($scheme === 'smtp' && $encryption === 'tls') {
+            $query[] = 'encryption=tls';
         }
 
         $queryString = $query ? '?' . implode('&', $query) : '';
 
-        return "smtp://{$auth}{$host}:{$port}{$queryString}";
+        return "{$scheme}://{$auth}{$host}:{$port}{$queryString}";
+    }
+
+    private function normalizeCredential(mixed $value): string
+    {
+        $value = trim((string)$value);
+
+        return in_array(strtolower($value), ['', 'null'], true) ? '' : $value;
     }
 }

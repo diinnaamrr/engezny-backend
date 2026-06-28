@@ -339,7 +339,7 @@ class AuthController extends Controller
         }
 
         if ($this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email) === false) {
-            return response()->json(responseFormatter(OTP_EMAIL_SEND_FAILED_503), 503);
+            return $this->otpEmailFailedResponse();
         }
 
         return response()->json(responseFormatter(DEFAULT_200));
@@ -584,7 +584,7 @@ class AuthController extends Controller
         }
 
         if ($this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email) === false) {
-            return response()->json(responseFormatter(OTP_EMAIL_SEND_FAILED_503), 503);
+            return $this->otpEmailFailedResponse();
         }
 
         return response()->json(responseFormatter(DEFAULT_200));
@@ -658,6 +658,20 @@ class AuthController extends Controller
             'is_phone_verified' => is_null($user['phone_verified_at']) ? 0 : 1,
             'is_profile_verified' => $user->isProfileVerified(),
         ];
+    }
+
+    private function otpEmailFailedResponse(): JsonResponse
+    {
+        $response = responseFormatter(OTP_EMAIL_SEND_FAILED_503);
+
+        if (config('app.debug')) {
+            $response['errors'] = [[
+                'error_code' => 'smtp',
+                'message' => $this->authService->getLastOtpEmailError() ?? 'Unknown mail error',
+            ]];
+        }
+
+        return response()->json($response, 503);
     }
 
 

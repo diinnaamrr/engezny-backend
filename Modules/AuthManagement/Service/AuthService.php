@@ -21,6 +21,7 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     protected $settingRepository;
     protected WhySMSService $whySMSService;
     protected OtpEmailService $otpEmailService;
+    private ?string $lastOtpEmailError = null;
 
     public function __construct(UserRepositoryInterface $userRepository, OtpVerificationRepositoryInterface $otpVerificationRepository, SettingRepositoryInterface $settingRepository, WhySMSService $whySMSService, OtpEmailService $otpEmailService)
     {
@@ -165,6 +166,8 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
 
             return true;
         } catch (\Throwable $e) {
+            $this->lastOtpEmailError = $e->getMessage();
+
             \Log::error('OTP email failed', [
                 'email' => $email,
                 'error' => $e->getMessage(),
@@ -173,6 +176,11 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
 
             return false;
         }
+    }
+
+    public function getLastOtpEmailError(): ?string
+    {
+        return $this->lastOtpEmailError;
     }
 
     private function getOtpMessage(string $otp, ?string $type): string

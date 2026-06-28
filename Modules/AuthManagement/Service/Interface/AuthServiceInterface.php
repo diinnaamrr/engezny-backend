@@ -12,6 +12,8 @@ interface AuthServiceInterface extends BaseServiceInterface
 
     public function sendOtpToClient($user, $type = null, ?string $identifier = null): mixed;
 
+    public function getLastOtpEmailError(): ?string;
+
     public function updateLoginUser(string|int $id, array $data): ?Model;
 
 }
