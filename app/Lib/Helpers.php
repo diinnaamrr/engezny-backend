@@ -194,6 +194,41 @@ if (!function_exists('businessConfig')) {
     }
 }
 
+if (!function_exists('applyBusinessMailConfig')) {
+    function applyBusinessMailConfig(): void
+    {
+        $config = businessConfig('email_config', 'email_config')?->value;
+
+        if ($config && !empty($config['host'])) {
+            $driver = strtolower((string)($config['driver'] ?? 'smtp'));
+            $mailer = in_array($driver, ['smtp', 'sendmail', 'log'], true) ? $driver : 'smtp';
+
+            config([
+                'mail.default' => $mailer,
+                "mail.mailers.{$mailer}" => array_merge(
+                    config("mail.mailers.{$mailer}", []),
+                    [
+                        'transport' => $mailer,
+                        'host' => $config['host'],
+                        'port' => (int)($config['port'] ?? 587),
+                        'encryption' => !empty($config['encryption']) ? $config['encryption'] : null,
+                        'username' => $config['username'] ?? null,
+                        'password' => $config['password'] ?? null,
+                    ]
+                ),
+                'mail.from' => [
+                    'address' => $config['email_id'] ?? config('mail.from.address'),
+                    'name' => $config['mailer_name'] ?? config('mail.from.name'),
+                ],
+            ]);
+
+            if (app()->bound('mail.manager')) {
+                app()->forgetInstance('mail.manager');
+            }
+        }
+    }
+}
+
 if (!function_exists('getDriverCollectableAmount')) {
     function getDriverCollectableAmount($userAccount): float
     {

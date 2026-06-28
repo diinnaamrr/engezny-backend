@@ -145,6 +145,8 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     private function sendOtpViaEmail(string $email, string $otp, ?string $type = null): bool
     {
         try {
+            applyBusinessMailConfig();
+
             $businessName = businessConfig('business_name', 'business_information')?->value ?? 'NEMO';
             $message = $this->getOtpMessage($otp, $type);
             $subjects = [
@@ -153,18 +155,28 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
                 'login' => "{$businessName} - Login Code",
             ];
             $subject = $subjects[$type] ?? "{$businessName} - Verification Code";
+            $mailer = config('mail.default', 'smtp');
 
-            Mail::raw($message, function ($mail) use ($email, $subject) {
+            \Log::info('Sending OTP email', [
+                'email' => $email,
+                'type' => $type,
+                'mailer' => $mailer,
+                'host' => config("mail.mailers.{$mailer}.host"),
+                'from' => config('mail.from.address'),
+            ]);
+
+            Mail::mailer($mailer)->raw($message, function ($mail) use ($email, $subject) {
                 $mail->to($email)->subject($subject);
             });
 
-            \Log::info('OTP email sent', ['email' => $email, 'type' => $type]);
+            \Log::info('OTP email sent successfully', ['email' => $email, 'type' => $type]);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('OTP email failed', [
                 'email' => $email,
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
             return false;
