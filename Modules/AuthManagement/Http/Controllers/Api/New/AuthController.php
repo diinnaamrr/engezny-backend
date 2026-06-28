@@ -186,10 +186,6 @@ class AuthController extends Controller
             }
         }
 
-        /**
-         * phone no verification SMS_Body
-         */
-        $this->authService->sendOtpToClient($user, 'register');
         return response()->json(responseFormatter(REGISTRATION_200));
     }
 
@@ -233,20 +229,6 @@ class AuthController extends Controller
 
         if (Hash::check($request['password'], $user['password'])) {
             if ($user->is_active) {
-                $verification = $user->user_type == CUSTOMER ? (businessConfig('customer_verification')?->value ?? 0) : (businessConfig('driver_verification')?->value ?? 0);
-                if ($verification && !$user->phone_verified_at) {
-
-                    if (businessConfig('firebase_otp_verification_status')?->value != 1) {
-                        /**
-                         * Phone verification SMS_Body
-                         */
-                        $this->authService->sendOtpToClient($user);
-                    }
-                    return response()->json(responseFormatter(constant: DEFAULT_SENT_OTP_200, content: [
-                        'is_phone_verified' => is_null($user->phone_verified_at) ? 0 : 1,
-                        'verification_url' => $user->user_type == CUSTOMER ? '/api/customer/auth/otp-login' : '/api/driver/auth/otp-login'
-                    ]), 202);
-                }
                 $access_type = $user->user_type == CUSTOMER ? CUSTOMER_PANEL_ACCESS : DRIVER_PANEL_ACCESS;
                 $userData = [
                     'failed_attempt' => 0,
@@ -356,10 +338,7 @@ class AuthController extends Controller
             $this->otpVerificationService->delete(id: $data->id);
         }
 
-        /**
-         * general purpose SMS_Body
-         */
-        $this->authService->sendOtpToClient($user);
+        $this->authService->sendOtpToClient($user, null, $request->phone_or_email);
 
         return response()->json(responseFormatter(DEFAULT_200));
     }
@@ -563,7 +542,7 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'phone_or_email' => 'required|min:8|max:20',
+            'phone_or_email' => 'required',
             'password' => 'required|min:8',
         ]);
 
@@ -590,7 +569,7 @@ class AuthController extends Controller
     public function forgetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone_or_email' => 'required|min:8|max:20',
+            'phone_or_email' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -601,10 +580,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(responseFormatter(USER_NOT_FOUND_404), 403);
         }
-        /**
-         * forget password SMS_Body
-         */
-        $this->authService->sendOtpToClient($user, 'forget_password');
+        $this->authService->sendOtpToClient($user, 'forget_password', $request->phone_or_email);
 
         return response()->json(responseFormatter(DEFAULT_200));
     }

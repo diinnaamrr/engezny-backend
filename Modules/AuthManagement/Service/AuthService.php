@@ -32,20 +32,32 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     public function checkClientRoute($request)
     {
         $route = str_contains($request->route()?->getPrefix(), 'customer');
-        if ($route) {
-            $user = $this->userRepository->findOneBy(criteria: ['phone' => $request->phone_or_email, 'user_type' => CUSTOMER]);
-        } else {
-            $user = $this->userRepository->findOneBy(criteria: ['phone' => $request->phone_or_email, 'user_type' => DRIVER]);
+        $userType = $route ? CUSTOMER : DRIVER;
+        $identifier = $request->phone_or_email;
+
+        $user = $this->userRepository->findOneBy(criteria: [
+            'phone' => $identifier,
+            'user_type' => $userType,
+        ]);
+
+        if (!$user && filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            $user = $this->userRepository->findOneBy(criteria: [
+                'email' => $identifier,
+                'user_type' => $userType,
+            ]);
         }
+
         return $user;
     }
 
-    private function generateOtp($user, $otp)
+    private function generateOtp($user, $otp, ?string $identifier = null)
     {
+        $phoneOrEmail = $identifier ?? $user->phone;
+
         try {
             $expires_at = env('APP_MODE') == 'live' ? 3 : 1000;
             $attributes = [
-                'phone_or_email' => $user->phone,
+                'phone_or_email' => $phoneOrEmail,
                 'otp' => (string)$otp,
                 'expires_at' => Carbon::now()->addMinutes($expires_at),
             ];
@@ -57,7 +69,7 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
             ]);
             
             // Delete old OTP
-            $verification = $this->otpVerificationRepository->findOneBy(['phone_or_email' => $user->phone]);
+            $verification = $this->otpVerificationRepository->findOneBy(['phone_or_email' => $phoneOrEmail]);
             if ($verification) {
                 \Log::info('Deleting old OTP', ['id' => $verification->id, 'old_otp' => $verification->otp]);
                 $this->otpVerificationRepository->delete($verification->id);
@@ -98,26 +110,27 @@ class AuthService extends BaseService implements Interface\AuthServiceInterface
     }
 
 
-    public function sendOtpToClient($user, $type = null)
+    public function sendOtpToClient($user, $type = null, ?string $identifier = null)
     {
+        $identifier = $identifier ?? $user->phone;
+
         if ($type == 'trip') {
             $otp = env('APP_MODE') == 'live' ? rand(1000, 9999) : '0000';
             if (self::send($user->phone, $otp) == "not_found") {
-                return $this->generateOtp($user, '0000');
+                return $this->generateOtp($user, '0000', $identifier);
             }
-            return $this->generateOtp($user, $otp);
-        } 
-        
-        $otp = rand(100000, 999999); 
+            return $this->generateOtp($user, $otp, $identifier);
+        }
+
+        $otp = rand(100000, 999999);
 
         if (in_array($type, ['register', 'forget_password'], true) && $this->whySMSService->isEnabled()) {
             if ($this->whySMSService->sendOTP($user->phone, $otp, $type) === 'success') {
-                return $this->generateOtp($user, $otp);
+                return $this->generateOtp($user, $otp, $identifier);
             }
         }
 
         self::send($user->phone, $otp);
-        return $this->generateOtp($user, $otp);
-
+        return $this->generateOtp($user, $otp, $identifier);
     }
 }

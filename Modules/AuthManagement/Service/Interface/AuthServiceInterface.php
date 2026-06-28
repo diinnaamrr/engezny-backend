@@ -10,7 +10,7 @@ interface AuthServiceInterface extends BaseServiceInterface
     public function checkClientRoute($request);
 //    public function generateOtp($user);
 
-    public function sendOtpToClient($user,$type=null);
+    public function sendOtpToClient($user, $type = null, ?string $identifier = null);
 
     public function updateLoginUser(string|int $id, array $data): ?Model;
 
